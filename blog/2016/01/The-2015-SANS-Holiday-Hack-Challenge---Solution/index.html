@@ -10,9 +10,9 @@
   <meta itemprop="description" content="Summary Which commands are sent across the Gnome’s command-and-control channel? EXEC:iwconfig in packet 363 EXEC:cat /tmp/iwlistscan.txt in packet 573 What image appears in the photo the Gnome sent across the channel from the Dosis home? A tidy children&rsquo;s room is depicted in the photo. The photo includes something like legs that are probably attached to the camera. At the bottom is a label with &ldquo;GnomeNet-NorthAmerica&rdquo;. What operating system and CPU type are used in the Gnome?">
 
   
-  <meta itemprop="keywords" content="certifications,challenge,ctf,exploit,exploit-exercises,offensive-security,protostar,reverse-engineering,sans,seh," />
+  <meta itemprop="keywords" content="certifications,challenge,ctf,exploit,exploit-exercises,hacking,hashcat,offensive-security,protostar,reverse-engineering,sans,seh," />
   
-    <meta itemprop="wordCount" content="2969">
+    <meta itemprop="wordCount" content="2972">
   
 
   <meta property="og:title" content="The 2015 SANS Holiday Hack Challenge - Solution" />
@@ -770,7 +770,7 @@ The restored video feed <a href="/img/post/2015/holidayhack/4_eval_xor.png">imag
 
 <h2 id="decrypt-c-c-communication:fc53e74f05f8f7542d80a6ee08c867a6">Decrypt C&amp;C Communication</h2>
 
-<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#!env python2</span>
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#!/usr/bin/env python2</span>
 <span class="kn">from</span> <span class="nn">scapy.all</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">packetCount</span> <span class="o">=</span> <span class="mi">0</span>
@@ -856,7 +856,7 @@ The restored video feed <a href="/img/post/2015/holidayhack/4_eval_xor.png">imag
 
 <h2 id="sgstatd-remote-exploit:fc53e74f05f8f7542d80a6ee08c867a6">sgstatd Remote Exploit</h2>
 
-<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#!/usr/bin/python</span>
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#!/usr/bin/env python2</span>
 <span class="c"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">socket</span>
@@ -927,7 +927,12 @@ The restored video feed <a href="/img/post/2015/holidayhack/4_eval_xor.png">imag
 
 <h2 id="restore-overlay-error:fc53e74f05f8f7542d80a6ee08c867a6">Restore Overlay Error</h2>
 
-<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageChops</span><span class="p">,</span> <span class="n">ImageMath</span>
+<!-- TODO: adjust script to work correctly //-->
+
+<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageChops</span><span class="p">,</span> <span class="n">ImageMath</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="k">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">))</span>
@@ -942,34 +947,31 @@ The restored video feed <a href="/img/post/2015/holidayhack/4_eval_xor.png">imag
 <span class="n">imajs</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">filenames</span><span class="p">)</span> <span class="ow">in</span> <span class="n">walk</span><span class="p">(</span><span class="n">mydir</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s">&quot;factory_cam_&quot;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
-
-            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mydir</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s">&quot;RGBA&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">getbands</span><span class="p">())</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="bp">False</span><span class="p">:</span>
-                <span class="n">ir</span><span class="p">,</span> <span class="n">ig</span><span class="p">,</span> <span class="n">ib</span><span class="p">,</span> <span class="n">ia</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="s">&#39;RGB&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">ir</span><span class="p">,</span> <span class="n">ig</span><span class="p">,</span> <span class="n">ib</span><span class="p">))</span>
-
-            <span class="n">imajs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mydir</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s">&quot;RGB&quot;</span><span class="p">)</span><span class="c">#.convert(&#39;L&#39;)#.convert(&#39;LA&#39;)#.convert(&quot;RGB&quot;)</span>
+        <span class="n">imajs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 
 <span class="k">print</span><span class="p">(</span><span class="n">imajs</span><span class="p">)</span>
+<span class="n">newimaj</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s">&#39;RGB&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">768</span><span class="p">))</span>
 
-<span class="n">myimaj</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mydir</span><span class="p">,</span> <span class="s">&quot;camera_feed_overlap_error.png&quot;</span><span class="p">))</span>
-<span class="n">myr</span><span class="p">,</span> <span class="n">myg</span><span class="p">,</span> <span class="n">myb</span><span class="p">,</span> <span class="n">mya</span> <span class="o">=</span> <span class="n">myimaj</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1024</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">769</span><span class="p">):</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
 
-<span class="n">x</span><span class="o">=</span><span class="mi">0</span>
-<span class="k">for</span> <span class="n">imaj1</span> <span class="ow">in</span> <span class="n">imajs</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">imaj1</span><span class="p">,</span><span class="n">myimaj</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">imaj</span> <span class="ow">in</span> <span class="n">imajs</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">imaj</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">imaj1</span> <span class="o">==</span> <span class="n">myimaj</span><span class="p">:</span>
-        <span class="k">continue</span>
-    <span class="k">if</span> <span class="n">imaj1</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">myimaj</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&quot;size mismatch&quot;</span><span class="p">)</span>
-        <span class="k">continue</span>
+            <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span> <span class="o">=</span> <span class="n">imaj</span><span class="o">.</span><span class="n">getpixel</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 
-    <span class="n">myimaj</span> <span class="o">=</span> <span class="n">ImageMath</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s">&quot;convert(a^b, &#39;L&#39;)&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">imaj1</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s">&#39;L&#39;</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="n">myimaj</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s">&#39;L&#39;</span><span class="p">))</span>
-    <span class="n">myimaj</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%d</span><span class="s">_eval_xor.png&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">))</span>
-    <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">r</span><span class="p">:</span>
+                <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">r</span> <span class="o">^=</span> <span class="n">red</span>
+                <span class="n">g</span> <span class="o">^=</span> <span class="n">green</span>
+                <span class="n">b</span> <span class="o">^=</span> <span class="n">blue</span>
+
+        <span class="n">newimaj</span><span class="o">.</span><span class="n">putpixel</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+
+<span class="n">newimaj</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;solution.png&#39;</span><span class="p">)</span>
 </code></pre></div>
 </p>
 
@@ -979,6 +981,10 @@ The restored video feed <a href="/img/post/2015/holidayhack/4_eval_xor.png">imag
   <ul class="pager">
     
 
+    
+      
+        &nbsp;<li class="previous"><a href="http://camelinc.info/blog/2016/01/Password-Cracking-on-Amazon-EC2/"> Password Cracking on Amazon EC2 </a></li>
+      
     
     
       

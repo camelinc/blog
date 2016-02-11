@@ -227,11 +227,8 @@ After some rounds, the solution should be presented.&lt;/p&gt;
 
 &lt;p&gt;Some issues persist in my solution and still required some manual tweaks.
 Maybe someone wants to improve the code to handle this issue automagically.
-Yet it worked.&lt;/p&gt;
-
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+Yet it worked.
+Get it now on &lt;a href=&#34;https://gist.github.com/camelinc/6d59545d207f4876183b#file-05_server-py&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;The script produces this wonderful output.&lt;/p&gt;
 
@@ -557,8 +554,8 @@ This I could not figure out in time.&lt;/p&gt;
 &lt;h1 id=&#34;links:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Links&lt;/h1&gt;
 
 &lt;ul&gt;
-&lt;li&gt;[FIXME: FireEye solutions]()&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://earnestwish.com/category/application-hacking/&#34;&gt;FIXME&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.fireeye.com/blog/threat-research/2015/09/flare-on_challenges.html&#34;&gt;FireEye solutions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://earnestwish.com/category/application-hacking/&#34;&gt;Python Image File Hacking&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://f0dder.reteam.org/essay01.htm&#34;&gt;TEA&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://www.nayuki.io/page/tiny-encryption-algorithm-in-x86-assembly&#34;&gt;TEA in x86 assembly&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.phx2600.org/archive/2011/06/05/forensics-100-defcon-ctf-quals/&#34;&gt;Forensics 100 Defcon CTF Quals&lt;/a&gt;&lt;/li&gt;
