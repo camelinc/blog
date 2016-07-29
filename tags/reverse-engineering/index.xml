@@ -17,16 +17,16 @@
       <guid>http://camelinc.info/blog/2015/08/FLARE-on-Challenge-2015/</guid>
       <description>
 
-&lt;h1 id=&#34;instructions:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Instructions&lt;/h1&gt;
+&lt;h1 id=&#34;instructions&#34;&gt;Instructions&lt;/h1&gt;
 
 &lt;p&gt;The FireEye Labs Advanced Reverse Engineering (FLARE) team is an elite technical group of malware analysts, researchers, and hackers.
 We are looking to hire smart individuals interested in reverse engineering.
 We have created this series of binary challenges to test your skills.
 We encourage anyone to participate and practice their skills while having fun!&lt;/p&gt;
 
-&lt;h1 id=&#34;challenge-0x01:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 0x01&lt;/h1&gt;
+&lt;h1 id=&#34;challenge-0x01&#34;&gt;Challenge 0x01&lt;/h1&gt;
 
-&lt;h2 id=&#34;walkthrough:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+&lt;h2 id=&#34;walkthrough&#34;&gt;Walkthrough&lt;/h2&gt;
 
 &lt;p&gt;Somewhere in the file an email address is hidden.
 First, let&amp;rsquo;s extract the exe with 7zip.
@@ -71,13 +71,13 @@ With a python two liner we can decrypt the password on the go.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h2 id=&#34;solution:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;solution&lt;/h2&gt;
+&lt;h2 id=&#34;solution&#34;&gt;solution&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;bunny_sl0pe@flare-on.com&lt;/code&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;challenge-0x02:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 0x02&lt;/h1&gt;
+&lt;h1 id=&#34;challenge-0x02&#34;&gt;Challenge 0x02&lt;/h1&gt;
 
-&lt;h2 id=&#34;walkthrough-1:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+&lt;h2 id=&#34;walkthrough-1&#34;&gt;Walkthrough&lt;/h2&gt;
 
 &lt;p&gt;This challenge should also be quite simple.
 Attach OllyDbg and take a look at &lt;code&gt;very_success&lt;/code&gt;.
@@ -131,13 +131,13 @@ The code basically reimplements the assembly.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h2 id=&#34;solution-1:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;solution&lt;/h2&gt;
+&lt;h2 id=&#34;solution-1&#34;&gt;solution&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;a_Little_b1t_harder_plez@flare-on.com&lt;/code&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;challenge-0x03:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 0x03&lt;/h1&gt;
+&lt;h1 id=&#34;challenge-0x03&#34;&gt;Challenge 0x03&lt;/h1&gt;
 
-&lt;h2 id=&#34;walkthrough-2:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+&lt;h2 id=&#34;walkthrough-2&#34;&gt;Walkthrough&lt;/h2&gt;
 
 &lt;p&gt;Debug in &lt;code&gt;elfi&lt;/code&gt; OllyDbg gives no interesting results.
 What should we do!
@@ -151,17 +151,17 @@ Running the newly created &lt;code&gt;elfie.py&lt;/code&gt; yields some more obf
 Before doing that, replace the call to &lt;code&gt;exec&lt;/code&gt; with a &lt;code&gt;print&lt;/code&gt;.
 After looking long enough at the code, the solution is obvious.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; strings elfie &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sed &lt;span class=&#34;s2&#34;&gt;&amp;quot;s/exec/print/g&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; python &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -oP &lt;span class=&#34;s2&#34;&gt;&amp;quot;in reversed\(&amp;#39;moc.+&amp;#39;\)&amp;quot;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; strings elfie &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sed &lt;span class=&#34;s2&#34;&gt;&amp;quot;s/exec/print/g&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; python &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -oP &lt;span class=&#34;s2&#34;&gt;&amp;quot;in reversed\(&amp;#39;moc.+&amp;#39;\)&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;h2 id=&#34;solution-2:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+
+&lt;h2 id=&#34;solution-2&#34;&gt;Solution&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Elfie.L0000ves.YOOOO@flare-on.co&lt;/code&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;challenge-0x04:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 0x04&lt;/h1&gt;
+&lt;h1 id=&#34;challenge-0x04&#34;&gt;Challenge 0x04&lt;/h1&gt;
 
-&lt;h2 id=&#34;walkthrough-3:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+&lt;h2 id=&#34;walkthrough-3&#34;&gt;Walkthrough&lt;/h2&gt;
 
 &lt;p&gt;The file is packed with UPX.
 Consequently, we have to unpack the file to get a better idea what is going on.
@@ -184,7 +184,7 @@ The second hash value is calculated based on some unknown value.&lt;/p&gt;
 &lt;p&gt;Why not write a script to iterate all possible values.
 Win.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;subprocess&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;subprocess&lt;/span&gt;
 
 &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;range&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;24&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;process&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;subprocess&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Popen&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;([&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;youPecks&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;stdout&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;subprocess&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;PIPE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
@@ -193,18 +193,18 @@ Win.&lt;/p&gt;
     &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;flare&amp;quot;&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
         &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;strip&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;())&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;Alternativeley, we can manipulate the value for the check in &lt;code&gt;0x00401BB0&lt;/code&gt;.
 The time_struct is used to store pointers and lengths while copying the base64 encoded strings to the heap.&lt;/p&gt;
 
-&lt;h2 id=&#34;solution-3:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+&lt;h2 id=&#34;solution-3&#34;&gt;Solution&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Uhr1them3tic@flare-on.com&lt;/code&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;challenge-0x05:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 0x05&lt;/h1&gt;
+&lt;h1 id=&#34;challenge-0x05&#34;&gt;Challenge 0x05&lt;/h1&gt;
 
-&lt;h2 id=&#34;walkthrough-4:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+&lt;h2 id=&#34;walkthrough-4&#34;&gt;Walkthrough&lt;/h2&gt;
 
 &lt;p&gt;This time we have got a network capture and a binary.
 The binary reads a file &amp;ldquo;key.txt&amp;rdquo;.
@@ -248,13 +248,13 @@ Get it now on &lt;a href=&#34;https://gist.github.com/camelinc/6d59545d207f48761
 2015-08-04 14:28:28,921 Sp1cy_7_lb0     UDYs1D7bNmdE1Aq=
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;solution-4:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+&lt;h2 id=&#34;solution-4&#34;&gt;Solution&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Sp1cy_7_layer_OSI_dip@flare-on.com&lt;/code&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;challenge-0x06:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 0x06&lt;/h1&gt;
+&lt;h1 id=&#34;challenge-0x06&#34;&gt;Challenge 0x06&lt;/h1&gt;
 
-&lt;h2 id=&#34;walkthrough-5:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+&lt;h2 id=&#34;walkthrough-5&#34;&gt;Walkthrough&lt;/h2&gt;
 
 &lt;p&gt;The, first challenge with an android apk.
 Take a look at the source code after unpacking the app.
@@ -265,17 +265,17 @@ So let&amp;rsquo;s dive in ARM assembly.&lt;/p&gt;
 During testing an emulated device proofed to be quite unstable.
 In order to debug the library we have to attach gdbserver to the running app.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;#Grep process id&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;#Grep process id&lt;/span&gt;
 ps &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep flare
 &lt;span class=&#34;c&#34;&gt;#attach to running app&lt;/span&gt;
 gdbserver :1234 --attach 4444
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;Next, we have to copy the libraries from the phone to the debugging machine.
 For this, we simply create a temporary directory and pull the necessary files via adb.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;#prepare directory structure&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;#prepare directory structure&lt;/span&gt;
 mkdir /tmp/my_android
 &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; /tmp/my_android
 mkdir system_lib
@@ -294,11 +294,11 @@ mkdir vendor_lib
 ~/Android/Sdk/platform-tools/adb pull /system/bin/linker
 ~/Android/Sdk/platform-tools/adb pull /data/app/com.flare_on.flare-1/lib/arm/libvalidate.so
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;With the necessary files in place we can start up the arm debugger.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;gp&#34;&gt;#&lt;/span&gt;start arm
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;gp&#34;&gt;#&lt;/span&gt;start arm
 &lt;span class=&#34;go&#34;&gt;./arm-linux-androideabi-gdb&lt;/span&gt;
 &lt;span class=&#34;gp&#34;&gt;#&lt;/span&gt;connect to remote gdbserver
 &lt;span class=&#34;go&#34;&gt;target remote 192.168.1.2:1234&lt;/span&gt;
@@ -317,13 +317,13 @@ mkdir vendor_lib
 &lt;span class=&#34;gp&#34;&gt;#&lt;/span&gt;verify logging
 &lt;span class=&#34;go&#34;&gt;show logging&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;The disassembly points out, that the relevant input comparison happens in line &lt;code&gt;Java_com_flareon_flare_ValidateActivity_validate+188&lt;/code&gt;.
 The memcmp takes two pointers and a size.
 To understand what&amp;rsquo;s happening here let&amp;rsquo;s add breakpoints that print out the relevant information.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;break Java_com_flareon_flare_ValidateActivity_validate+188&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;break Java_com_flareon_flare_ValidateActivity_validate+188&lt;/span&gt;
 &lt;span class=&#34;go&#34;&gt;commands 1&lt;/span&gt;
 &lt;span class=&#34;go&#34;&gt;set logging on&lt;/span&gt;
 &lt;span class=&#34;go&#34;&gt;i r&lt;/span&gt;
@@ -332,7 +332,7 @@ To understand what&amp;rsquo;s happening here let&amp;rsquo;s add breakpoints th
 &lt;span class=&#34;go&#34;&gt;c&lt;/span&gt;
 &lt;span class=&#34;go&#34;&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;With the above command gdb prints the registers and the relevant memory sections that are compared.
 1738 is the size 0xD94 divided by 2.
@@ -366,7 +366,7 @@ The pointer to the arrays with the solution is stored in &lt;code&gt;0xbeb84484&
 Subsequently, we have to interpret the data and recalculate the input bytes.
 The last step can be achieved with a short python script.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;
     &lt;span class=&#34;k&#34;&gt;global&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;myprimes&lt;/span&gt;
     &lt;span class=&#34;c&#34;&gt;#calculate prime numbers&lt;/span&gt;
     &lt;span class=&#34;n&#34;&gt;myprimes&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;primesfrom2to&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mh&#34;&gt;0x7e7d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
@@ -390,7 +390,7 @@ The last step can be achieved with a short python script.&lt;/p&gt;
 
 &lt;span class=&#34;n&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;This gives the wonderful output.&lt;/p&gt;
 
@@ -406,13 +406,13 @@ The last step can be achieved with a short python script.&lt;/p&gt;
 (&#39;a&#39;, &#39;v&#39;)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;solution-5:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+&lt;h2 id=&#34;solution-5&#34;&gt;Solution&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Should_have_g0ne_to_tashi_$tation@flare-on.com&lt;/code&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;challenge-7:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 7&lt;/h1&gt;
+&lt;h1 id=&#34;challenge-7&#34;&gt;Challenge 7&lt;/h1&gt;
 
-&lt;h2 id=&#34;walkthrough-6:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+&lt;h2 id=&#34;walkthrough-6&#34;&gt;Walkthrough&lt;/h2&gt;
 
 &lt;p&gt;This time we have got an obfuscated .Net binary.
 To take a look at the source code let&amp;rsquo;s utilize de4dot.
@@ -427,13 +427,13 @@ Just step through the program to the switch statement that is responsible for fa
 From there you can find the encryption key within memory:
   &lt;code&gt;metaprogrammingisherd_DD9BE1704C690FB422F1509A46ABC988&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;solution-6:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+&lt;h2 id=&#34;solution-6&#34;&gt;Solution&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Justr3adth3sourc3@flare-on.com&lt;/code&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;challenge-8:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 8&lt;/h1&gt;
+&lt;h1 id=&#34;challenge-8&#34;&gt;Challenge 8&lt;/h1&gt;
 
-&lt;h2 id=&#34;walkthrough-7:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+&lt;h2 id=&#34;walkthrough-7&#34;&gt;Walkthrough&lt;/h2&gt;
 
 &lt;p&gt;There is base64 encoded data in the binary.
 The image shows a calming image of some trees.
@@ -446,13 +446,13 @@ The solution can be found with the &lt;a href=&#34;https://github.com/zed-0xff/z
 
 &lt;p&gt;&lt;code&gt;zsteg base64.png -E b1,rgb,msb,xy &amp;gt; steg2.bin&lt;/code&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;solution-7:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+&lt;h2 id=&#34;solution-7&#34;&gt;Solution&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Im_in_ur_p1cs@flare-on.com&lt;/code&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;challenge-9:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 9&lt;/h1&gt;
+&lt;h1 id=&#34;challenge-9&#34;&gt;Challenge 9&lt;/h1&gt;
 
-&lt;h2 id=&#34;walkthrough-8:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+&lt;h2 id=&#34;walkthrough-8&#34;&gt;Walkthrough&lt;/h2&gt;
 
 &lt;p&gt;Obfuscated binary with anti debugging tricks:
 Non-conditional jump instructions throw off the debugger.
@@ -471,7 +471,7 @@ It directly creates the required parameters on the stack.&lt;/p&gt;
 &lt;p&gt;With pydbg we can attach a breakpoint at the relevant positions.
 The following function will log all relevant register values.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;myhandler1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;myhandler1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
     &lt;span class=&#34;c&#34;&gt;#XOR&lt;/span&gt;
     &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exception_address&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x00401AEE&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
         &lt;span class=&#34;n&#34;&gt;ah&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;get_register&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;AH&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
@@ -493,12 +493,12 @@ The following function will log all relevant register values.&lt;/p&gt;
         &lt;span class=&#34;n&#34;&gt;disasm&lt;/span&gt;    &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;disasm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exception_address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
         &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;%08x&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;: &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;%s&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dbg&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exception_address&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;disasm&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;We can grep the register values from the log file.
 Subsequently, let&amp;rsquo;s reverse engineer the encryption.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c&#34;&gt;# Rotate left: 0b1001 --&amp;gt; 0b0011&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c&#34;&gt;# Rotate left: 0b1001 --&amp;gt; 0b0011&lt;/span&gt;
 &lt;span class=&#34;n&#34;&gt;rol&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;lambda&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;val&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;r_bits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; \
     &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;r_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt; \
     &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;val&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;r_bits&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;max_bits&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt;
@@ -525,15 +525,15 @@ Subsequently, let&amp;rsquo;s reverse engineer the encryption.&lt;/p&gt;
 
 &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;out&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;h2 id=&#34;solution-8:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Solution&lt;/h2&gt;
+
+&lt;h2 id=&#34;solution-8&#34;&gt;Solution&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Is_th1s_3v3n_mai_finul_foarm@flare-on.com&lt;/code&gt;&lt;/p&gt;
 
-&lt;h1 id=&#34;challenge-10:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Challenge 10&lt;/h1&gt;
+&lt;h1 id=&#34;challenge-10&#34;&gt;Challenge 10&lt;/h1&gt;
 
-&lt;h2 id=&#34;walkthrough-9:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Walkthrough&lt;/h2&gt;
+&lt;h2 id=&#34;walkthrough-9&#34;&gt;Walkthrough&lt;/h2&gt;
 
 &lt;p&gt;This time we have got a super complex device driver.
 Finding the ioctls was quite simple in the disassembly.&lt;/p&gt;
@@ -551,7 +551,7 @@ This can be done statically with pydbg.
 With multiple potential values for each byte, the buffer still had to be decrypted.
 This I could not figure out in time.&lt;/p&gt;
 
-&lt;h1 id=&#34;links:049a8f7f784fabdf1597beecba8c8ad1&#34;&gt;Links&lt;/h1&gt;
+&lt;h1 id=&#34;links&#34;&gt;Links&lt;/h1&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.fireeye.com/blog/threat-research/2015/09/flare-on_challenges.html&#34;&gt;FireEye solutions&lt;/a&gt;&lt;/li&gt;

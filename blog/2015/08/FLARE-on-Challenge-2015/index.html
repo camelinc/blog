@@ -10,7 +10,7 @@
   <meta itemprop="description" content="Instructions The FireEye Labs Advanced Reverse Engineering (FLARE) team is an elite technical group of malware analysts, researchers, and hackers. We are looking to hire smart individuals interested in reverse engineering. We have created this series of binary challenges to test your skills. We encourage anyone to participate and practice their skills while having fun! Challenge 0x01 Walkthrough Somewhere in the file an email address is hidden. First, let&rsquo;s extract the exe with 7zip.">
 
   
-  <meta itemprop="keywords" content="certifications,challenge,ctf,exploit,exploit-exercises,hacking,hashcat,offensive-security,protostar,reverse-engineering,sans,seh," />
+  <meta itemprop="keywords" content="certifications,challenge,ctf,dns,exploit,exploit-exercises,golang,hacking,hashcat,information-gathering,offensive-security,protostar,reverse-engineering,sans,seh," />
   
     <meta itemprop="wordCount" content="2485">
   
@@ -39,18 +39,18 @@
   
 
 
-  <meta name="generator" content="Hugo 0.15" />
+  <meta name="generator" content="Hugo 0.16" />
   <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
-  <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
-  <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
+  <link href="http://camelinc.info/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://camelinc.info/css/hc.css" rel="stylesheet">
 
   
-  <link rel="stylesheet" href="http://camelinc.info//css/zenburn.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="http://camelinc.info/css/zenburn.css" type="text/css" media="screen" />
 
   
 
   
-  <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="http://camelinc.info/lightbox/css/lightbox.css" type="text/css" media="screen">
 
 
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
@@ -60,9 +60,8 @@
  
 
 
-  <body>
+<body>
 
-  
 <div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
   <div id = "wrapper">
 
@@ -77,11 +76,9 @@
           </button>
           <a href="http://camelinc.info//"><p class="navbar-brand">camelinc</p></a>
         </div>
-
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 					
-          <h2>http://camelinc.info/</h2>
 					
 					<li><a href="http://camelinc.info/about">About </a></li>
 					
@@ -91,6 +88,8 @@
         </div>
       </div>
     </div>
+
+
 
        
        <div id="sidebar-wrapper">
@@ -130,23 +129,22 @@
      <div class="container">
 
 
-
   <div id="article">
     <div class="article-title">FLARE on Challenge 2015</div>
     <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2015-08-31</small></p> <hr/>
     <div class="post">
       
 
-<h1 id="instructions:049a8f7f784fabdf1597beecba8c8ad1">Instructions</h1>
+<h1 id="instructions">Instructions</h1>
 
 <p>The FireEye Labs Advanced Reverse Engineering (FLARE) team is an elite technical group of malware analysts, researchers, and hackers.
 We are looking to hire smart individuals interested in reverse engineering.
 We have created this series of binary challenges to test your skills.
 We encourage anyone to participate and practice their skills while having fun!</p>
 
-<h1 id="challenge-0x01:049a8f7f784fabdf1597beecba8c8ad1">Challenge 0x01</h1>
+<h1 id="challenge-0x01">Challenge 0x01</h1>
 
-<h2 id="walkthrough:049a8f7f784fabdf1597beecba8c8ad1">Walkthrough</h2>
+<h2 id="walkthrough">Walkthrough</h2>
 
 <p>Somewhere in the file an email address is hidden.
 First, let&rsquo;s extract the exe with 7zip.
@@ -191,13 +189,13 @@ With a python two liner we can decrypt the password on the go.</p>
 </code></pre></div>
 
 
-<h2 id="solution:049a8f7f784fabdf1597beecba8c8ad1">solution</h2>
+<h2 id="solution">solution</h2>
 
 <p><code>bunny_sl0pe@flare-on.com</code></p>
 
-<h1 id="challenge-0x02:049a8f7f784fabdf1597beecba8c8ad1">Challenge 0x02</h1>
+<h1 id="challenge-0x02">Challenge 0x02</h1>
 
-<h2 id="walkthrough-1:049a8f7f784fabdf1597beecba8c8ad1">Walkthrough</h2>
+<h2 id="walkthrough-1">Walkthrough</h2>
 
 <p>This challenge should also be quite simple.
 Attach OllyDbg and take a look at <code>very_success</code>.
@@ -251,13 +249,13 @@ The code basically reimplements the assembly.</p>
 </code></pre></div>
 
 
-<h2 id="solution-1:049a8f7f784fabdf1597beecba8c8ad1">solution</h2>
+<h2 id="solution-1">solution</h2>
 
 <p><code>a_Little_b1t_harder_plez@flare-on.com</code></p>
 
-<h1 id="challenge-0x03:049a8f7f784fabdf1597beecba8c8ad1">Challenge 0x03</h1>
+<h1 id="challenge-0x03">Challenge 0x03</h1>
 
-<h2 id="walkthrough-2:049a8f7f784fabdf1597beecba8c8ad1">Walkthrough</h2>
+<h2 id="walkthrough-2">Walkthrough</h2>
 
 <p>Debug in <code>elfi</code> OllyDbg gives no interesting results.
 What should we do!
@@ -271,17 +269,17 @@ Running the newly created <code>elfie.py</code> yields some more obfuscated code
 Before doing that, replace the call to <code>exec</code> with a <code>print</code>.
 After looking long enough at the code, the solution is obvious.</p>
 
-<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="gp">$</span> strings elfie <span class="p">|</span> sed <span class="s2">&quot;s/exec/print/g&quot;</span> <span class="p">|</span> python <span class="p">|</span> grep -oP <span class="s2">&quot;in reversed\(&#39;moc.+&#39;\)&quot;</span>
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="gp">$</span> strings elfie <span class="p">|</span> sed <span class="s2">&quot;s/exec/print/g&quot;</span> <span class="p">|</span> python <span class="p">|</span> grep -oP <span class="s2">&quot;in reversed\(&#39;moc.+&#39;\)&quot;</span>
 </code></pre></div>
-</p>
 
-<h2 id="solution-2:049a8f7f784fabdf1597beecba8c8ad1">Solution</h2>
+
+<h2 id="solution-2">Solution</h2>
 
 <p><code>Elfie.L0000ves.YOOOO@flare-on.co</code></p>
 
-<h1 id="challenge-0x04:049a8f7f784fabdf1597beecba8c8ad1">Challenge 0x04</h1>
+<h1 id="challenge-0x04">Challenge 0x04</h1>
 
-<h2 id="walkthrough-3:049a8f7f784fabdf1597beecba8c8ad1">Walkthrough</h2>
+<h2 id="walkthrough-3">Walkthrough</h2>
 
 <p>The file is packed with UPX.
 Consequently, we have to unpack the file to get a better idea what is going on.
@@ -304,7 +302,7 @@ The second hash value is calculated based on some unknown value.</p>
 <p>Why not write a script to iterate all possible values.
 Win.</p>
 
-<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">subprocess</span>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">subprocess</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">24</span><span class="p">):</span>
     <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s">&#39;youPecks&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
@@ -313,18 +311,18 @@ Win.</p>
     <span class="k">if</span> <span class="s">&quot;flare&quot;</span> <span class="ow">in</span> <span class="n">out</span><span class="p">:</span>
         <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
 </code></pre></div>
-</p>
+
 
 <p>Alternativeley, we can manipulate the value for the check in <code>0x00401BB0</code>.
 The time_struct is used to store pointers and lengths while copying the base64 encoded strings to the heap.</p>
 
-<h2 id="solution-3:049a8f7f784fabdf1597beecba8c8ad1">Solution</h2>
+<h2 id="solution-3">Solution</h2>
 
 <p><code>Uhr1them3tic@flare-on.com</code></p>
 
-<h1 id="challenge-0x05:049a8f7f784fabdf1597beecba8c8ad1">Challenge 0x05</h1>
+<h1 id="challenge-0x05">Challenge 0x05</h1>
 
-<h2 id="walkthrough-4:049a8f7f784fabdf1597beecba8c8ad1">Walkthrough</h2>
+<h2 id="walkthrough-4">Walkthrough</h2>
 
 <p>This time we have got a network capture and a binary.
 The binary reads a file &ldquo;key.txt&rdquo;.
@@ -368,13 +366,13 @@ Get it now on <a href="https://gist.github.com/camelinc/6d59545d207f4876183b#fil
 2015-08-04 14:28:28,921 Sp1cy_7_lb0     UDYs1D7bNmdE1Aq=
 </code></pre>
 
-<h2 id="solution-4:049a8f7f784fabdf1597beecba8c8ad1">Solution</h2>
+<h2 id="solution-4">Solution</h2>
 
 <p><code>Sp1cy_7_layer_OSI_dip@flare-on.com</code></p>
 
-<h1 id="challenge-0x06:049a8f7f784fabdf1597beecba8c8ad1">Challenge 0x06</h1>
+<h1 id="challenge-0x06">Challenge 0x06</h1>
 
-<h2 id="walkthrough-5:049a8f7f784fabdf1597beecba8c8ad1">Walkthrough</h2>
+<h2 id="walkthrough-5">Walkthrough</h2>
 
 <p>The, first challenge with an android apk.
 Take a look at the source code after unpacking the app.
@@ -385,17 +383,17 @@ So let&rsquo;s dive in ARM assembly.</p>
 During testing an emulated device proofed to be quite unstable.
 In order to debug the library we have to attach gdbserver to the running app.</p>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#Grep process id</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#Grep process id</span>
 ps <span class="p">|</span> grep flare
 <span class="c">#attach to running app</span>
 gdbserver :1234 --attach 4444
 </code></pre></div>
-</p>
+
 
 <p>Next, we have to copy the libraries from the phone to the debugging machine.
 For this, we simply create a temporary directory and pull the necessary files via adb.</p>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#prepare directory structure</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#prepare directory structure</span>
 mkdir /tmp/my_android
 <span class="nb">cd</span> /tmp/my_android
 mkdir system_lib
@@ -414,11 +412,11 @@ mkdir vendor_lib
 ~/Android/Sdk/platform-tools/adb pull /system/bin/linker
 ~/Android/Sdk/platform-tools/adb pull /data/app/com.flare_on.flare-1/lib/arm/libvalidate.so
 </code></pre></div>
-</p>
+
 
 <p>With the necessary files in place we can start up the arm debugger.</p>
 
-<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="gp">#</span>start arm
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="gp">#</span>start arm
 <span class="go">./arm-linux-androideabi-gdb</span>
 <span class="gp">#</span>connect to remote gdbserver
 <span class="go">target remote 192.168.1.2:1234</span>
@@ -437,13 +435,13 @@ mkdir vendor_lib
 <span class="gp">#</span>verify logging
 <span class="go">show logging</span>
 </code></pre></div>
-</p>
+
 
 <p>The disassembly points out, that the relevant input comparison happens in line <code>Java_com_flareon_flare_ValidateActivity_validate+188</code>.
 The memcmp takes two pointers and a size.
 To understand what&rsquo;s happening here let&rsquo;s add breakpoints that print out the relevant information.</p>
 
-<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">break Java_com_flareon_flare_ValidateActivity_validate+188</span>
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">break Java_com_flareon_flare_ValidateActivity_validate+188</span>
 <span class="go">commands 1</span>
 <span class="go">set logging on</span>
 <span class="go">i r</span>
@@ -452,7 +450,7 @@ To understand what&rsquo;s happening here let&rsquo;s add breakpoints that print
 <span class="go">c</span>
 <span class="go">end</span>
 </code></pre></div>
-</p>
+
 
 <p>With the above command gdb prints the registers and the relevant memory sections that are compared.
 1738 is the size 0xD94 divided by 2.
@@ -486,7 +484,7 @@ The pointer to the arrays with the solution is stored in <code>0xbeb84484</code>
 Subsequently, we have to interpret the data and recalculate the input bytes.
 The last step can be achieved with a short python script.</p>
 
-<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="k">global</span> <span class="n">myprimes</span>
     <span class="c">#calculate prime numbers</span>
     <span class="n">myprimes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">primesfrom2to</span><span class="p">(</span><span class="mh">0x7e7d</span><span class="p">))</span>
@@ -510,7 +508,7 @@ The last step can be achieved with a short python script.</p>
 
 <span class="n">main</span><span class="p">()</span>
 </code></pre></div>
-</p>
+
 
 <p>This gives the wonderful output.</p>
 
@@ -526,13 +524,13 @@ The last step can be achieved with a short python script.</p>
 ('a', 'v')
 </code></pre>
 
-<h2 id="solution-5:049a8f7f784fabdf1597beecba8c8ad1">Solution</h2>
+<h2 id="solution-5">Solution</h2>
 
 <p><code>Should_have_g0ne_to_tashi_$tation@flare-on.com</code></p>
 
-<h1 id="challenge-7:049a8f7f784fabdf1597beecba8c8ad1">Challenge 7</h1>
+<h1 id="challenge-7">Challenge 7</h1>
 
-<h2 id="walkthrough-6:049a8f7f784fabdf1597beecba8c8ad1">Walkthrough</h2>
+<h2 id="walkthrough-6">Walkthrough</h2>
 
 <p>This time we have got an obfuscated .Net binary.
 To take a look at the source code let&rsquo;s utilize de4dot.
@@ -547,13 +545,13 @@ Just step through the program to the switch statement that is responsible for fa
 From there you can find the encryption key within memory:
   <code>metaprogrammingisherd_DD9BE1704C690FB422F1509A46ABC988</code></p>
 
-<h2 id="solution-6:049a8f7f784fabdf1597beecba8c8ad1">Solution</h2>
+<h2 id="solution-6">Solution</h2>
 
 <p><code>Justr3adth3sourc3@flare-on.com</code></p>
 
-<h1 id="challenge-8:049a8f7f784fabdf1597beecba8c8ad1">Challenge 8</h1>
+<h1 id="challenge-8">Challenge 8</h1>
 
-<h2 id="walkthrough-7:049a8f7f784fabdf1597beecba8c8ad1">Walkthrough</h2>
+<h2 id="walkthrough-7">Walkthrough</h2>
 
 <p>There is base64 encoded data in the binary.
 The image shows a calming image of some trees.
@@ -566,13 +564,13 @@ The solution can be found with the <a href="https://github.com/zed-0xff/zsteg">z
 
 <p><code>zsteg base64.png -E b1,rgb,msb,xy &gt; steg2.bin</code></p>
 
-<h2 id="solution-7:049a8f7f784fabdf1597beecba8c8ad1">Solution</h2>
+<h2 id="solution-7">Solution</h2>
 
 <p><code>Im_in_ur_p1cs@flare-on.com</code></p>
 
-<h1 id="challenge-9:049a8f7f784fabdf1597beecba8c8ad1">Challenge 9</h1>
+<h1 id="challenge-9">Challenge 9</h1>
 
-<h2 id="walkthrough-8:049a8f7f784fabdf1597beecba8c8ad1">Walkthrough</h2>
+<h2 id="walkthrough-8">Walkthrough</h2>
 
 <p>Obfuscated binary with anti debugging tricks:
 Non-conditional jump instructions throw off the debugger.
@@ -591,7 +589,7 @@ It directly creates the required parameters on the stack.</p>
 <p>With pydbg we can attach a breakpoint at the relevant positions.
 The following function will log all relevant register values.</p>
 
-<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">myhandler1</span><span class="p">(</span><span class="n">dbg</span><span class="p">):</span>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">myhandler1</span><span class="p">(</span><span class="n">dbg</span><span class="p">):</span>
     <span class="c">#XOR</span>
     <span class="k">if</span> <span class="n">dbg</span><span class="o">.</span><span class="n">exception_address</span> <span class="o">==</span> <span class="mh">0x00401AEE</span><span class="p">:</span>
         <span class="n">ah</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="s">&#39;AH&#39;</span><span class="p">)</span>
@@ -613,12 +611,12 @@ The following function will log all relevant register values.</p>
         <span class="n">disasm</span>    <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">disasm</span><span class="p">(</span><span class="n">dbg</span><span class="o">.</span><span class="n">exception_address</span><span class="p">)</span>
         <span class="k">print</span> <span class="s">&quot;</span><span class="si">%08x</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dbg</span><span class="o">.</span><span class="n">exception_address</span><span class="p">,</span> <span class="n">disasm</span><span class="p">)</span>
 </code></pre></div>
-</p>
+
 
 <p>We can grep the register values from the log file.
 Subsequently, let&rsquo;s reverse engineer the encryption.</p>
 
-<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># Rotate left: 0b1001 --&gt; 0b0011</span>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># Rotate left: 0b1001 --&gt; 0b0011</span>
 <span class="n">rol</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">,</span> <span class="n">r_bits</span><span class="p">,</span> <span class="n">max_bits</span><span class="p">:</span> \
     <span class="p">(</span><span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="n">r_bits</span><span class="o">%</span><span class="n">max_bits</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">max_bits</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">|</span> \
     <span class="p">((</span><span class="n">val</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">max_bits</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">max_bits</span><span class="o">-</span><span class="p">(</span><span class="n">r_bits</span><span class="o">%</span><span class="n">max_bits</span><span class="p">)))</span>
@@ -645,15 +643,15 @@ Subsequently, let&rsquo;s reverse engineer the encryption.</p>
 
 <span class="k">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 </code></pre></div>
-</p>
 
-<h2 id="solution-8:049a8f7f784fabdf1597beecba8c8ad1">Solution</h2>
+
+<h2 id="solution-8">Solution</h2>
 
 <p><code>Is_th1s_3v3n_mai_finul_foarm@flare-on.com</code></p>
 
-<h1 id="challenge-10:049a8f7f784fabdf1597beecba8c8ad1">Challenge 10</h1>
+<h1 id="challenge-10">Challenge 10</h1>
 
-<h2 id="walkthrough-9:049a8f7f784fabdf1597beecba8c8ad1">Walkthrough</h2>
+<h2 id="walkthrough-9">Walkthrough</h2>
 
 <p>This time we have got a super complex device driver.
 Finding the ioctls was quite simple in the disassembly.</p>
@@ -671,7 +669,7 @@ This can be done statically with pydbg.
 With multiple potential values for each byte, the buffer still had to be decrypted.
 This I could not figure out in time.</p>
 
-<h1 id="links:049a8f7f784fabdf1597beecba8c8ad1">Links</h1>
+<h1 id="links">Links</h1>
 
 <ul>
 <li><a href="https://www.fireeye.com/blog/threat-research/2015/09/flare-on_challenges.html">FireEye solutions</a></li>

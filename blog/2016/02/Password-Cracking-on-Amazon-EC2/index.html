@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta itemprop="name" content="Password Cracking on Amazon EC2 ">
+  <title>Password Cracking on Amazon EC2 </title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta itemprop="description" content="Introduction Cracking with the desktop computer is not always a good idea. It can be quite noisy when you are trying to sleep. The room can become too hot for a hacker. And most important of all, all the hashes are already in the cloud! Let&rsquo;s get started. Create EC2 GPU Instance Take a look the the current GPU instance details at amazon and choose the right version for your purse.">
+
+  
+  <meta itemprop="keywords" content="certifications,challenge,ctf,dns,exploit,exploit-exercises,golang,hacking,hashcat,information-gathering,offensive-security,protostar,reverse-engineering,sans,seh," />
+  
+    <meta itemprop="wordCount" content="813">
+  
+
+  <meta property="og:title" content="Password Cracking on Amazon EC2 " />
+  <meta property="og:description" content="Introduction Cracking with the desktop computer is not always a good idea. It can be quite noisy when you are trying to sleep. The room can become too hot for a hacker. And most important of all, all the hashes are already in the cloud! Let&rsquo;s get started. Create EC2 GPU Instance Take a look the the current GPU instance details at amazon and choose the right version for your purse." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://camelinc.info/blog/2016/02/Password-Cracking-on-Amazon-EC2/" />
+  
+
+  
+  <meta property="og:updated_time" content="2016-02-09 20:59:59 &#43;0000 UTC"/>
+  
+  
+  
+  
+
+  
+    <meta name="twitter:card" content="summary"/>
+  
+
+  
+  <meta name="twitter:title" content="Password Cracking on Amazon EC2 "/>
+  <meta name="twitter:description" content="Introduction Cracking with the desktop computer is not always a good idea. It can be quite noisy when you are trying to sleep. The room can become too hot for a hacker. And most important of all, all the hashes are already in the cloud! Let&rsquo;s get started. Create EC2 GPU Instance Take a look the the current GPU instance details at amazon and choose the right version for your purse."/>
+  
+  
+
+
+  <meta name="generator" content="Hugo 0.16" />
+  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  <link href="http://camelinc.info/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://camelinc.info/css/hc.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="http://camelinc.info/css/zenburn.css" type="text/css" media="screen" />
+
+  
+
+  
+  <link rel="stylesheet" href="http://camelinc.info/lightbox/css/lightbox.css" type="text/css" media="screen">
+
+
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  
+</head>
+ 
+
+
+<body>
+
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+  <div id = "wrapper">
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://camelinc.info//"><p class="navbar-brand">camelinc</p></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+					
+					<li><a href="http://camelinc.info/about">About </a></li>
+					
+					<li><a href="http://camelinc.info/post">Posts </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/img/avatar.png" />
+          <li class="sidebar-brand"><a href="http://camelinc.info//"><h1 class="brand">camelinc</h1></a><h3></h3></li>
+          <hr />
+
+					
+						<li><a href="http://camelinc.info/about">About </a></li>
+					
+						<li><a href="http://camelinc.info/post">Posts </a></li>
+					
+          <hr />
+
+          <div id="social-wrapper">
+           
+             <li> <a href="https://twitter.com/camelinc"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+
+           
+             
+           
+
+           
+             
+           
+
+           
+             <li> <a href="https://github.com/camelinc"><i class="fa fa-github-square"></i> github</a> </li>
+           
+         </div>
+
+       </ul>
+     </div>
+
+     <div class="container">
+
+
+  <div id="article">
+    <div class="article-title">Password Cracking on Amazon EC2 </div>
+    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2016-02-09</small></p> <hr/>
+    <div class="post">
+      
+
+<h1 id="introduction">Introduction</h1>
+
+<p>Cracking with the desktop computer is not always a good idea.
+It can be quite noisy when you are trying to sleep.
+The room can become too hot for a hacker.
+And most important of all, all the hashes are already in the cloud!
+Let&rsquo;s get started.</p>
+
+<h1 id="create-ec2-gpu-instance">Create EC2 GPU Instance</h1>
+
+<p>Take a look the the current GPU instance details at <a href="https://aws.amazon.com/ec2/instance-types/#gpu">amazon</a> and choose the right version for your purse.
+Spin up the instance and login via ssh before proceeding.
+For starters I chose the x2.2xlarge instance type.
+The AMI image ID was ami-87564feb or simply choose a Ubuntu trusty amd64 image.</p>
+
+<h1 id="setup-ec2-gpu-instance">Setup EC2 GPU Instance</h1>
+
+<p>Before we begin, let&rsquo;s verify that the system has got a NVIDIA graphics card.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>lspci <span class="p">|</span> grep -i <span class="s2">&quot;NVIDIA&quot;</span>
+</code></pre></div>
+
+
+<p>Looks good!
+In order to stick to the best practice, let&rsquo;s follow the <a href="http://docs.nvidia.com/cuda/cuda-getting-started-guide-for-linux/index.html#runfile-installation">guide</a>.
+Start by installing the required packages, such as gcc and header files.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sudo apt-get update
+<span class="nv">$ </span>sudo apt-get install -y gcc g++ build-essential <span class="s2">&quot;linux-headers-</span><span class="k">$(</span>uname -r<span class="k">)</span><span class="s2">&quot;</span>
+<span class="nv">$ </span>sudo apt-get install -y freeglut3 freeglut3-dev p7zip-full
+<span class="nv">$ </span>sudo apt-get install -y linux-image-extra-virtual
+</code></pre></div>
+
+
+<p>Then we simply choose the install method and download the respective driver from <a href="https://developer.nvidia.com/cuda-downloads">NVIDIA</a>.
+For this time let&rsquo;s stick to the installer file.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl -O <span class="s2">&quot;http://developer.download.nvidia.com/compute/cuda/7.5/Prod/local_installers/cuda_7.5.18_linux.run&quot;</span>
+</code></pre></div>
+
+
+<p>Next, the nouveau driver has to be removed.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">echo</span> <span class="s">&lt;&lt;EOF | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf</span>
+<span class="s">lacklist nouveau</span>
+<span class="s">blacklist lbm-nouveau</span>
+<span class="s">options nouveau modeset=0</span>
+<span class="s">alias nouveau off</span>
+<span class="s">alias lbm-nouveau off</span>
+<span class="s">EOF</span>
+<span class="nv">$ </span><span class="nb">echo </span>options nouveau <span class="nv">modeset</span><span class="o">=</span><span class="m">0</span> <span class="p">|</span> sudo tee -a /etc/modprobe.d/nouveau-kms.conf
+<span class="nv">$ </span>sudo update-initramfs -u
+</code></pre></div>
+
+
+<p>After this we have to restart the system for the changes to take effect.</p>
+
+<h1 id="installing-cuda">Installing Cuda</h1>
+
+<p>After the reboot the next step is to unpack the runfile.
+The output will consist of three separate files.
+The first one to execute is the NVIDIA-Linux-x86_64&hellip;run file.
+This will install the kernel module.
+After that the module can be loaded.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sudo <span class="s2">&quot;./cuda_7.5.18_linux.run&quot;</span> -extract<span class="o">=</span>./nvidia_installers
+<span class="nv">$ </span>sudo ./nvidia_installers/NVIDIA-Linux-x86_64-352.39.run --silent
+<span class="nv">$ </span>sudo modprobe nvidia
+</code></pre></div>
+
+
+<p>After the kernel module has been installed the system environment has to be adjusted.
+First the PATH should be adjusted.
+Also the LD_LIBRARY_PATH has to include the cuda libraries.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span>/usr/local/cuda/bin:<span class="nv">$PATH</span>
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$PATH</span><span class="s2">&quot;</span> <span class="p">|</span> sudo tee -a /etc/environment
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;/usr/local/cuda/lib64&quot;</span> <span class="p">|</span> sudo tee -a /etc/ld.so.conf.d/cuda.conf
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;/usr/local/cuda/lib&quot;</span> <span class="p">|</span> sudo tee -a /etc/ld.so.conf.d/cuda.conf
+<span class="nv">$ </span>sudo ldconfig
+</code></pre></div>
+
+
+<p>Once again, let&rsquo;s reboot the system so the changes take effect.</p>
+
+<h1 id="installing-cudahashcat">Installing cudaHashcat</h1>
+
+<p>After the final reboot quickly verify the kernel module is loaded.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>lsmod <span class="p">|</span> grep -q nvidia
+</code></pre></div>
+
+
+<p>If everything works, let&rsquo;s proceed by downloading the cudaHashcat binary.
+Once it is downloaded we can unzip it and setup the access rights.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sudo curl https://hashcat.net/files/cudaHashcat-2.01.7z -O
+<span class="nv">$ </span>sudo 7za x -y -o /opt/ cudaHashcat-2.01.7z &gt; /dev/null
+<span class="nv">$ </span>sudo chown -R ubuntu:ubuntu /opt/cudaHashcat-2.01/
+</code></pre></div>
+
+
+<p>So the next thing is to check that cudaHashcat is working as expected.</p>
+
+<h2 id="benchmark">Benchmark</h2>
+
+<p>What better way to see the result, other than run a benchmark.
+This will give a true indicator of the gains over a traditional desktop GPU.
+The whole results are available on <a href="https://gist.github.com/camelinc/5c454d428e25a1cdc803#file-cudahashcat64-bin_benchmark_g2-2xlarge">gist</a>.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>/opt/cudaHashcat-2.01/cudaHashcat64.bin --benchmark
+cudaHashcat v2.01 starting in benchmark-mode...
+Device <span class="c">#1: GRID K520, 4095MB, 797Mhz, 8MCU</span>
+
+Hashtype: MD5
+Workload: <span class="m">1024</span> loops, <span class="m">256</span> accel
+Speed.GPU.#1.:  2632.2 MH/s
+
+Hashtype: SHA1
+Workload: <span class="m">1024</span> loops, <span class="m">256</span> accel
+Speed.GPU.#1.:   690.4 MH/s
+</code></pre></div>
+
+
+<p>My local machine with a AMD Radeon HD 7870 GHz Edition for a comparison.
+The graphics card encounters some problems with the temperature and aborts some tests.
+The full results are available on <a href="https://gist.github.com/camelinc/5c454d428e25a1cdc803#file-oclhashcat64-bin_benchmark">github</a>.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>sudo /opt/oclHashcat/oclHashcat64.bin --benchmark
+oclHashcat v2.01 starting in benchmark-mode...
+Device <span class="c">#1: Pitcairn, 1630MB, 1050Mhz, 20MCU</span>
+
+Hashtype: MD5
+Workload: <span class="m">1024</span> loops, <span class="m">256</span> accel
+Speed.GPU.#1.:  4477.7 MH/s
+
+Hashtype: SHA1
+Workload: <span class="m">1024</span> loops, <span class="m">256</span> accel
+Speed.GPU.#1.:  1710.5 MH/s
+</code></pre></div>
+
+
+<p>The results are quite obvious.
+My old AMD is still better at cracking than a g2.2xlarge instance.
+Maybe scaling up to a g2.8xlarge give more promising results.</p>
+
+<h2 id="next-steps">Next steps</h2>
+
+<p>The speed is not really magnificent.
+Maybe running Hashcat in a spot instance for a cheap price is the right way to go.
+The problem here is that the instance might terminate because of price fluctuations.
+To solve this probelm S3 cloud storage would be a great place to store the hashes and results.
+During testing the connection to S3 via awscli did not work out.
+Maybe another tool can do the job.
+Or another storage mechanism is suitable to persist the relevant data.</p>
+
+<h1 id="automation">Automation</h1>
+
+<p>In order to speed up the whole process a bash script is the obvious solution.
+The whole file can be found in <a href="https://gist.github.com/camelinc/5c454d428e25a1cdc803#file-cuda-setup-sh">this</a> gist.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#basic setup, disable nouveau</span>
+<span class="nv">$ </span>./cuda-setup.sh -i
+<span class="c">#install cuda</span>
+<span class="nv">$ </span>./cuda-setup.sh -r
+</code></pre></div>
+
+
+<h1 id="links">Links</h1>
+
+<h2 id="cuda">CUDA</h2>
+
+<ul>
+<li><a href="https://developer.nvidia.com/cuda-downloads">CUDA 7.5 Downloads | NVIDIA Developer</a></li>
+<li><a href="http://docs.nvidia.com/cuda/cuda-getting-started-guide-for-linux/index.html">Getting Started Linux :: CUDA Toolkit Documentation</a></li>
+<li><a href="https://tleyden.github.io/blog/2014/10/25/cuda-6-dot-5-on-aws-gpu-instance-running-ubuntu-14-dot-04/">CUDA 6.5 on AWS GPU Instance Running Ubuntu 14.04</a></li>
+<li><a href="https://vtluug.org/wiki/Amazon_EC2:_GPU_Cluster">Amazon EC2: GPU Cluster</a></li>
+</ul>
+
+<h2 id="hashcat">Hashcat</h2>
+
+<ul>
+<li><a href="https://dunham.io/post/password-cracking/">Password Cracking on Amazon EC2 · Andrew Dunham&rsquo;s Blog</a></li>
+<li><a href="https://thehackerblog.com/amazon-ec2-gpu-hvm-spot-instance-cracking-setup-tutorial/">Amazon EC2 GPU HVM Spot Instance Password Cracking – Hashcat Setup Tutorial</a></li>
+<li><a href="https://hashcat.net/forum/thread-4143.html">cudaHashCat64 on AWS EC2</a></li>
+<li><a href="http://www.parseerror.com/blog/aws-gpu-password-cracking-recipe">AWS GPU Password Cracking Recipe</a></li>
+</ul>
+
+<!-- ## Amazon EC2 ##
+ * [User Guides — Boto 3 Docs 1.2.3 documentation](https://boto3.readthedocs.org/en/latest/guide/index.html)
+//-->
+
+    </div>
+  </div>
+
+  <ul class="pager">
+    
+
+    
+      
+        &nbsp;<li class="previous"><a href="http://camelinc.info/blog/2016/07/Discovering-juicy-targets-via-DNS/"> Discovering juicy targets via DNS</a></li>
+      
+    
+    
+      
+        &nbsp;<li class="next"><a href="http://camelinc.info/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/"> The 2015 SANS Holiday Hack Challenge - Solution</a></li>
+      
+    
+  </ul>
+
+
+
+<footer>
+
+  <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+
+  
+  
+
+  <script type="text/javascript" src="/js/jquery-2.1.4.js"></script>
+
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/js/hc.js"></script>
+
+  
+  <script type="text/javascript" src="/lightbox/js/lightbox.js"></script>
+
+  
+
+</footer>
+
+
+	</body>
+</html>

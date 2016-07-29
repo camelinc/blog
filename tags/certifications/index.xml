@@ -17,54 +17,57 @@
       <guid>http://camelinc.info/blog/2015/07/Offensive-Security-Certified-Expert/</guid>
       <description>
 
-&lt;h1 id=&#34;intro:1d507ae3a219d4adcf3991ea4f105e4e&#34;&gt;Intro&lt;/h1&gt;
+&lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;
 
 &lt;p&gt;Try Harder!
 Today I finally received my OSCE certificate in the mail.
-So I thought I should write a short review.&lt;/p&gt;
+So, I thought I could share my past experience in a few sentences.&lt;/p&gt;
 
-&lt;h1 id=&#34;exercises:1d507ae3a219d4adcf3991ea4f105e4e&#34;&gt;Exercises&lt;/h1&gt;
+&lt;h1 id=&#34;exercises&#34;&gt;Exercises&lt;/h1&gt;
 
 &lt;p&gt;Most of the exercises cover exploit development.
 Web security and network attacks complete the picture.
-One of my favourite topics was was AV evasion.&lt;/p&gt;
+One of my favourite topics was AV evasion.&lt;/p&gt;
 
 &lt;p&gt;Everything is documented quite well and easy to follow.
 Even though the course material is covered with dust, it provides a good introduction.
-These basics are still applied today.
+These basics still apply today.
 OSCE is an intermediate course.
 Consequently, current protection mechanisms, e.g., ASLR might be too much to cover.&lt;/p&gt;
 
-&lt;h1 id=&#34;preparation:1d507ae3a219d4adcf3991ea4f105e4e&#34;&gt;Preparation&lt;/h1&gt;
+&lt;h1 id=&#34;exam-preparation&#34;&gt;Exam Preparation&lt;/h1&gt;
 
 &lt;p&gt;During the exercises I simply had to follow the instructions provided in the manual.
 I felt, that this would not be enough to pass the exam.
 I wanted to get more familiar with the whole process of exploit development.&lt;/p&gt;
 
-&lt;p&gt;For some exploits on exploit-db the vulnerable binary can be downloaded.
+&lt;p&gt;For some exploits the vulnerable binary can be downloaded from exploit-db.
 These provide an excellent practice playground.
-Additionally, the &lt;a href=&#34;https://exploit-exercises.com/protostar/&#34;&gt;exploit-execises&lt;/a&gt; with protostar provide another excellent playground.
+Additionally, the &lt;a href=&#34;https://exploit-exercises.com/protostar/&#34;&gt;exploit-execises&lt;/a&gt; with protostar provide another magnificent learning experience.
 They helped me getting more familiar with the different exploitation techniques.
 Protostar covers stack overflows, heap overflows, and also format string attacks.
-Furthermore, the writeups of &lt;a href=&#34;http://www.fuzzysecurity.com/exploits.html&#34;&gt;FuzzySecurity 2.0&lt;/a&gt; proofed quite informative.
-The &lt;a href=&#34;https://www.corelan.be/index.php/articles/&#34;&gt;corelan&lt;/a&gt; site also provide excellent material for exploit development.
+Furthermore, the tutorials of &lt;a href=&#34;http://www.fuzzysecurity.com/exploits.html&#34;&gt;FuzzySecurity 2.0&lt;/a&gt; proofed quite worthwhile.
+The &lt;a href=&#34;https://www.corelan.be/index.php/articles/&#34;&gt;corelan&lt;/a&gt; exploitation series also provide excellent material for exploit development.
+All these resources provide quite some material.
 After a lot of exercise I finally had the guts to schedule my exam.&lt;/p&gt;
 
-&lt;h1 id=&#34;the-exam:1d507ae3a219d4adcf3991ea4f105e4e&#34;&gt;The Exam&lt;/h1&gt;
+&lt;h1 id=&#34;the-exam&#34;&gt;The Exam&lt;/h1&gt;
 
-&lt;p&gt;For the exam you have to proove your skills in 48 hours.
-In 24 extra hours you have to hand in the documentation.
-The topics of the exam are quite obvious, after completeing the exercises.&lt;/p&gt;
+&lt;p&gt;For the exam you have to prove your skills in 48 hours.
+In additional 24 hours you have to hand in the documentation.
+The topics of the exam are quite obvious, after completing the exercises.&lt;/p&gt;
 
 &lt;p&gt;Unfortunately, I did not pass the exam on the first try.
-I was lacking creative ideas to achieve enough points.
+The first few targets fell quite fast.
+Yet, I had a tough time of it with the last target.
+I was lacking creative ideas to obtain enough points to pass.
 Yet, I tried harder and after some months had the time to retake the exam.
 This time I did pass.&lt;/p&gt;
 
-&lt;h1 id=&#34;conclusion:1d507ae3a219d4adcf3991ea4f105e4e&#34;&gt;Conclusion&lt;/h1&gt;
+&lt;h1 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h1&gt;
 
 &lt;p&gt;The Offensive Security Certified Expert certification was quite a challenge.
-A challenge that is really worth the sweat and tears.
+A challenge that is really worth blood, sweat and tears.
 If you think about doing a medium certification in information security, cracking the perimeter is definitely the right choice.
 I will Try Harder!&lt;/p&gt;
 
@@ -78,11 +81,13 @@ I will Try Harder!&lt;/p&gt;
 
 
 
-&lt;h1 id=&#34;resurces:1d507ae3a219d4adcf3991ea4f105e4e&#34;&gt;Resurces&lt;/h1&gt;
+&lt;h1 id=&#34;resources&#34;&gt;Resources&lt;/h1&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.offensive-security.com/information-security-certifications/osce-offensive-security-certified-expert/&#34;&gt;Offensive Security Certified Expert (OSCE) Certification&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;!-- http://www.primalsecurity.net/course-review-osce/ //--&gt;
 </description>
     </item>
     
@@ -94,7 +99,7 @@ I will Try Harder!&lt;/p&gt;
       <guid>http://camelinc.info/blog/2014/05/Offensive-Security-Certified-Professional/</guid>
       <description>
 
-&lt;h1 id=&#34;intro:5a52d9ee6431ea95a441332f1f070a1a&#34;&gt;Intro&lt;/h1&gt;
+&lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;
 
 &lt;p&gt;Try Harder!
 If received my OSCP exam in the mail today.
@@ -107,7 +112,7 @@ Up until I received the learning material and the VPN connection to the lab was 
 &lt;p&gt;The exercises were quite easy, as they try to establish a baseline knowledge of tools and methods.
 The later exercises go more into detail of security.&lt;/p&gt;
 
-&lt;h1 id=&#34;the-lab:5a52d9ee6431ea95a441332f1f070a1a&#34;&gt;The Lab&lt;/h1&gt;
+&lt;h1 id=&#34;the-lab&#34;&gt;The Lab&lt;/h1&gt;
 
 &lt;p&gt;The really interessting stuff was going on in the labs.
 There are about 50 boxes distributed in a few separate network segments.
@@ -124,7 +129,7 @@ There might also be other students working on the same machine.
 Compiling stand alone exploits and having them ready at hand is also quite handy sometimes.
 Also, it was important not to rely on one single exploit, but to try different ways of exploiting a system.&lt;/p&gt;
 
-&lt;h1 id=&#34;the-exam:5a52d9ee6431ea95a441332f1f070a1a&#34;&gt;The Exam&lt;/h1&gt;
+&lt;h1 id=&#34;the-exam&#34;&gt;The Exam&lt;/h1&gt;
 
 &lt;p&gt;The exam is limited to 24 hours of hacking.
 Subsequently, in 24 extra hours you have to hand in the exam report.
@@ -132,7 +137,7 @@ All the details for the exam will land in your mailbox when the scheduled exam s
 Of course, you will have to take over a certain amount of machines.
 This hands on exam is what distinguishes the OSCP from other exams.&lt;/p&gt;
 
-&lt;h1 id=&#34;conclusion:5a52d9ee6431ea95a441332f1f070a1a&#34;&gt;Conclusion&lt;/h1&gt;
+&lt;h1 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h1&gt;
 
 &lt;p&gt;The Offensive Security Certified Professional is a great basis for anybody interested in information security.
 Your skill level does not play a big role.
@@ -151,7 +156,7 @@ I will Try Harder!&lt;/p&gt;
 
 
 
-&lt;h1 id=&#34;resurces:5a52d9ee6431ea95a441332f1f070a1a&#34;&gt;Resurces&lt;/h1&gt;
+&lt;h1 id=&#34;resurces&#34;&gt;Resurces&lt;/h1&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.offensive-security.com/information-security-certifications/oscp-offensive-security-certified-professional/&#34;&gt;Offensive Security Certified Professional (OSCP) Certification&lt;/a&gt;&lt;/li&gt;

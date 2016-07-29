@@ -6,18 +6,18 @@
     <description>Recent content in Hashcat on camelinc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 Jan 2016 20:59:59 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 09 Feb 2016 20:59:59 +0000</lastBuildDate>
     <atom:link href="http://camelinc.info/tags/hashcat/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Password Cracking on Amazon EC2 </title>
-      <link>http://camelinc.info/blog/2016/01/Password-Cracking-on-Amazon-EC2/</link>
-      <pubDate>Sat, 09 Jan 2016 20:59:59 +0000</pubDate>
+      <link>http://camelinc.info/blog/2016/02/Password-Cracking-on-Amazon-EC2/</link>
+      <pubDate>Tue, 09 Feb 2016 20:59:59 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2016/01/Password-Cracking-on-Amazon-EC2/</guid>
+      <guid>http://camelinc.info/blog/2016/02/Password-Cracking-on-Amazon-EC2/</guid>
       <description>
 
-&lt;h1 id=&#34;introduction:c641cd6aff00e74365f758133af04f9f&#34;&gt;Introduction&lt;/h1&gt;
+&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 
 &lt;p&gt;Cracking with the desktop computer is not always a good idea.
 It can be quite noisy when you are trying to sleep.
@@ -25,14 +25,14 @@ The room can become too hot for a hacker.
 And most important of all, all the hashes are already in the cloud!
 Let&amp;rsquo;s get started.&lt;/p&gt;
 
-&lt;h1 id=&#34;create-ec2-gpu-instance:c641cd6aff00e74365f758133af04f9f&#34;&gt;Create EC2 GPU Instance&lt;/h1&gt;
+&lt;h1 id=&#34;create-ec2-gpu-instance&#34;&gt;Create EC2 GPU Instance&lt;/h1&gt;
 
 &lt;p&gt;Take a look the the current GPU instance details at &lt;a href=&#34;https://aws.amazon.com/ec2/instance-types/#gpu&#34;&gt;amazon&lt;/a&gt; and choose the right version for your purse.
 Spin up the instance and login via ssh before proceeding.
 For starters I chose the x2.2xlarge instance type.
 The AMI image ID was ami-87564feb or simply choose a Ubuntu trusty amd64 image.&lt;/p&gt;
 
-&lt;h1 id=&#34;setup-ec2-gpu-instance:c641cd6aff00e74365f758133af04f9f&#34;&gt;Setup EC2 GPU Instance&lt;/h1&gt;
+&lt;h1 id=&#34;setup-ec2-gpu-instance&#34;&gt;Setup EC2 GPU Instance&lt;/h1&gt;
 
 &lt;p&gt;Before we begin, let&amp;rsquo;s verify that the system has got a NVIDIA graphics card.&lt;/p&gt;
 
@@ -74,7 +74,7 @@ For this time let&amp;rsquo;s stick to the installer file.&lt;/p&gt;
 
 &lt;p&gt;After this we have to restart the system for the changes to take effect.&lt;/p&gt;
 
-&lt;h1 id=&#34;installing-cuda:c641cd6aff00e74365f758133af04f9f&#34;&gt;Installing Cuda&lt;/h1&gt;
+&lt;h1 id=&#34;installing-cuda&#34;&gt;Installing Cuda&lt;/h1&gt;
 
 &lt;p&gt;After the reboot the next step is to unpack the runfile.
 The output will consist of three separate files.
@@ -102,7 +102,7 @@ Also the LD_LIBRARY_PATH has to include the cuda libraries.&lt;/p&gt;
 
 &lt;p&gt;Once again, let&amp;rsquo;s reboot the system so the changes take effect.&lt;/p&gt;
 
-&lt;h1 id=&#34;installing-cudahashcat:c641cd6aff00e74365f758133af04f9f&#34;&gt;Installing cudaHashcat&lt;/h1&gt;
+&lt;h1 id=&#34;installing-cudahashcat&#34;&gt;Installing cudaHashcat&lt;/h1&gt;
 
 &lt;p&gt;After the final reboot quickly verify the kernel module is loaded.&lt;/p&gt;
 
@@ -121,13 +121,13 @@ Once it is downloaded we can unzip it and setup the access rights.&lt;/p&gt;
 
 &lt;p&gt;So the next thing is to check that cudaHashcat is working as expected.&lt;/p&gt;
 
-&lt;h2 id=&#34;benchmark:c641cd6aff00e74365f758133af04f9f&#34;&gt;Benchmark&lt;/h2&gt;
+&lt;h2 id=&#34;benchmark&#34;&gt;Benchmark&lt;/h2&gt;
 
 &lt;p&gt;What better way to see the result, other than run a benchmark.
 This will give a true indicator of the gains over a traditional desktop GPU.
 The whole results are available on &lt;a href=&#34;https://gist.github.com/camelinc/5c454d428e25a1cdc803#file-cudahashcat64-bin_benchmark_g2-2xlarge&#34;&gt;gist&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;/opt/cudaHashcat-2.01/cudaHashcat64.bin --benchmark
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;/opt/cudaHashcat-2.01/cudaHashcat64.bin --benchmark
 cudaHashcat v2.01 starting in benchmark-mode...
 Device &lt;span class=&#34;c&#34;&gt;#1: GRID K520, 4095MB, 797Mhz, 8MCU&lt;/span&gt;
 
@@ -139,13 +139,13 @@ Hashtype: SHA1
 Workload: &lt;span class=&#34;m&#34;&gt;1024&lt;/span&gt; loops, &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt; accel
 Speed.GPU.#1.:   690.4 MH/s
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;My local machine with a AMD Radeon HD 7870 GHz Edition for a comparison.
 The graphics card encounters some problems with the temperature and aborts some tests.
 The full results are available on &lt;a href=&#34;https://gist.github.com/camelinc/5c454d428e25a1cdc803#file-oclhashcat64-bin_benchmark&#34;&gt;github&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;sudo /opt/oclHashcat/oclHashcat64.bin --benchmark 
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;sudo /opt/oclHashcat/oclHashcat64.bin --benchmark
 oclHashcat v2.01 starting in benchmark-mode...
 Device &lt;span class=&#34;c&#34;&gt;#1: Pitcairn, 1630MB, 1050Mhz, 20MCU&lt;/span&gt;
 
@@ -157,13 +157,13 @@ Hashtype: SHA1
 Workload: &lt;span class=&#34;m&#34;&gt;1024&lt;/span&gt; loops, &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt; accel
 Speed.GPU.#1.:  1710.5 MH/s
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
+
 
 &lt;p&gt;The results are quite obvious.
 My old AMD is still better at cracking than a g2.2xlarge instance.
 Maybe scaling up to a g2.8xlarge give more promising results.&lt;/p&gt;
 
-&lt;h2 id=&#34;next-steps:c641cd6aff00e74365f758133af04f9f&#34;&gt;Next steps&lt;/h2&gt;
+&lt;h2 id=&#34;next-steps&#34;&gt;Next steps&lt;/h2&gt;
 
 &lt;p&gt;The speed is not really magnificent.
 Maybe running Hashcat in a spot instance for a cheap price is the right way to go.
@@ -173,21 +173,21 @@ During testing the connection to S3 via awscli did not work out.
 Maybe another tool can do the job.
 Or another storage mechanism is suitable to persist the relevant data.&lt;/p&gt;
 
-&lt;h1 id=&#34;automation:c641cd6aff00e74365f758133af04f9f&#34;&gt;Automation&lt;/h1&gt;
+&lt;h1 id=&#34;automation&#34;&gt;Automation&lt;/h1&gt;
 
 &lt;p&gt;In order to speed up the whole process a bash script is the obvious solution.
 The whole file can be found in &lt;a href=&#34;https://gist.github.com/camelinc/5c454d428e25a1cdc803#file-cuda-setup-sh&#34;&gt;this&lt;/a&gt; gist.&lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;#basic setup, disable nouveau&lt;/span&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;#basic setup, disable nouveau&lt;/span&gt;
 &lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;./cuda-setup.sh -i
 &lt;span class=&#34;c&#34;&gt;#install cuda&lt;/span&gt;
 &lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;./cuda-setup.sh -r
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;h1 id=&#34;links:c641cd6aff00e74365f758133af04f9f&#34;&gt;Links&lt;/h1&gt;
 
-&lt;h2 id=&#34;cuda:c641cd6aff00e74365f758133af04f9f&#34;&gt;CUDA&lt;/h2&gt;
+&lt;h1 id=&#34;links&#34;&gt;Links&lt;/h1&gt;
+
+&lt;h2 id=&#34;cuda&#34;&gt;CUDA&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://developer.nvidia.com/cuda-downloads&#34;&gt;CUDA 7.5 Downloads | NVIDIA Developer&lt;/a&gt;&lt;/li&gt;
@@ -196,7 +196,7 @@ The whole file can be found in &lt;a href=&#34;https://gist.github.com/camelinc/
 &lt;li&gt;&lt;a href=&#34;https://vtluug.org/wiki/Amazon_EC2:_GPU_Cluster&#34;&gt;Amazon EC2: GPU Cluster&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;hashcat:c641cd6aff00e74365f758133af04f9f&#34;&gt;Hashcat&lt;/h2&gt;
+&lt;h2 id=&#34;hashcat&#34;&gt;Hashcat&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://dunham.io/post/password-cracking/&#34;&gt;Password Cracking on Amazon EC2 · Andrew Dunham&amp;rsquo;s Blog&lt;/a&gt;&lt;/li&gt;

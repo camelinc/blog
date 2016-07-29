@@ -3,13 +3,17 @@
   
   <url>
     <loc>http://camelinc.info/</loc>
-    <lastmod>2016-01-09T20:59:59+00:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2016-07-29T20:59:59+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://camelinc.info/blog/2016/01/Password-Cracking-on-Amazon-EC2/</loc>
-    <lastmod>2016-01-09T20:59:59+00:00</lastmod>
+    <loc>http://camelinc.info/blog/2016/07/Discovering-juicy-targets-via-DNS/</loc>
+    <lastmod>2016-07-29T20:59:59+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://camelinc.info/blog/2016/02/Password-Cracking-on-Amazon-EC2/</loc>
+    <lastmod>2016-02-09T20:59:59+00:00</lastmod>
   </url>
   
   <url>
