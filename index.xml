@@ -73,8 +73,6 @@ One big source of information are the regularly updated scans at &lt;a href=&#34
 Another big source of information are the results at censys.io.
 They have a lot information about TLS certificates indexed in their search engine.&lt;/p&gt;
 
-&lt;!-- TODO: mindmap like https://hackertarget.com/osint-map.png //--&gt;
-
 
 
 &lt;figure &gt;
@@ -90,8 +88,6 @@ They have a lot information about TLS certificates indexed in their search engin
 &lt;p&gt;After some hacking away at the keyboard, the first working code sample is on github.
 There exist still a lot of ToDos until it is working as expect.
 Keep yourself updated on the repository &lt;a href=&#34;https://github.com/camelinc/dnsDisco&#34;&gt;dnsDisco&lt;/a&gt;.&lt;/p&gt;
-
-&lt;!-- TODO:asciinema //--&gt;
 
 &lt;script type=&#34;text/javascript&#34; src=&#34;https://asciinema.org/a/5e8ccz55nsq0lw9yrrwk20iwp.js&#34; id=&#34;asciicast-5e8ccz55nsq0lw9yrrwk20iwp&#34; async&gt;&lt;/script&gt;
 

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta itemprop="name" content="SEC660/GXPN Review">
+  <title>SEC660/GXPN Review</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta itemprop="description" content="Introduction May 2016 I had the chance to participate in the SANS SEC660: Advanced Penetration Testing, Exploit Writing, and Ethical Hacking in Amsterdam. The course syllabus gave a good outline about what to expect. For some topics I felt they would be really worth it. According to the prerequisites only basic scripting, networking and operating system knowledge were necessary. One big drawback is the price for a SANS training. It is by no means comparable to the offensive security trainings.">
+
+  
+  <meta itemprop="keywords" content="certifications,challenge,ctf,dns,exploit,exploit-exercises,golang,gxpn,hacking,hashcat,information-gathering,offensive-security,projects,protostar,red-team,reverse-engineering,review,sans,sec660,seh,wifi,windows,wlan," />
+  
+    <meta itemprop="wordCount" content="1019">
+  
+
+  <meta property="og:title" content="SEC660/GXPN Review" />
+  <meta property="og:description" content="Introduction May 2016 I had the chance to participate in the SANS SEC660: Advanced Penetration Testing, Exploit Writing, and Ethical Hacking in Amsterdam. The course syllabus gave a good outline about what to expect. For some topics I felt they would be really worth it. According to the prerequisites only basic scripting, networking and operating system knowledge were necessary. One big drawback is the price for a SANS training. It is by no means comparable to the offensive security trainings." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://localhost:1313/blog/2016/08/SEC660/GXPN-Review/" />
+  
+
+  
+  <meta property="og:updated_time" content="2016-08-18 20:59:59 &#43;0000 UTC"/>
+  
+  
+  
+  
+
+  
+    <meta name="twitter:card" content="summary"/>
+  
+
+  
+  <meta name="twitter:title" content="SEC660/GXPN Review"/>
+  <meta name="twitter:description" content="Introduction May 2016 I had the chance to participate in the SANS SEC660: Advanced Penetration Testing, Exploit Writing, and Ethical Hacking in Amsterdam. The course syllabus gave a good outline about what to expect. For some topics I felt they would be really worth it. According to the prerequisites only basic scripting, networking and operating system knowledge were necessary. One big drawback is the price for a SANS training. It is by no means comparable to the offensive security trainings."/>
+  
+  
+
+
+  <meta name="generator" content="Hugo 0.16" />
+  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  <link href="http://localhost:1313/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://localhost:1313/css/hc.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="http://localhost:1313/css/zenburn.css" type="text/css" media="screen" />
+
+  
+
+  
+  <link rel="stylesheet" href="http://localhost:1313/lightbox/css/lightbox.css" type="text/css" media="screen">
+
+
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  
+</head>
+ 
+
+
+<body>
+
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+  <div id = "wrapper">
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://localhost:1313//"><p class="navbar-brand">camelinc</p></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+					
+					<li><a href="http://localhost:1313/about">About </a></li>
+					
+					<li><a href="http://localhost:1313/post">Posts </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/img/avatar.png" />
+          <li class="sidebar-brand"><a href="http://localhost:1313//"><h1 class="brand">camelinc</h1></a><h3></h3></li>
+          <hr />
+
+					
+						<li><a href="http://localhost:1313/about">About </a></li>
+					
+						<li><a href="http://localhost:1313/post">Posts </a></li>
+					
+          <hr />
+
+          <div id="social-wrapper">
+           
+             <li> <a href="https://twitter.com/camelinc"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+
+           
+             
+           
+
+           
+             
+           
+
+           
+             <li> <a href="https://github.com/camelinc"><i class="fa fa-github-square"></i> github</a> </li>
+           
+         </div>
+
+       </ul>
+     </div>
+
+     <div class="container">
+
+
+  <div id="article">
+    <div class="article-title">SEC660/GXPN Review</div>
+    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2016-08-18</small></p> <hr/>
+    <div class="post">
+      
+
+<h1 id="introduction">Introduction</h1>
+
+<p>May 2016 I had the chance to participate in the <em>SANS SEC660: Advanced Penetration Testing, Exploit Writing, and Ethical Hacking</em> in Amsterdam.
+The course syllabus gave a good outline about what to expect.
+For some topics I felt they would be really worth it.
+According to the prerequisites only basic scripting, networking and operating system knowledge were necessary.
+One big drawback is the price for a SANS training.
+It is by no means comparable to the offensive security trainings.
+Yet, I wanted to see if the training is really worth the buck.</p>
+
+<h1 id="training">Training</h1>
+
+<p>The training takes a whole five days of lectures from 9 until 19 o&rsquo;clock.
+Each theoretical section is followed by practical exercises to put the newly acquire knowledge to practice.
+On the 6th day the topics of the past week are covered in a concluding CTF.</p>
+
+<h2 id="day-1-intro-network-attacks">Day 1 - Intro &amp; Network Attacks</h2>
+
+<p>The first days gives a short introduction and kicks off quite fast.
+The focus for the first day is to get access to the network and to gain a first foothold.
+So the real course begins with NAC bypasses.
+Subsequently, attacks on routing protocols and network devices are covered.
+These enable an attack to perform a Man-in-the-Middle attack and gain access on the network.
+<!-- bootcamp //-->
+The whole day is quite easy if you are familiar with networking.</p>
+
+<h2 id="day-2-crypto-pxe-attacks-escaping-restricted-environments">Day 2 - Crypto, PXE Attacks, &amp; Escaping Restricted Environments</h2>
+
+<p>Personally, the crypto section on day 2 was a highlight.
+The level of detail for this section is quite basic and mostly covers attacks, e.g. bit flipping.
+Yet, if you are not familiar with crypto the learning curve is quite steep.
+The second part of day 2 was all about restricted environments.</p>
+
+<h2 id="day-3-python-scapy-and-fuzzing">Day 3 - Python, Scapy, and Fuzzing</h2>
+
+<p>Day 3 started off with an introduction to python.
+This was just a primer to get started with scapy and the sulley fuzzing framework.
+Scapy as essential tool for a penetration tester.
+Sulley as an easy fuzzer to get started.
+The fuzzing section also covered different fuzzing approaches.
+American fuzzy loop being the latest addition.</p>
+
+<h2 id="day-4-exploiting-linux">Day 4 - Exploiting Linux</h2>
+
+<p>During this day the pace of the course skyrocketed.
+It starts off with an introduction to Linux memory and x86 assembly.
+Following this in depth look into Linux come the actual attacks.
+After the basic stack overflows the more current ret2libc attacks are also covered.
+Obviously, the course also covered the OS protection mechanisms.
+Cracking stack canaries and DEP are part of the exercises.</p>
+
+<h2 id="day-5-exploiting-windows">Day 5 - Exploiting Windows</h2>
+
+<p>Following Linux exploitation this day also starts off with the essential basics about Windows memory layout.
+Also, the different Windows protection mechanisms have undergone quite a development over the years.
+Basic stack overflows and SEH overwrites give a good start to the actual magic.
+Anybody who was still following the course was hit by the last part of the course.
+After the intro to return oriented programming and gadgets Stephen walked us through one exploit.
+By the end of the day, everybody looked like a zombie.</p>
+
+<h2 id="day-6-ctf">Day 6 - CTF</h2>
+
+<p>The concluding capture the flag really was the icing on the top of the whole course.
+The challenges covered most of the topics of the previous days and let you practice everything in a live session.
+The challenges are arranged in classical jeopardy style.
+Up to five people can join up to work on the challenges together in a team.</p>
+
+<p>Our team had quite a good start.
+We were leading the scoreboard quite soon.
+In the last hour only one other team was close enough to threaten our first place.
+Only a few minutes before the ctf closed this team shot ahead.
+All of us hammered away at their keyboards to obtain just some more points to gain back the lead.
+Unfortunately, we did not win and did miss out on the awesome challenge coins.</p>
+
+<h1 id="gxpn-certification">GXPN Certification</h1>
+
+<p>According to Stephen, we would be one of the first students to encounter a new feature during the exam.
+We were supposed to work in a virtual machine that we could access via the browser during the exam for some questions.
+This way we would also have to prove our practical knowledge.
+All in all, we had to answer 55 questions in three hours.
+As it was my first GIAC certification I did not know what to expect.
+I therefore wanted to prepare really good and set the exam day on the last possible day.</p>
+
+<h2 id="preparation">Preparation</h2>
+
+<p>As preparation I read through the books and watched the recordings.
+I also created some Anki cards in order to anticipate potential questions.
+This also quite gave me good idea where I would have to dig a little deeper.</p>
+
+<p>During the exam you are allowed to bring along a &ldquo;handful&rdquo; of books.
+This also includes your own written documentation.
+I therefore create an index to quickly lookup any topic I could not answer with absolute certainty.</p>
+
+<h2 id="exam">Exam</h2>
+
+<p>The day of the exam was quite stressful.
+A few things did not work out as expected.
+At some point the network cable fell loose from my exam computer - the lock latch was missing.
+After I few minutes a continued my exam on another computer.
+After quite some time I finish with a good score.
+Under the given circumstances it was good and I think it is quite hard to achieve a better score.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>After the exam I would definitely recommend doing this course for everybody who wants to learn more about technical penetration testing.
+Not only will you learn quite a bit about the inner workings of the foundations of the internet.
+You will also learn to bend and abuse those little wheels and notches.</p>
+
+<h2 id="osce-vs-gxpn">OSCE Vs GXPN</h2>
+
+<p>Comparing my experience with OSEC to GXPN I would say that the two courses supplement each other.
+With OSCE you get to read a lot of assembly and low level hacking.
+GXPN on the other hand provides descriptions and theory to the whole picture.
+It also covers topics that were not part for my OSCE training, e.g. crypto.</p>
+
+<h1 id="links">Links</h1>
+
+<ul>
+<li><a href="https://www.sans.org/course/advanced-penetration-testing-exploits-ethical-hacking">SANS SEC660</a></li>
+<li><a href="http://www.primalsecurity.net/0x1-course-review-sec660-advanced-penetration-testing-exploit-writing-and-ethical-hacking-gxpn/">Course Review: SEC660</a></li>
+<li><a href="https://matterpreter.com/sec660-gxpn/">SEC660/GXPN In Review</a></li>
+</ul>
+
+    </div>
+  </div>
+
+  <ul class="pager">
+    
+
+    
+    
+      
+        &nbsp;<li class="next"><a href="http://localhost:1313/blog/2016/07/Discovering-juicy-targets-via-DNS/"> Discovering juicy targets via DNS</a></li>
+      
+    
+  </ul>
+
+
+
+<footer>
+
+  <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+
+  
+  
+
+  <script type="text/javascript" src="/js/jquery-2.1.4.js"></script>
+
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/js/hc.js"></script>
+
+  
+  <script type="text/javascript" src="/lightbox/js/lightbox.js"></script>
+
+  
+
+</footer>
+
+
+	<script data-no-instant>document.write('<script src="/livereload.js?mindelay=10"></' + 'script>')</script></body>
+</html>
