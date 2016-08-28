@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Review on camelinc</title>
-    <link>http://camelinc.info/tags/review/</link>
+    <link>http://localhost:1313/tags/review/</link>
     <description>Recent content in Review on camelinc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 18 Aug 2016 20:59:59 +0000</lastBuildDate>
-    <atom:link href="http://camelinc.info/tags/review/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/review/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>SEC660/GXPN Review</title>
-      <link>http://camelinc.info/blog/2016/08/SEC660/GXPN-Review/</link>
+      <link>http://localhost:1313/blog/2016/08/SEC660/GXPN-Review/</link>
       <pubDate>Thu, 18 Aug 2016 20:59:59 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2016/08/SEC660/GXPN-Review/</guid>
+      <guid>http://localhost:1313/blog/2016/08/SEC660/GXPN-Review/</guid>
       <description>
 
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;

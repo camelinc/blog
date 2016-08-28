@@ -2,152 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Certifications on camelinc</title>
-    <link>http://camelinc.info/tags/certifications/</link>
+    <link>http://localhost:1313/tags/certifications/</link>
     <description>Recent content in Certifications on camelinc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 18 Aug 2016 20:59:59 +0000</lastBuildDate>
-    <atom:link href="http://camelinc.info/tags/certifications/index.xml" rel="self" type="application/rss+xml" />
-    
-    <item>
-      <title>SEC660/GXPN Review</title>
-      <link>http://camelinc.info/blog/2016/08/SEC660/GXPN-Review/</link>
-      <pubDate>Thu, 18 Aug 2016 20:59:59 +0000</pubDate>
-      
-      <guid>http://camelinc.info/blog/2016/08/SEC660/GXPN-Review/</guid>
-      <description>
-
-&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
-
-&lt;p&gt;May 2016 I had the chance to participate in the &lt;em&gt;SANS SEC660: Advanced Penetration Testing, Exploit Writing, and Ethical Hacking&lt;/em&gt; in Amsterdam.
-The course syllabus gave a good outline about what to expect.
-For some topics I felt they would be really worth it.
-According to the prerequisites only basic scripting, networking and operating system knowledge were necessary.
-One big drawback is the price for a SANS training.
-It is by no means comparable to the offensive security trainings.
-Yet, I wanted to see if the training is really worth the buck.&lt;/p&gt;
-
-&lt;h1 id=&#34;training&#34;&gt;Training&lt;/h1&gt;
-
-&lt;p&gt;The training takes a whole five days of lectures from 9 until 19 o&amp;rsquo;clock.
-Each theoretical section is followed by practical exercises to put the newly acquire knowledge to practice.
-On the 6th day the topics of the past week are covered in a concluding CTF.&lt;/p&gt;
-
-&lt;h2 id=&#34;day-1-intro-network-attacks&#34;&gt;Day 1 - Intro &amp;amp; Network Attacks&lt;/h2&gt;
-
-&lt;p&gt;The first days gives a short introduction and kicks off quite fast.
-The focus for the first day is to get access to the network and to gain a first foothold.
-So the real course begins with NAC bypasses.
-Subsequently, attacks on routing protocols and network devices are covered.
-These enable an attack to perform a Man-in-the-Middle attack and gain access on the network.
-&lt;!-- bootcamp //--&gt;
-The whole day is quite easy if you are familiar with networking.&lt;/p&gt;
-
-&lt;h2 id=&#34;day-2-crypto-pxe-attacks-escaping-restricted-environments&#34;&gt;Day 2 - Crypto, PXE Attacks, &amp;amp; Escaping Restricted Environments&lt;/h2&gt;
-
-&lt;p&gt;Personally, the crypto section on day 2 was a highlight.
-The level of detail for this section is quite basic and mostly covers attacks, e.g. bit flipping.
-Yet, if you are not familiar with crypto the learning curve is quite steep.
-The second part of day 2 was all about restricted environments.&lt;/p&gt;
-
-&lt;h2 id=&#34;day-3-python-scapy-and-fuzzing&#34;&gt;Day 3 - Python, Scapy, and Fuzzing&lt;/h2&gt;
-
-&lt;p&gt;Day 3 started off with an introduction to python.
-This was just a primer to get started with scapy and the sulley fuzzing framework.
-Scapy as essential tool for a penetration tester.
-Sulley as an easy fuzzer to get started.
-The fuzzing section also covered different fuzzing approaches.
-American fuzzy loop being the latest addition.&lt;/p&gt;
-
-&lt;h2 id=&#34;day-4-exploiting-linux&#34;&gt;Day 4 - Exploiting Linux&lt;/h2&gt;
-
-&lt;p&gt;During this day the pace of the course skyrocketed.
-It starts off with an introduction to Linux memory and x86 assembly.
-Following this in depth look into Linux come the actual attacks.
-After the basic stack overflows the more current ret2libc attacks are also covered.
-Obviously, the course also covered the OS protection mechanisms.
-Cracking stack canaries and DEP are part of the exercises.&lt;/p&gt;
-
-&lt;h2 id=&#34;day-5-exploiting-windows&#34;&gt;Day 5 - Exploiting Windows&lt;/h2&gt;
-
-&lt;p&gt;Following Linux exploitation this day also starts off with the essential basics about Windows memory layout.
-Also, the different Windows protection mechanisms have undergone quite a development over the years.
-Basic stack overflows and SEH overwrites give a good start to the actual magic.
-Anybody who was still following the course was hit by the last part of the course.
-After the intro to return oriented programming and gadgets Stephen walked us through one exploit.
-By the end of the day, everybody looked like a zombie.&lt;/p&gt;
-
-&lt;h2 id=&#34;day-6-ctf&#34;&gt;Day 6 - CTF&lt;/h2&gt;
-
-&lt;p&gt;The concluding capture the flag really was the icing on the top of the whole course.
-The challenges covered most of the topics of the previous days and let you practice everything in a live session.
-The challenges are arranged in classical jeopardy style.
-Up to five people can join up to work on the challenges together in a team.&lt;/p&gt;
-
-&lt;p&gt;Our team had quite a good start.
-We were leading the scoreboard quite soon.
-In the last hour only one other team was close enough to threaten our first place.
-Only a few minutes before the ctf closed this team shot ahead.
-All of us hammered away at their keyboards to obtain just some more points to gain back the lead.
-Unfortunately, we did not win and did miss out on the awesome challenge coins.&lt;/p&gt;
-
-&lt;h1 id=&#34;gxpn-certification&#34;&gt;GXPN Certification&lt;/h1&gt;
-
-&lt;p&gt;According to Stephen, we would be one of the first students to encounter a new feature during the exam.
-We were supposed to work in a virtual machine that we could access via the browser during the exam for some questions.
-This way we would also have to prove our practical knowledge.
-All in all, we had to answer 55 questions in three hours.
-As it was my first GIAC certification I did not know what to expect.
-I therefore wanted to prepare really good and set the exam day on the last possible day.&lt;/p&gt;
-
-&lt;h2 id=&#34;preparation&#34;&gt;Preparation&lt;/h2&gt;
-
-&lt;p&gt;As preparation I read through the books and watched the recordings.
-I also created some Anki cards in order to anticipate potential questions.
-This also quite gave me good idea where I would have to dig a little deeper.&lt;/p&gt;
-
-&lt;p&gt;During the exam you are allowed to bring along a &amp;ldquo;handful&amp;rdquo; of books.
-This also includes your own written documentation.
-I therefore create an index to quickly lookup any topic I could not answer with absolute certainty.&lt;/p&gt;
-
-&lt;h2 id=&#34;exam&#34;&gt;Exam&lt;/h2&gt;
-
-&lt;p&gt;The day of the exam was quite stressful.
-A few things did not work out as expected.
-At some point the network cable fell loose from my exam computer - the lock latch was missing.
-After I few minutes a continued my exam on another computer.
-After quite some time I finish with a good score.
-Under the given circumstances it was good and I think it is quite hard to achieve a better score.&lt;/p&gt;
-
-&lt;h1 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;After the exam I would definitely recommend doing this course for everybody who wants to learn more about technical penetration testing.
-Not only will you learn quite a bit about the inner workings of the foundations of the internet.
-You will also learn to bend and abuse those little wheels and notches.&lt;/p&gt;
-
-&lt;h2 id=&#34;osce-vs-gxpn&#34;&gt;OSCE Vs GXPN&lt;/h2&gt;
-
-&lt;p&gt;Comparing my experience with OSEC to GXPN I would say that the two courses supplement each other.
-With OSCE you get to read a lot of assembly and low level hacking.
-GXPN on the other hand provides descriptions and theory to the whole picture.
-It also covers topics that were not part for my OSCE training, e.g. crypto.&lt;/p&gt;
-
-&lt;h1 id=&#34;links&#34;&gt;Links&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.sans.org/course/advanced-penetration-testing-exploits-ethical-hacking&#34;&gt;SANS SEC660&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.primalsecurity.net/0x1-course-review-sec660-advanced-penetration-testing-exploit-writing-and-ethical-hacking-gxpn/&#34;&gt;Course Review: SEC660&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://matterpreter.com/sec660-gxpn/&#34;&gt;SEC660/GXPN In Review&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
+    <lastBuildDate>Mon, 06 Jul 2015 16:00:02 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/certifications/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Offensive Security Certified Expert</title>
-      <link>http://camelinc.info/blog/2015/07/Offensive-Security-Certified-Expert/</link>
+      <link>http://localhost:1313/blog/2015/07/Offensive-Security-Certified-Expert/</link>
       <pubDate>Mon, 06 Jul 2015 16:00:02 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2015/07/Offensive-Security-Certified-Expert/</guid>
+      <guid>http://localhost:1313/blog/2015/07/Offensive-Security-Certified-Expert/</guid>
       <description>
 
 &lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;
@@ -207,8 +74,8 @@ I will Try Harder!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/osce/02-osce-certs.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Try Harder!&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/osce/02-osce-certs.png&#34; alt=&#34;Try Harder!&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/osce/02-osce-certs.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Try Harder!&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/osce/02-osce-certs.png&#34; alt=&#34;Try Harder!&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -226,10 +93,10 @@ I will Try Harder!&lt;/p&gt;
     
     <item>
       <title>Offensive Security Certified Professional</title>
-      <link>http://camelinc.info/blog/2014/05/Offensive-Security-Certified-Professional/</link>
+      <link>http://localhost:1313/blog/2014/05/Offensive-Security-Certified-Professional/</link>
       <pubDate>Wed, 28 May 2014 14:14:46 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2014/05/Offensive-Security-Certified-Professional/</guid>
+      <guid>http://localhost:1313/blog/2014/05/Offensive-Security-Certified-Professional/</guid>
       <description>
 
 &lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;
@@ -282,8 +149,8 @@ I will Try Harder!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/oscp/01-oscp-certs.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Try Harder!&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/oscp/01-oscp-certs.png&#34; alt=&#34;Try Harder!&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2014/oscp/01-oscp-certs.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Try Harder!&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2014/oscp/01-oscp-certs.png&#34; alt=&#34;Try Harder!&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 

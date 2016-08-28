@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Dns on camelinc</title>
-    <link>http://camelinc.info/tags/dns/</link>
+    <link>http://localhost:1313/tags/dns/</link>
     <description>Recent content in Dns on camelinc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 29 Jul 2016 20:59:59 +0000</lastBuildDate>
-    <atom:link href="http://camelinc.info/tags/dns/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/dns/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Discovering juicy targets via DNS</title>
-      <link>http://camelinc.info/blog/2016/07/Discovering-juicy-targets-via-DNS/</link>
+      <link>http://localhost:1313/blog/2016/07/Discovering-juicy-targets-via-DNS/</link>
       <pubDate>Fri, 29 Jul 2016 20:59:59 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2016/07/Discovering-juicy-targets-via-DNS/</guid>
+      <guid>http://localhost:1313/blog/2016/07/Discovering-juicy-targets-via-DNS/</guid>
       <description>
 
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
@@ -76,8 +76,8 @@ They have a lot information about TLS certificates indexed in their search engin
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2016/dnsDisco/overview.svg&#34; data-lightbox=&#34;default&#34;  &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2016/dnsDisco/overview.svg&#34;  &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2016/dnsDisco/overview.svg&#34; data-lightbox=&#34;default&#34;  &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2016/dnsDisco/overview.svg&#34;  &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 

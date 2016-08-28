@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Challenge on camelinc</title>
-    <link>http://camelinc.info/tags/challenge/</link>
+    <link>http://localhost:1313/tags/challenge/</link>
     <description>Recent content in Challenge on camelinc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 31 Aug 2015 16:55:26 +0000</lastBuildDate>
-    <atom:link href="http://camelinc.info/tags/challenge/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/challenge/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>FLARE on Challenge 2015</title>
-      <link>http://camelinc.info/blog/2015/08/FLARE-on-Challenge-2015/</link>
+      <link>http://localhost:1313/blog/2015/08/FLARE-on-Challenge-2015/</link>
       <pubDate>Mon, 31 Aug 2015 16:55:26 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2015/08/FLARE-on-Challenge-2015/</guid>
+      <guid>http://localhost:1313/blog/2015/08/FLARE-on-Challenge-2015/</guid>
       <description>
 
 &lt;h1 id=&#34;instructions&#34;&gt;Instructions&lt;/h1&gt;
@@ -567,10 +567,10 @@ This I could not figure out in time.&lt;/p&gt;
     
     <item>
       <title>Exploit Exercises - Protostar - Final levels</title>
-      <link>http://camelinc.info/blog/2014/11/Exploit-Exercises---Protostar---Final-levels/</link>
+      <link>http://localhost:1313/blog/2014/11/Exploit-Exercises---Protostar---Final-levels/</link>
       <pubDate>Sun, 02 Nov 2014 16:55:26 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2014/11/Exploit-Exercises---Protostar---Final-levels/</guid>
+      <guid>http://localhost:1313/blog/2014/11/Exploit-Exercises---Protostar---Final-levels/</guid>
       <description>
 
 &lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
@@ -1613,10 +1613,10 @@ A great curse to try harder each exercise.&lt;/p&gt;
     
     <item>
       <title>Exploit Exercises - Protostar - Heap levels</title>
-      <link>http://camelinc.info/blog/2014/11/Exploit-Exercises---Protostar---Heap-levels/</link>
+      <link>http://localhost:1313/blog/2014/11/Exploit-Exercises---Protostar---Heap-levels/</link>
       <pubDate>Sat, 01 Nov 2014 11:52:17 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2014/11/Exploit-Exercises---Protostar---Heap-levels/</guid>
+      <guid>http://localhost:1313/blog/2014/11/Exploit-Exercises---Protostar---Heap-levels/</guid>
       <description>
 
 &lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
@@ -2255,10 +2255,10 @@ Then, we can push our destination address and finally return to finish this exer
     
     <item>
       <title>Exploit Exercises - Protostar - Network levels</title>
-      <link>http://camelinc.info/blog/2014/09/Exploit-Exercises---Protostar---Network-levels/</link>
+      <link>http://localhost:1313/blog/2014/09/Exploit-Exercises---Protostar---Network-levels/</link>
       <pubDate>Thu, 18 Sep 2014 13:21:27 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2014/09/Exploit-Exercises---Protostar---Network-levels/</guid>
+      <guid>http://localhost:1313/blog/2014/09/Exploit-Exercises---Protostar---Network-levels/</guid>
       <description>
 
 &lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
@@ -2768,10 +2768,10 @@ The three strings need to be &amp;ldquo;net3&amp;rdquo;, &amp;ldquo;awesomesauce
     
     <item>
       <title>Exploit Exercises - Protostar - Format String levels</title>
-      <link>http://camelinc.info/blog/2014/09/Exploit-Exercises---Protostar---Format-String-levels/</link>
+      <link>http://localhost:1313/blog/2014/09/Exploit-Exercises---Protostar---Format-String-levels/</link>
       <pubDate>Tue, 16 Sep 2014 13:21:27 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2014/09/Exploit-Exercises---Protostar---Format-String-levels/</guid>
+      <guid>http://localhost:1313/blog/2014/09/Exploit-Exercises---Protostar---Format-String-levels/</guid>
       <description>
 
 &lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
@@ -3104,10 +3104,10 @@ This reduces the overall length of the command to complete this exercise.&lt;/p&
     
     <item>
       <title>Exploit Exercises - Protostar - Stack levels</title>
-      <link>http://camelinc.info/blog/2014/08/Exploit-Exercises---Protostar---Stack-levels/</link>
+      <link>http://localhost:1313/blog/2014/08/Exploit-Exercises---Protostar---Stack-levels/</link>
       <pubDate>Sun, 31 Aug 2014 16:07:14 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2014/08/Exploit-Exercises---Protostar---Stack-levels/</guid>
+      <guid>http://localhost:1313/blog/2014/08/Exploit-Exercises---Protostar---Stack-levels/</guid>
       <description>
 
 &lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;

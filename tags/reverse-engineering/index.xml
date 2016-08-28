@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Reverse Engineering on camelinc</title>
-    <link>http://camelinc.info/tags/reverse-engineering/</link>
+    <link>http://localhost:1313/tags/reverse-engineering/</link>
     <description>Recent content in Reverse Engineering on camelinc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 31 Aug 2015 16:55:26 +0000</lastBuildDate>
-    <atom:link href="http://camelinc.info/tags/reverse-engineering/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/reverse-engineering/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>FLARE on Challenge 2015</title>
-      <link>http://camelinc.info/blog/2015/08/FLARE-on-Challenge-2015/</link>
+      <link>http://localhost:1313/blog/2015/08/FLARE-on-Challenge-2015/</link>
       <pubDate>Mon, 31 Aug 2015 16:55:26 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2015/08/FLARE-on-Challenge-2015/</guid>
+      <guid>http://localhost:1313/blog/2015/08/FLARE-on-Challenge-2015/</guid>
       <description>
 
 &lt;h1 id=&#34;instructions&#34;&gt;Instructions&lt;/h1&gt;

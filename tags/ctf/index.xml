@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ctf on camelinc</title>
-    <link>http://camelinc.info/tags/ctf/</link>
+    <link>http://localhost:1313/tags/ctf/</link>
     <description>Recent content in Ctf on camelinc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 05 Jan 2016 01:23:27 +0000</lastBuildDate>
-    <atom:link href="http://camelinc.info/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/ctf/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>The 2015 SANS Holiday Hack Challenge - Solution</title>
-      <link>http://camelinc.info/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/</link>
+      <link>http://localhost:1313/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/</link>
       <pubDate>Tue, 05 Jan 2016 01:23:27 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/</guid>
+      <guid>http://localhost:1313/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/</guid>
       <description>
 
 &lt;h1 id=&#34;summary&#34;&gt;Summary&lt;/h1&gt;
@@ -111,8 +111,8 @@ Finally, in packet 875 the server requests a file with &lt;code&gt;FILE:/root/Pi
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/snapshot_CURRENT.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;Nobody at home.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/snapshot_CURRENT.jpg&#34; alt=&#34;Nobody at home.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/snapshot_CURRENT.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;Nobody at home.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/snapshot_CURRENT.jpg&#34; alt=&#34;Nobody at home.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -187,11 +187,11 @@ With the information from the web application a shodan search might also yield s
 &lt;a href=&#34;https://www.shodan.io/search?query=SuperGnome&amp;amp;language=en&#34;&gt;shodan.io&lt;/a&gt; provides four additional IP addresses running a SuperGnome web interface.&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/52.2.229.189.png&#34;&gt;Supergnome 1&lt;/a&gt; - 52.2.229.189 (United States, Ashburn)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/52.34.3.80.png&#34;&gt;Supergnome 2&lt;/a&gt; - 52.34.3.80 (Japan, Tokyo)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/52.64.191.71.png&#34;&gt;Supergnome 3&lt;/a&gt; - 52.64.191.71 (Brazil)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/52.192.152.132.png&#34;&gt;Supergnome 4&lt;/a&gt; - 52.192.152.132 (Australia, Sydney)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/54.233.105.81.png&#34;&gt;Supergnome 5&lt;/a&gt; - 54.233.105.81 (United States, Boardman)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/52.2.229.189.png&#34;&gt;Supergnome 1&lt;/a&gt; - 52.2.229.189 (United States, Ashburn)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/52.34.3.80.png&#34;&gt;Supergnome 2&lt;/a&gt; - 52.34.3.80 (Japan, Tokyo)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/52.64.191.71.png&#34;&gt;Supergnome 3&lt;/a&gt; - 52.64.191.71 (Brazil)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/52.192.152.132.png&#34;&gt;Supergnome 4&lt;/a&gt; - 52.192.152.132 (Australia, Sydney)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/54.233.105.81.png&#34;&gt;Supergnome 5&lt;/a&gt; - 54.233.105.81 (United States, Boardman)&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;Pinning the IP addresses on a map gives us the following overview.&lt;/p&gt;
@@ -199,8 +199,8 @@ With the information from the web application a shodan search might also yield s
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/shodan-map.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Supergnome Map&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/shodan-map.png&#34; alt=&#34;Supergnome Map&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/shodan-map.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Supergnome Map&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/shodan-map.png&#34; alt=&#34;Supergnome Map&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -336,8 +336,8 @@ NCC-1701 is the alternative name for the starship USS Enterprise in the fictiona
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/NCC1701.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;NCC1701&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/NCC1701.jpg&#34; alt=&#34;NCC1701&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/NCC1701.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;NCC1701&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/NCC1701.jpg&#34; alt=&#34;NCC1701&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -353,8 +353,8 @@ According to the application code, the temporary directory is created and never 
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/Path_Traversal-1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Path Traversal - step 1&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/Path_Traversal-1.png&#34; alt=&#34;Path Traversal - step 1&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/Path_Traversal-1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Path Traversal - step 1&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/Path_Traversal-1.png&#34; alt=&#34;Path Traversal - step 1&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -373,8 +373,8 @@ Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/Path_Traversal-2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Path Traversal - step 2&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/Path_Traversal-2.png&#34; alt=&#34;Path Traversal - step 2&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/Path_Traversal-2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Path Traversal - step 2&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/Path_Traversal-2.png&#34; alt=&#34;Path Traversal - step 2&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -409,8 +409,8 @@ Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/NoSQL_injection.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;NoSQL Injection on the login form.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/NoSQL_injection.png&#34; alt=&#34;NoSQL Injection on the login form.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/NoSQL_injection.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;NoSQL Injection on the login form.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/NoSQL_injection.png&#34; alt=&#34;NoSQL Injection on the login form.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -427,8 +427,8 @@ Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/NoSQL_injection_bruteforce.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Brute-Forcing the password for admin.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/NoSQL_injection_bruteforce.png&#34; alt=&#34;Brute-Forcing the password for admin.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/NoSQL_injection_bruteforce.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Brute-Forcing the password for admin.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/NoSQL_injection_bruteforce.png&#34; alt=&#34;Brute-Forcing the password for admin.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -446,8 +446,8 @@ Go watch it!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/THX1138.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;THX 1138&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/THX1138.jpg&#34; alt=&#34;THX 1138&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/THX1138.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;THX 1138&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/THX1138.jpg&#34; alt=&#34;THX 1138&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -469,8 +469,8 @@ With a valid session id, simply upload a file and include the SSJS payload of yo
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/SSJS_Injection.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Server-Side JavaScript Injection&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/SSJS_Injection.png&#34; alt=&#34;Server-Side JavaScript Injection&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/SSJS_Injection.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Server-Side JavaScript Injection&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/SSJS_Injection.png&#34; alt=&#34;Server-Side JavaScript Injection&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -494,8 +494,8 @@ Other handy payloads might be to open a reverse shell.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/BU22_1729_2716057.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Bender_Rodriguez&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/BU22_1729_2716057.png&#34; alt=&#34;Bender_Rodriguez&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/BU22_1729_2716057.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Bender_Rodriguez&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/BU22_1729_2716057.png&#34; alt=&#34;Bender_Rodriguez&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -523,8 +523,8 @@ The remote exploit proof-of-concept code is listed &lt;a href=&#34;#sgstatd-remo
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/SG5-whoami.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Established remote shell on SuperGnome 5.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/SG5-whoami.png&#34; alt=&#34;Established remote shell on SuperGnome 5.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/SG5-whoami.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Established remote shell on SuperGnome 5.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/SG5-whoami.png&#34; alt=&#34;Established remote shell on SuperGnome 5.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -599,15 +599,15 @@ It is addressed to &lt;code&gt;psychdoctor@whovillepsychiatrists.com&lt;/code&gt
 Each SuperGnome contains an image with white noise.
 These have been XOR and can therefore be reversed.
 This process can be easily achieved with a &lt;a href=&#34;#restore-overlay-error:f01f8c0644e5f5332f225b6c091c5a59&#34;&gt;script&lt;/a&gt; using pillow&amp;rsquo;s ImageMath.
-The restored video feed &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/4_eval_xor.png&#34;&gt;image&lt;/a&gt; is still not very clear.&lt;/p&gt;
+The restored video feed &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/4_eval_xor.png&#34;&gt;image&lt;/a&gt; is still not very clear.&lt;/p&gt;
 
 &lt;p&gt;With the information from the mail, we can compare the latest known image of Cindy-Lou Who with the restored image:&lt;/p&gt;
 
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/Cindy_Lou_Who.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Image comparison&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/Cindy_Lou_Who.png&#34; alt=&#34;Image comparison&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/Cindy_Lou_Who.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Image comparison&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/Cindy_Lou_Who.png&#34; alt=&#34;Image comparison&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 

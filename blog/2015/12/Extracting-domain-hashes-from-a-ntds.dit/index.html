@@ -7,16 +7,16 @@
   <title>Extracting domain hashes from a ntds.dit</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta itemprop="description" content="Intro Let&rsquo;s say, you found an ntds.dit lying around on your hard disk. What a shame to let it sit there and just eat up disk space. Better extract the hashes and get crackin&rsquo;. Option 1 Preparation https://blog.joelj.org/windows-password-audit-with-kali-linux/?doing_wp_cron=1448310876.2788469791412353515625 http://www.harmj0y.net/blog/redteaming/the-case-of-a-stubborn-ntds-dit/ libesedb ntdsxtract Extraction Option 2 https://github.com/HarmJ0y/ImpDump Next Steps Improve cracking automate script best rules combine available tools gather wordlists encoding issues Resurces Windows Password Audit with Kali Linux Offensive Security Certified">
+  <meta itemprop="description" content="How to extract the user hashes from a domain controller">
 
   
-  <meta itemprop="keywords" content="certifications,challenge,ctf,dns,exploit,exploit-exercises,golang,gxpn,hacking,hashcat,information-gathering,offensive-security,projects,protostar,red-team,reverse-engineering,review,sans,sec660,seh,wifi,windows,wlan," />
+  <meta itemprop="keywords" content="red team, windows" />
   
     <meta itemprop="wordCount" content="73">
   
 
   <meta property="og:title" content="Extracting domain hashes from a ntds.dit" />
-  <meta property="og:description" content="Intro Let&rsquo;s say, you found an ntds.dit lying around on your hard disk. What a shame to let it sit there and just eat up disk space. Better extract the hashes and get crackin&rsquo;. Option 1 Preparation https://blog.joelj.org/windows-password-audit-with-kali-linux/?doing_wp_cron=1448310876.2788469791412353515625 http://www.harmj0y.net/blog/redteaming/the-case-of-a-stubborn-ntds-dit/ libesedb ntdsxtract Extraction Option 2 https://github.com/HarmJ0y/ImpDump Next Steps Improve cracking automate script best rules combine available tools gather wordlists encoding issues Resurces Windows Password Audit with Kali Linux Offensive Security Certified" />
+  <meta property="og:description" content="How to extract the user hashes from a domain controller" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="http://localhost:1313/blog/2015/12/Extracting-domain-hashes-from-a-ntds.dit/" />
   
@@ -34,12 +34,10 @@
 
   
   <meta name="twitter:title" content="Extracting domain hashes from a ntds.dit"/>
-  <meta name="twitter:description" content="Intro Let&rsquo;s say, you found an ntds.dit lying around on your hard disk. What a shame to let it sit there and just eat up disk space. Better extract the hashes and get crackin&rsquo;. Option 1 Preparation https://blog.joelj.org/windows-password-audit-with-kali-linux/?doing_wp_cron=1448310876.2788469791412353515625 http://www.harmj0y.net/blog/redteaming/the-case-of-a-stubborn-ntds-dit/ libesedb ntdsxtract Extraction Option 2 https://github.com/HarmJ0y/ImpDump Next Steps Improve cracking automate script best rules combine available tools gather wordlists encoding issues Resurces Windows Password Audit with Kali Linux Offensive Security Certified"/>
+  <meta name="twitter:description" content="How to extract the user hashes from a domain controller"/>
   
   
 
-
-  <meta name="generator" content="Hugo 0.16" />
   <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
   <link href="http://localhost:1313/css/bootstrap.min.css" rel="stylesheet">
   <link href="http://localhost:1313/css/hc.css" rel="stylesheet">
@@ -52,12 +50,11 @@
   
   <link rel="stylesheet" href="http://localhost:1313/lightbox/css/lightbox.css" type="text/css" media="screen">
 
-
+  <meta name="generator" content="Hugo 0.16" />
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   
   
 </head>
- 
 
 
 <body>
@@ -222,8 +219,9 @@ Better extract the hashes and get crackin&rsquo;.</p>
 
   
 
-</footer>
+  
 
+</footer>
 
 	<script data-no-instant>document.write('<script src="/livereload.js?mindelay=10"></' + 'script>')</script></body>
 </html>

@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Hashcat on camelinc</title>
-    <link>http://camelinc.info/tags/hashcat/</link>
+    <link>http://localhost:1313/tags/hashcat/</link>
     <description>Recent content in Hashcat on camelinc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 09 Feb 2016 20:59:59 +0000</lastBuildDate>
-    <atom:link href="http://camelinc.info/tags/hashcat/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/hashcat/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Password Cracking on Amazon EC2 </title>
-      <link>http://camelinc.info/blog/2016/02/Password-Cracking-on-Amazon-EC2/</link>
+      <link>http://localhost:1313/blog/2016/02/Password-Cracking-on-Amazon-EC2/</link>
       <pubDate>Tue, 09 Feb 2016 20:59:59 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2016/02/Password-Cracking-on-Amazon-EC2/</guid>
+      <guid>http://localhost:1313/blog/2016/02/Password-Cracking-on-Amazon-EC2/</guid>
       <description>
 
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
