@@ -11,11 +11,11 @@
     <atom:link href="http://camelinc.info/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Basic Social Engineering example</title>
-      <link>http://camelinc.info/blog/2016/09/Basic-Social-Engineering-example/</link>
+      <title>Social Engineering with PowerShell Empire and gophish</title>
+      <link>http://camelinc.info/blog/2016/09/Social-Engineering-with-PowerShell-Empire-and-gophish/</link>
       <pubDate>Thu, 01 Sep 2016 10:46:59 +0000</pubDate>
       
-      <guid>http://camelinc.info/blog/2016/09/Basic-Social-Engineering-example/</guid>
+      <guid>http://camelinc.info/blog/2016/09/Social-Engineering-with-PowerShell-Empire-and-gophish/</guid>
       <description>
 
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
@@ -106,7 +106,7 @@ Finally, we also want to have to clear text credentials from the current user.
 To get those the collection/prompt module can be utilized.&lt;/p&gt;
 
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&amp;gt; usemodule collection/prompt
-&amp;gt; TODO: configure settings
+&amp;gt; info
 &amp;gt; execute
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
