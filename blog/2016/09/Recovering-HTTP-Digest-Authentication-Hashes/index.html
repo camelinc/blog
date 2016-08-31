@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta itemprop="name" content="Recovering HTTP Digest Authentication Hashes">
+  <title>Recovering HTTP Digest Authentication Hashes</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta itemprop="description" content="Cracking captured HTTP Digest Authentication captured hashes.">
+
+  
+  <meta itemprop="keywords" content="hacking, social engineering, word macros, gophish" />
+  
+    <meta itemprop="wordCount" content="363">
+  
+
+  <meta property="og:title" content="Recovering HTTP Digest Authentication Hashes" />
+  <meta property="og:description" content="This is my personal blog to keep track of stuff I am doing after hours." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://localhost:1313/blog/2016/09/Recovering-HTTP-Digest-Authentication-Hashes/" />
+  
+
+  
+  <meta property="og:updated_time" content="2016-09-01 10:46:59 &#43;0000 UTC"/>
+  
+  
+  
+  
+
+  
+    <meta name="twitter:card" content="summary"/>
+  
+
+  
+  <meta name="twitter:title" content="Recovering HTTP Digest Authentication Hashes"/>
+  <meta name="twitter:description" content="This is my personal blog to keep track of stuff I am doing after hours."/>
+  
+  
+
+  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  <link href="http://localhost:1313//css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://localhost:1313//css/hc.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="http://localhost:1313//css/zenburn.css" type="text/css" media="screen" />
+
+  
+
+  
+  <link rel="stylesheet" href="http://localhost:1313//lightbox/css/lightbox.css" type="text/css" media="screen">
+
+  <meta name="generator" content="Hugo 0.16" />
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  
+</head>
+
+
+  <body>
+
+  
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+  <div id = "wrapper">
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://localhost:1313//"><p class="navbar-brand">camelinc</p></a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+          <h2>http://localhost:1313/</h2>
+					
+					<li><a href="http://localhost:1313/about">About </a></li>
+					
+					<li><a href="http://localhost:1313/post">Posts </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/img/avatar.png" />
+          <li class="sidebar-brand"><a href="http://localhost:1313//"><h1 class="brand">camelinc</h1></a><h3>This is my personal blog to keep track of stuff I am doing after hours.</h3></li>
+          <hr />
+
+					
+						<li><a href="http://localhost:1313/about">About </a></li>
+					
+						<li><a href="http://localhost:1313/post">Posts </a></li>
+					
+          <hr />
+
+          <div id="social-wrapper">
+           
+             <li> <a href="https://twitter.com/camelinc"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+
+           
+             
+           
+
+           
+             
+           
+
+           
+             <li> <a href="https://github.com/camelinc"><i class="fa fa-github-square"></i> github</a> </li>
+           
+         </div>
+
+       </ul>
+     </div>
+
+     <div class="container">
+
+
+  <div id="article">
+    <div class="article-title">Recovering HTTP Digest Authentication Hashes</div>
+    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2016-09-01</small></p> <hr/>
+    <div class="post">
+      
+
+<h1 id="introduction">Introduction</h1>
+
+<p>On a recent engagement I encountered the chance to work with responder.
+This tool was created by SpiderLabs in 2014 and still does an awesome job.
+It can poison the network in order to retrieve authentication hashes and passwords.
+By default it will only respond to SMB requests.
+With a few more options, the tool can poison network traffic for specific targets and numerous protocols.
+This enables us to retrieve NTLM Hashes for pass-the-hash attacks and also crack those hashes.</p>
+
+<p>This time, I did not get any results with the default settings.
+Therefore, the next step was to inject a WPAD file with my malicious proxy in order for the victim browser to answer an HTTP digest authentication.
+For me, this was a running instance of Burp Proxy to easily monitor and manipulate the incoming requests.
+So, how does Digest authentication actually work?</p>
+
+<h2 id="http-basic-authentication">HTTP Basic Authentication</h2>
+
+<p>Let&rsquo;s start with HTTP basic authentication.
+The server send a response with the TODO header and a realm distinguish the scope of the authentication.
+This header tells the browser to open login prompt.
+Subsequently, the variables are concatenated and base64 encoded before being sent off to the server with an HTTP request.
+By simply decoding the base64 string we can recover the username:password combination.</p>
+
+<p>TODO: Screenshot</p>
+
+<h2 id="http-digest-authentication">HTTP Digest Authentication</h2>
+
+<p>With Digest Authentication the whole thing gains in complexity.
+This time the server response also includes a nonce, a magic, &hellip; .
+The browser asks the user for credentials the same way.
+Subsequently, the browser encodes the variables and sends off the request.</p>
+
+<p>TODO: example header
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">user:<span class="nv">$response$679066476e67b5c7c4e88f04be567f8b$user$myrealm$GET$/$8c12bd8f728afe56d45a0ce846b70e5a$00000001$4b61913cec32e2c9$auth</span>
+</code></pre></div>
+</p>
+
+<p>The subsequent client request includes a string separated by &ldquo;$&rdquo;.
+The particular fields therein are as follows.
+Here the magic is &lsquo;$response$&rsquo;</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">user:<span class="nv">$MAGIC$response$user$realm$method$uri$nonce$nonceCount$ClientNonce$qop</span>
+</code></pre></div>
+
+
+<h1 id="demonstration">Demonstration</h1>
+
+<p>First, we intercepted the hash with Burp Proxy.</p>
+
+<h2 id="hashcat">hashcat</h2>
+
+<p>The resulting string is not supported by hashcat.
+To get cracking, we have to identify the correct hash and challenge parameters.</p>
+
+<h2 id="jtr">JtR</h2>
+
+<p>John-the-ripper supports the hash format out of the box.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>cat ./htdigest
+moi:<span class="nv">$response$faa6cb7d676e5b7c17fcbf966436aa0c$moi$myrealm$GET$/$af32592775d27b1cd06356b3a0db9ddf$00000001$8e1d49754a25aea7$auth</span>
+user:<span class="nv">$response$679066476e67b5c7c4e88f04be567f8b$user$myrealm$GET$/$8c12bd8f728afe56d45a0ce846b70e5a$00000001$4b61913cec32e2c9$auth</span>
+
+<span class="nv">$ </span>./john ./htdigest
+Loaded <span class="m">2</span> password hashes with <span class="m">2</span> different salts <span class="o">(</span>HTTP Digest access authentication <span class="o">[</span>HDAA-MD5<span class="o">])</span>
+kikou            <span class="o">(</span>moi<span class="o">)</span>
+nocode           <span class="o">(</span>user<span class="o">)</span>
+guesses: <span class="m">2</span>  <span class="nb">time</span>: 0:00:01:27 <span class="o">(</span>3<span class="o">)</span>  c/s: <span class="m">670223</span>  trying: nocode
+</code></pre></div>
+
+
+<h1 id="links">Links</h1>
+
+<ul>
+<li><a href="https://github.com/SpiderLabs/Responder">SpiderLabs/Responder</a></li>
+</ul>
+
+    </div>
+  </div>
+
+  <ul class="pager">
+    
+
+    
+      
+        &nbsp;<li class="previous"><a href="http://localhost:1313/blog/2016/09/Basic-Social-Engineering-example/"> Basic Social Engineering example</a></li>
+      
+    
+    
+      
+        &nbsp;<li class="next"><a href="http://localhost:1313/blog/2016/08/SEC660/GXPN-Review/"> SEC660/GXPN Review</a></li>
+      
+    
+  </ul>
+
+
+
+<footer>
+
+  <p class="text-muted credit">&copy; 2016. All rights reserved. </p>
+
+  
+  
+
+  <script type="text/javascript" src="http://localhost:1313//js/jquery-2.1.4.js"></script>
+
+  <script src="http://localhost:1313//js/bootstrap.min.js"></script>
+  <script src="http://localhost:1313//js/bootstrap.js"></script>
+  <script type="text/javascript" src="http://localhost:1313//js/hc.js"></script>
+
+  
+  <script type="text/javascript" src="http://localhost:1313//lightbox/js/lightbox.js"></script>
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', "UA-83225898-1", 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  
+
+</footer>
+
+	<script data-no-instant>document.write('<script src="/livereload.js?mindelay=10"></' + 'script>')</script></body>
+</html>
