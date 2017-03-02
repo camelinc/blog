@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="utf-8">
-  <meta itemprop="name" content="CTF - Mr Robot">
-  <title>CTF - Mr Robot</title>
+  <meta itemprop="name" content="Vulnhub - Mr Robot: 1 boot2root CTF walkthrough">
+  <title>Vulnhub - Mr Robot: 1 boot2root CTF walkthrough</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta itemprop="description" content="This is my personal blog to keep track of stuff I am doing after hours.">
@@ -12,13 +12,13 @@
   
   <meta itemprop="keywords" content="" />
   
-    <meta itemprop="wordCount" content="609">
+    <meta itemprop="wordCount" content="637">
   
 
-  <meta property="og:title" content="CTF - Mr Robot" />
+  <meta property="og:title" content="Vulnhub - Mr Robot: 1 boot2root CTF walkthrough" />
   <meta property="og:description" content="This is my personal blog to keep track of stuff I am doing after hours." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://camelinc.info/blog/2017/02/CTF---Mr-Robot/" />
+  <meta property="og:url" content="http://camelinc.info/blog/2017/02/Vulnhub---Mr-Robot-1-boot2root-CTF-walkthrough/" />
   
 
   
@@ -33,7 +33,7 @@
   
 
   
-  <meta name="twitter:title" content="CTF - Mr Robot"/>
+  <meta name="twitter:title" content="Vulnhub - Mr Robot: 1 boot2root CTF walkthrough"/>
   <meta name="twitter:description" content="This is my personal blog to keep track of stuff I am doing after hours."/>
   
   
@@ -130,7 +130,7 @@
 
 
   <div id="article">
-    <div class="article-title">CTF - Mr Robot</div>
+    <div class="article-title">Vulnhub - Mr Robot: 1 boot2root CTF walkthrough</div>
     <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2017-02-25</small></p> <hr/>
     <div class="post">
       
@@ -139,7 +139,7 @@
 
 <p>Find the three flags that are hidden in the vm.</p>
 
-<h2 id="information-gathering">Information gathering</h2>
+<h1 id="flag-1">Flag 1</h1>
 
 <p>To begin the fun let&rsquo;s run netdiscover to identify the target system.</p>
 
@@ -206,7 +206,7 @@ key-1-of-3.txt
 
 
 
-<h2 id="flag-2">Flag 2</h2>
+<h1 id="flag-2">Flag 2</h1>
 
 <p>Next, we run wpscan examine the wordpress installation.</p>
 
@@ -283,7 +283,7 @@ This can easily be done by adding our own php code to one of the templates.</p>
 </code></pre></div>
 
 
-<p>Take a look at the home directories.
+<p>After the reverse meterpreter session has been established, let&rsquo;s take a look at the home directories.
 There is a user robot with the second flag file.
 Unfortunately, we do not have the right access rights, but in the same folder is a password hash for the user that we might be able to crack.</p>
 
@@ -310,6 +310,9 @@ An interactive version can be started via the following command.</p>
 </code></pre></div>
 
 
+<p>Then we simply login with the robot user and the discovered password.
+This give access to the key file.</p>
+
 
 
 <figure class="fcenter">
@@ -320,7 +323,7 @@ An interactive version can be started via the following command.</p>
 
 
 
-<h2 id="flag-3">Flag 3</h2>
+<h1 id="flag-3">Flag 3</h1>
 
 <p>After searching the server only the root user&rsquo;s home directory is left.
 To access this folder we somehow need to gain root on the system.
