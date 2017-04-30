@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>camelinc</title>
-    <link>http://camelinc.info/index.xml</link>
+    <link>http://localhost:1313/index.xml</link>
     <description>Recent content on camelinc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -556,8 +556,8 @@ Better try the web browser instead.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fmedium&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Uh, we&amp;#39;re gonna need to move your desk&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-1_0.png&#34; alt=&#34;Uh, we&amp;#39;re gonna need to move your desk&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Uh, we&amp;#39;re gonna need to move your desk&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-1_0.png&#34; alt=&#34;Uh, we&amp;#39;re gonna need to move your desk&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -617,8 +617,8 @@ There are six files listed in the directory view.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fmedium&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webserver-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The contents of the image directory.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webserver-1_1.png&#34; alt=&#34;The contents of the image directory.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webserver-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The contents of the image directory.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webserver-1_1.png&#34; alt=&#34;The contents of the image directory.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -629,8 +629,8 @@ There are six files listed in the directory view.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fmedium&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/bill.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Thanks bill.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/bill.png&#34; alt=&#34;Thanks bill.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/bill.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Thanks bill.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/bill.png&#34; alt=&#34;Thanks bill.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -642,8 +642,8 @@ The hint provides the following information.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fmedium&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The hint is hidden in the source code.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-1_1.png&#34; alt=&#34;The hint is hidden in the source code.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The hint is hidden in the source code.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-1_1.png&#34; alt=&#34;The hint is hidden in the source code.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -661,8 +661,8 @@ The homepage includes a link to the &amp;ldquo;Employee portal&amp;rdquo;.&lt;/p
 
 
 &lt;figure class=&#34;fcenter fmedium&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-2_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Welcome to the employee portal.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-2_0.png&#34; alt=&#34;Welcome to the employee portal.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-2_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Welcome to the employee portal.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-2_0.png&#34; alt=&#34;Welcome to the employee portal.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -673,8 +673,8 @@ The homepage includes a link to the &amp;ldquo;Employee portal&amp;rdquo;.&lt;/p
 
 
 &lt;figure class=&#34;fcenter fmedium&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-2_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Welcome to the employee portal.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-2_1.png&#34; alt=&#34;Welcome to the employee portal.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-2_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Welcome to the employee portal.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-2_1.png&#34; alt=&#34;Welcome to the employee portal.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -685,8 +685,8 @@ The homepage includes a link to the &amp;ldquo;Employee portal&amp;rdquo;.&lt;/p
 &lt;p&gt;
 
 &lt;figure class=&#34;fcenter fmedium&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Message 1&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_0.png&#34; alt=&#34;Message 1&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-3_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Message 1&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-3_0.png&#34; alt=&#34;Message 1&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -694,8 +694,8 @@ The homepage includes a link to the &amp;ldquo;Employee portal&amp;rdquo;.&lt;/p
 
 
 &lt;figure class=&#34;fcenter fmedium&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Message 2&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_1.png&#34; alt=&#34;Message 2&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-3_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Message 2&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-3_1.png&#34; alt=&#34;Message 2&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -703,8 +703,8 @@ The homepage includes a link to the &amp;ldquo;Employee portal&amp;rdquo;.&lt;/p
 
 
 &lt;figure class=&#34;fcenter fmedium&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Message 3&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_2.png&#34; alt=&#34;Message 3&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-3_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Message 3&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-3_2.png&#34; alt=&#34;Message 3&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -736,8 +736,8 @@ Maybe the search yields some results.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_3.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;One results for &amp;#39;ssl&amp;#39;&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_3.png&#34; alt=&#34;One results for &amp;#39;ssl&amp;#39;&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-3_3.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;One results for &amp;#39;ssl&amp;#39;&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-3_3.png&#34; alt=&#34;One results for &amp;#39;ssl&amp;#39;&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -746,8 +746,8 @@ Maybe the search yields some results.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_4.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Bill posts security relevant information in the portal.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/webseite-3_4.png&#34; alt=&#34;Bill posts security relevant information in the portal.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-3_4.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Bill posts security relevant information in the portal.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/webseite-3_4.png&#34; alt=&#34;Bill posts security relevant information in the portal.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -797,8 +797,8 @@ Set the respective options via &amp;ldquo;Edit&amp;rdquo;-&amp;gt;&amp;ldquo;Pre
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/wireshark-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Set the options to decrypt ssl traffic.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/wireshark-1_0.png&#34; alt=&#34;Set the options to decrypt ssl traffic.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/wireshark-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Set the options to decrypt ssl traffic.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/wireshark-1_0.png&#34; alt=&#34;Set the options to decrypt ssl traffic.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -810,8 +810,8 @@ Luckily, this is http which can be read like an open book.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/wireshark-1_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The decrypted SSL traffic.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/wireshark-1_2.png&#34; alt=&#34;The decrypted SSL traffic.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/wireshark-1_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The decrypted SSL traffic.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/wireshark-1_2.png&#34; alt=&#34;The decrypted SSL traffic.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -833,8 +833,8 @@ So, the next tool to investigate was sslyze to get some details about the ssl co
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/sslyze-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Only the cipher suite RC4-MD5 is enabled.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/sslyze-1_0.png&#34; alt=&#34;Only the cipher suite RC4-MD5 is enabled.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/sslyze-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Only the cipher suite RC4-MD5 is enabled.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/sslyze-1_0.png&#34; alt=&#34;Only the cipher suite RC4-MD5 is enabled.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -848,8 +848,8 @@ With that proxying the ssl connection the browser could be utilized to access po
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/tomcat-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The tomcat manager after a successful login.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/tomcat-1_0.png&#34; alt=&#34;The tomcat manager after a successful login.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/tomcat-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The tomcat manager after a successful login.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/tomcat-1_0.png&#34; alt=&#34;The tomcat manager after a successful login.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -884,8 +884,8 @@ Get lucky!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The target opens a meterpreter session.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-1_0.png&#34; alt=&#34;The target opens a meterpreter session.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/meterpreter-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The target opens a meterpreter session.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/meterpreter-1_0.png&#34; alt=&#34;The target opens a meterpreter session.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -898,8 +898,8 @@ Metasploits local_exploit_suggester might provide some pointers.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;These exploits might work according to metasploit.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-1_1.png&#34; alt=&#34;These exploits might work according to metasploit.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/meterpreter-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;These exploits might work according to metasploit.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/meterpreter-1_1.png&#34; alt=&#34;These exploits might work according to metasploit.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -949,8 +949,8 @@ Maybe we can now change user or login.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;From tomcat to milton.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-1_1.png&#34; alt=&#34;From tomcat to milton.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/meterpreter-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;From tomcat to milton.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/meterpreter-1_1.png&#34; alt=&#34;From tomcat to milton.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -998,8 +998,8 @@ First, the meta information is a good place to search.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fmedium&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/bill-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The metadata contains a comment.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/bill-1_0.png&#34; alt=&#34;The metadata contains a comment.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/bill-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The metadata contains a comment.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/bill-1_0.png&#34; alt=&#34;The metadata contains a comment.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1011,8 +1011,8 @@ This might even be the password for the command line.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/shell-2_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The password hint worked.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/shell-2_0.png&#34; alt=&#34;The password hint worked.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/shell-2_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The password hint worked.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/shell-2_0.png&#34; alt=&#34;The password hint worked.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1049,8 +1049,8 @@ This makes working and navigating much more convenient.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-2_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;A meterpreter session as root.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/meterpreter-2_0.png&#34; alt=&#34;A meterpreter session as root.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/meterpreter-2_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;A meterpreter session as root.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/meterpreter-2_0.png&#34; alt=&#34;A meterpreter session as root.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1061,8 +1061,8 @@ This makes working and navigating much more convenient.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/flag-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The final flag.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/flag-1_0.png&#34; alt=&#34;The final flag.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/flag-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The final flag.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/flag-1_0.png&#34; alt=&#34;The final flag.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1073,8 +1073,8 @@ This makes working and navigating much more convenient.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fmedium&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/flair.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;Another final flag?&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/flair.jpg&#34; alt=&#34;Another final flag?&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/flair.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;Another final flag?&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/flair.jpg&#34; alt=&#34;Another final flag?&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1089,8 +1089,8 @@ The file &lt;code&gt;/usr/local/etc/portspoof.conf&lt;/code&gt; holds the follow
 
 
 &lt;figure class=&#34;fcenter fmedium&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/portspoof-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Trololo&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-1/portspoof-1_0.png&#34; alt=&#34;Trololo&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/portspoof-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Trololo&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-breach-1/portspoof-1_0.png&#34; alt=&#34;Trololo&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1112,10 +1112,10 @@ The script is run during startup and boom you have won.&lt;/p&gt;
     
     <item>
       <title>Vulnhub - Mr Robot: 1 boot2root CTF walkthrough</title>
-      <link>http://camelinc.info/blog/2017/02/Vulnhub---Mr-Robot-1-boot2root-CTF-walkthrough/</link>
+      <link>http://localhost:1313/blog/2017/02/Vulnhub---Mr-Robot-1-boot2root-CTF-walkthrough/</link>
       <pubDate>Sat, 25 Feb 2017 10:46:59 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2017/02/Vulnhub---Mr-Robot-1-boot2root-CTF-walkthrough/</guid>
+      <guid>http://localhost:1313/blog/2017/02/Vulnhub---Mr-Robot-1-boot2root-CTF-walkthrough/</guid>
       <description>
 
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
@@ -1129,8 +1129,8 @@ The script is run during startup and boom you have won.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/netdiscover-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Identify the right target&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/netdiscover-1_0.png&#34; alt=&#34;Identify the right target&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/netdiscover-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Identify the right target&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/netdiscover-1_0.png&#34; alt=&#34;Identify the right target&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1146,8 +1146,8 @@ The next step obviously is to run a quick nmap scan.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/nmap-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Nmap scan results.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/nmap-1_0.png&#34; alt=&#34;Nmap scan results.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/nmap-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Nmap scan results.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/nmap-1_0.png&#34; alt=&#34;Nmap scan results.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1162,8 +1162,8 @@ The next step obviously is to run a quick nmap scan.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/gobuster-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The results of the directory brute-force attack.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/gobuster-1_0.png&#34; alt=&#34;The results of the directory brute-force attack.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/gobuster-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The results of the directory brute-force attack.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/gobuster-1_0.png&#34; alt=&#34;The results of the directory brute-force attack.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1182,8 +1182,8 @@ key-1-of-3.txt
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/flag-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Flag 1&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/flag-1_1.png&#34; alt=&#34;Flag 1&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/flag-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Flag 1&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/flag-1_1.png&#34; alt=&#34;Flag 1&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1215,8 +1215,8 @@ The fsocity.dic file might provide some pointers or provide input for a brute-fo
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/wp-login-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;User enumeration vulnerability.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/wp-login-1_1.png&#34; alt=&#34;User enumeration vulnerability.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/wp-login-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;User enumeration vulnerability.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/wp-login-1_1.png&#34; alt=&#34;User enumeration vulnerability.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1231,8 +1231,8 @@ To do this, we simply set the password to some bogus value and adjust the patter
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/hydra-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Valid login names.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/hydra-1_0.png&#34; alt=&#34;Valid login names.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/hydra-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Valid login names.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/hydra-1_0.png&#34; alt=&#34;Valid login names.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1249,8 +1249,8 @@ Let&amp;rsquo;s switch back to wpscan for this task.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/wpscan-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Valid login account found!&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/wpscan-1_1.png&#34; alt=&#34;Valid login account found!&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/wpscan-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Valid login account found!&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/wpscan-1_1.png&#34; alt=&#34;Valid login account found!&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1273,8 +1273,8 @@ Unfortunately, we do not have the right access rights, but in the same folder is
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/meterpreter-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The meterpreter reverse shell has connected and we have access to the system&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/meterpreter-1_1.png&#34; alt=&#34;The meterpreter reverse shell has connected and we have access to the system&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/meterpreter-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The meterpreter reverse shell has connected and we have access to the system&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/meterpreter-1_1.png&#34; alt=&#34;The meterpreter reverse shell has connected and we have access to the system&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1299,8 +1299,8 @@ This give access to the key file.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/flag-1_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;We have access to the second file!&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/flag-1_2.png&#34; alt=&#34;We have access to the second file!&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/flag-1_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;We have access to the second file!&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/flag-1_2.png&#34; alt=&#34;We have access to the second file!&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1315,8 +1315,8 @@ The kernel is fairly old and might be vulnerable to an exploit.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/meterpreter-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;An old kernel version!&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/meterpreter-1_0.png&#34; alt=&#34;An old kernel version!&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/meterpreter-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;An old kernel version!&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/meterpreter-1_0.png&#34; alt=&#34;An old kernel version!&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1327,8 +1327,8 @@ The kernel is fairly old and might be vulnerable to an exploit.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/searchsploit-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;One vulnerability found for the kernel!&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/searchsploit-1_0.png&#34; alt=&#34;One vulnerability found for the kernel!&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/searchsploit-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;One vulnerability found for the kernel!&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/searchsploit-1_0.png&#34; alt=&#34;One vulnerability found for the kernel!&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1339,8 +1339,8 @@ The kernel is fairly old and might be vulnerable to an exploit.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/searchsploit-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;There exists another vulnerability with a metasploit module.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/searchsploit-1_1.png&#34; alt=&#34;There exists another vulnerability with a metasploit module.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/searchsploit-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;There exists another vulnerability with a metasploit module.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/searchsploit-1_1.png&#34; alt=&#34;There exists another vulnerability with a metasploit module.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1359,8 +1359,8 @@ Let&amp;rsquo;s search for setuid files that might be exploitable.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/searchsploit-1_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;A local installation of nmap.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/searchsploit-1_2.png&#34; alt=&#34;A local installation of nmap.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/searchsploit-1_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;A local installation of nmap.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/searchsploit-1_2.png&#34; alt=&#34;A local installation of nmap.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1374,8 +1374,8 @@ This version of nmap has that option enabled.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/flag-1_3.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The third and final flog.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-mr-robot/flag-1_3.png&#34; alt=&#34;The third and final flog.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/flag-1_3.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The third and final flog.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2017/vulnhub-mr-robot/flag-1_3.png&#34; alt=&#34;The third and final flog.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1391,10 +1391,10 @@ This version of nmap has that option enabled.&lt;/p&gt;
     
     <item>
       <title>Social Engineering with PowerShell Empire and gophish</title>
-      <link>http://camelinc.info/blog/2016/09/Social-Engineering-with-PowerShell-Empire-and-gophish/</link>
+      <link>http://localhost:1313/blog/2016/09/Social-Engineering-with-PowerShell-Empire-and-gophish/</link>
       <pubDate>Thu, 01 Sep 2016 10:46:59 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2016/09/Social-Engineering-with-PowerShell-Empire-and-gophish/</guid>
+      <guid>http://localhost:1313/blog/2016/09/Social-Engineering-with-PowerShell-Empire-and-gophish/</guid>
       <description>
 
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
@@ -1450,8 +1450,8 @@ Next, the macro has to be added to the document.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2016/malicious-word-macros/word-macro.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The stager macro after adding it to the Office document.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2016/malicious-word-macros/word-macro.png&#34; alt=&#34;The stager macro after adding it to the Office document.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2016/malicious-word-macros/word-macro.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The stager macro after adding it to the Office document.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2016/malicious-word-macros/word-macro.png&#34; alt=&#34;The stager macro after adding it to the Office document.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1467,8 +1467,8 @@ Create the campaign with the right options and start it when ready.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2016/malicious-word-macros/gophish-overview.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Gophish main interface.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2016/malicious-word-macros/gophish-overview.png&#34; alt=&#34;Gophish main interface.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2016/malicious-word-macros/gophish-overview.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Gophish main interface.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2016/malicious-word-macros/gophish-overview.png&#34; alt=&#34;Gophish main interface.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1499,8 +1499,8 @@ Unfortunately, the results are quite terrifying.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2016/malicious-word-macros/virustotal-file-analysis.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Virustotal results for the backdoored office document.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2016/malicious-word-macros/virustotal-file-analysis.png&#34; alt=&#34;Virustotal results for the backdoored office document.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2016/malicious-word-macros/virustotal-file-analysis.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Virustotal results for the backdoored office document.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2016/malicious-word-macros/virustotal-file-analysis.png&#34; alt=&#34;Virustotal results for the backdoored office document.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1530,10 +1530,10 @@ Good thing that I am not in the movie business.&lt;/p&gt;
     
     <item>
       <title>SEC660/GXPN Review</title>
-      <link>http://camelinc.info/blog/2016/08/SEC660/GXPN-Review/</link>
+      <link>http://localhost:1313/blog/2016/08/SEC660/GXPN-Review/</link>
       <pubDate>Thu, 18 Aug 2016 20:59:59 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2016/08/SEC660/GXPN-Review/</guid>
+      <guid>http://localhost:1313/blog/2016/08/SEC660/GXPN-Review/</guid>
       <description>
 
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
@@ -1663,10 +1663,10 @@ It also covers topics that were not part for my OSCE training, e.g. crypto.&lt;/
     
     <item>
       <title>Discovering juicy targets via DNS</title>
-      <link>http://camelinc.info/blog/2016/07/Discovering-juicy-targets-via-DNS/</link>
+      <link>http://localhost:1313/blog/2016/07/Discovering-juicy-targets-via-DNS/</link>
       <pubDate>Fri, 29 Jul 2016 20:59:59 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2016/07/Discovering-juicy-targets-via-DNS/</guid>
+      <guid>http://localhost:1313/blog/2016/07/Discovering-juicy-targets-via-DNS/</guid>
       <description>
 
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
@@ -1728,8 +1728,8 @@ They have a lot information about TLS certificates indexed in their search engin
 
 
 &lt;figure &gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2016/dnsDisco/overview.svg&#34; data-lightbox=&#34;default&#34;  &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2016/dnsDisco/overview.svg&#34;  &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2016/dnsDisco/overview.svg&#34; data-lightbox=&#34;default&#34;  &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2016/dnsDisco/overview.svg&#34;  &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -1750,10 +1750,10 @@ Keep yourself updated on the repository &lt;a href=&#34;https://github.com/camel
     
     <item>
       <title>Password Cracking on Amazon EC2 </title>
-      <link>http://camelinc.info/blog/2016/02/Password-Cracking-on-Amazon-EC2/</link>
+      <link>http://localhost:1313/blog/2016/02/Password-Cracking-on-Amazon-EC2/</link>
       <pubDate>Tue, 09 Feb 2016 20:59:59 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2016/02/Password-Cracking-on-Amazon-EC2/</guid>
+      <guid>http://localhost:1313/blog/2016/02/Password-Cracking-on-Amazon-EC2/</guid>
       <description>
 
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
@@ -1952,10 +1952,10 @@ $ ./cuda-setup.sh -r
     
     <item>
       <title>The 2015 SANS Holiday Hack Challenge - Solution</title>
-      <link>http://camelinc.info/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/</link>
+      <link>http://localhost:1313/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/</link>
       <pubDate>Tue, 05 Jan 2016 01:23:27 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/</guid>
+      <guid>http://localhost:1313/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/</guid>
       <description>
 
 &lt;h1 id=&#34;summary&#34;&gt;Summary&lt;/h1&gt;
@@ -2052,8 +2052,8 @@ Finally, in packet 875 the server requests a file with &lt;code&gt;FILE:/root/Pi
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/snapshot_CURRENT.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;Nobody at home.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/snapshot_CURRENT.jpg&#34; alt=&#34;Nobody at home.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/snapshot_CURRENT.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;Nobody at home.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/snapshot_CURRENT.jpg&#34; alt=&#34;Nobody at home.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -2128,11 +2128,11 @@ With the information from the web application a shodan search might also yield s
 &lt;a href=&#34;https://www.shodan.io/search?query=SuperGnome&amp;amp;language=en&#34;&gt;shodan.io&lt;/a&gt; provides four additional IP addresses running a SuperGnome web interface.&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/52.2.229.189.png&#34;&gt;Supergnome 1&lt;/a&gt; - 52.2.229.189 (United States, Ashburn)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/52.34.3.80.png&#34;&gt;Supergnome 2&lt;/a&gt; - 52.34.3.80 (Japan, Tokyo)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/52.64.191.71.png&#34;&gt;Supergnome 3&lt;/a&gt; - 52.64.191.71 (Brazil)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/52.192.152.132.png&#34;&gt;Supergnome 4&lt;/a&gt; - 52.192.152.132 (Australia, Sydney)&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/54.233.105.81.png&#34;&gt;Supergnome 5&lt;/a&gt; - 54.233.105.81 (United States, Boardman)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/52.2.229.189.png&#34;&gt;Supergnome 1&lt;/a&gt; - 52.2.229.189 (United States, Ashburn)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/52.34.3.80.png&#34;&gt;Supergnome 2&lt;/a&gt; - 52.34.3.80 (Japan, Tokyo)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/52.64.191.71.png&#34;&gt;Supergnome 3&lt;/a&gt; - 52.64.191.71 (Brazil)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/52.192.152.132.png&#34;&gt;Supergnome 4&lt;/a&gt; - 52.192.152.132 (Australia, Sydney)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/54.233.105.81.png&#34;&gt;Supergnome 5&lt;/a&gt; - 54.233.105.81 (United States, Boardman)&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;Pinning the IP addresses on a map gives us the following overview.&lt;/p&gt;
@@ -2140,8 +2140,8 @@ With the information from the web application a shodan search might also yield s
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/shodan-map.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Supergnome Map&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/shodan-map.png&#34; alt=&#34;Supergnome Map&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/shodan-map.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Supergnome Map&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/shodan-map.png&#34; alt=&#34;Supergnome Map&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -2277,8 +2277,8 @@ NCC-1701 is the alternative name for the starship USS Enterprise in the fictiona
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/NCC1701.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;NCC1701&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/NCC1701.jpg&#34; alt=&#34;NCC1701&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/NCC1701.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;NCC1701&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/NCC1701.jpg&#34; alt=&#34;NCC1701&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -2294,8 +2294,8 @@ According to the application code, the temporary directory is created and never 
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/Path_Traversal-1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Path Traversal - step 1&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/Path_Traversal-1.png&#34; alt=&#34;Path Traversal - step 1&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/Path_Traversal-1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Path Traversal - step 1&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/Path_Traversal-1.png&#34; alt=&#34;Path Traversal - step 1&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -2314,8 +2314,8 @@ Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/Path_Traversal-2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Path Traversal - step 2&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/Path_Traversal-2.png&#34; alt=&#34;Path Traversal - step 2&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/Path_Traversal-2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Path Traversal - step 2&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/Path_Traversal-2.png&#34; alt=&#34;Path Traversal - step 2&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -2350,8 +2350,8 @@ Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/NoSQL_injection.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;NoSQL Injection on the login form.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/NoSQL_injection.png&#34; alt=&#34;NoSQL Injection on the login form.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/NoSQL_injection.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;NoSQL Injection on the login form.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/NoSQL_injection.png&#34; alt=&#34;NoSQL Injection on the login form.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -2368,8 +2368,8 @@ Let&amp;rsquo;s download files in the context of the gnome-admin user!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/NoSQL_injection_bruteforce.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Brute-Forcing the password for admin.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/NoSQL_injection_bruteforce.png&#34; alt=&#34;Brute-Forcing the password for admin.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/NoSQL_injection_bruteforce.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Brute-Forcing the password for admin.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/NoSQL_injection_bruteforce.png&#34; alt=&#34;Brute-Forcing the password for admin.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -2387,8 +2387,8 @@ Go watch it!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/THX1138.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;THX 1138&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/THX1138.jpg&#34; alt=&#34;THX 1138&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/THX1138.jpg&#34; data-lightbox=&#34;default&#34; data-title=&#34;THX 1138&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/THX1138.jpg&#34; alt=&#34;THX 1138&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -2410,8 +2410,8 @@ With a valid session id, simply upload a file and include the SSJS payload of yo
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/SSJS_Injection.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Server-Side JavaScript Injection&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/SSJS_Injection.png&#34; alt=&#34;Server-Side JavaScript Injection&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/SSJS_Injection.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Server-Side JavaScript Injection&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/SSJS_Injection.png&#34; alt=&#34;Server-Side JavaScript Injection&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -2435,8 +2435,8 @@ Other handy payloads might be to open a reverse shell.&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/BU22_1729_2716057.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Bender_Rodriguez&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/BU22_1729_2716057.png&#34; alt=&#34;Bender_Rodriguez&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/BU22_1729_2716057.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Bender_Rodriguez&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/BU22_1729_2716057.png&#34; alt=&#34;Bender_Rodriguez&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -2464,8 +2464,8 @@ The remote exploit proof-of-concept code is listed &lt;a href=&#34;#sgstatd-remo
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/SG5-whoami.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Established remote shell on SuperGnome 5.&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/SG5-whoami.png&#34; alt=&#34;Established remote shell on SuperGnome 5.&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/SG5-whoami.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Established remote shell on SuperGnome 5.&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/SG5-whoami.png&#34; alt=&#34;Established remote shell on SuperGnome 5.&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -2540,15 +2540,15 @@ It is addressed to &lt;code&gt;psychdoctor@whovillepsychiatrists.com&lt;/code&gt
 Each SuperGnome contains an image with white noise.
 These have been XOR and can therefore be reversed.
 This process can be easily achieved with a &lt;a href=&#34;#restore-overlay-error:f01f8c0644e5f5332f225b6c091c5a59&#34;&gt;script&lt;/a&gt; using pillow&amp;rsquo;s ImageMath.
-The restored video feed &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/4_eval_xor.png&#34;&gt;image&lt;/a&gt; is still not very clear.&lt;/p&gt;
+The restored video feed &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/4_eval_xor.png&#34;&gt;image&lt;/a&gt; is still not very clear.&lt;/p&gt;
 
 &lt;p&gt;With the information from the mail, we can compare the latest known image of Cindy-Lou Who with the restored image:&lt;/p&gt;
 
 
 
 &lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/holidayhack/Cindy_Lou_Who.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Image comparison&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/holidayhack/Cindy_Lou_Who.png&#34; alt=&#34;Image comparison&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/holidayhack/Cindy_Lou_Who.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Image comparison&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/holidayhack/Cindy_Lou_Who.png&#34; alt=&#34;Image comparison&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -2802,10 +2802,10 @@ The restored video feed &lt;a href=&#34;http://camelinc.info/img/post/2015/holid
     
     <item>
       <title>FLARE on Challenge 2015</title>
-      <link>http://camelinc.info/blog/2015/08/FLARE-on-Challenge-2015/</link>
+      <link>http://localhost:1313/blog/2015/08/FLARE-on-Challenge-2015/</link>
       <pubDate>Mon, 31 Aug 2015 16:55:26 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2015/08/FLARE-on-Challenge-2015/</guid>
+      <guid>http://localhost:1313/blog/2015/08/FLARE-on-Challenge-2015/</guid>
       <description>
 
 &lt;h1 id=&#34;instructions&#34;&gt;Instructions&lt;/h1&gt;
@@ -3358,10 +3358,10 @@ This I could not figure out in time.&lt;/p&gt;
     
     <item>
       <title>Offensive Security Certified Expert</title>
-      <link>http://camelinc.info/blog/2015/07/Offensive-Security-Certified-Expert/</link>
+      <link>http://localhost:1313/blog/2015/07/Offensive-Security-Certified-Expert/</link>
       <pubDate>Mon, 06 Jul 2015 16:00:02 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2015/07/Offensive-Security-Certified-Expert/</guid>
+      <guid>http://localhost:1313/blog/2015/07/Offensive-Security-Certified-Expert/</guid>
       <description>
 
 &lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;
@@ -3421,8 +3421,8 @@ I will Try Harder!&lt;/p&gt;
 
 
 &lt;figure class=&#34;fcenter&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2015/osce/02-osce-certs.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Try Harder!&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2015/osce/02-osce-certs.png&#34; alt=&#34;Try Harder!&#34; &gt;
+    &lt;a href=&#34;http://localhost:1313/img/post/2015/osce/02-osce-certs.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Try Harder!&#34; &gt;
+        &lt;img src=&#34;http://localhost:1313/img/post/2015/osce/02-osce-certs.png&#34; alt=&#34;Try Harder!&#34; &gt;
     &lt;/a&gt;
 &lt;/figure&gt;
 
@@ -3440,10 +3440,10 @@ I will Try Harder!&lt;/p&gt;
     
     <item>
       <title>Exploit Exercises - Protostar - Final levels</title>
-      <link>http://camelinc.info/blog/2014/11/Exploit-Exercises---Protostar---Final-levels/</link>
+      <link>http://localhost:1313/blog/2014/11/Exploit-Exercises---Protostar---Final-levels/</link>
       <pubDate>Sun, 02 Nov 2014 16:55:26 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2014/11/Exploit-Exercises---Protostar---Final-levels/</guid>
+      <guid>http://localhost:1313/blog/2014/11/Exploit-Exercises---Protostar---Final-levels/</guid>
       <description>
 
 &lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
@@ -4486,10 +4486,10 @@ A great curse to try harder each exercise.&lt;/p&gt;
     
     <item>
       <title>Exploit Exercises - Protostar - Heap levels</title>
-      <link>http://camelinc.info/blog/2014/11/Exploit-Exercises---Protostar---Heap-levels/</link>
+      <link>http://localhost:1313/blog/2014/11/Exploit-Exercises---Protostar---Heap-levels/</link>
       <pubDate>Sat, 01 Nov 2014 11:52:17 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2014/11/Exploit-Exercises---Protostar---Heap-levels/</guid>
+      <guid>http://localhost:1313/blog/2014/11/Exploit-Exercises---Protostar---Heap-levels/</guid>
       <description>
 
 &lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
@@ -5128,10 +5128,10 @@ Then, we can push our destination address and finally return to finish this exer
     
     <item>
       <title>Exploit Exercises - Protostar - Network levels</title>
-      <link>http://camelinc.info/blog/2014/09/Exploit-Exercises---Protostar---Network-levels/</link>
+      <link>http://localhost:1313/blog/2014/09/Exploit-Exercises---Protostar---Network-levels/</link>
       <pubDate>Thu, 18 Sep 2014 13:21:27 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2014/09/Exploit-Exercises---Protostar---Network-levels/</guid>
+      <guid>http://localhost:1313/blog/2014/09/Exploit-Exercises---Protostar---Network-levels/</guid>
       <description>
 
 &lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
@@ -5641,10 +5641,10 @@ The three strings need to be &amp;ldquo;net3&amp;rdquo;, &amp;ldquo;awesomesauce
     
     <item>
       <title>Exploit Exercises - Protostar - Format String levels</title>
-      <link>http://camelinc.info/blog/2014/09/Exploit-Exercises---Protostar---Format-String-levels/</link>
+      <link>http://localhost:1313/blog/2014/09/Exploit-Exercises---Protostar---Format-String-levels/</link>
       <pubDate>Tue, 16 Sep 2014 13:21:27 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2014/09/Exploit-Exercises---Protostar---Format-String-levels/</guid>
+      <guid>http://localhost:1313/blog/2014/09/Exploit-Exercises---Protostar---Format-String-levels/</guid>
       <description>
 
 &lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
@@ -5977,10 +5977,10 @@ This reduces the overall length of the command to complete this exercise.&lt;/p&
     
     <item>
       <title>Exploit Exercises - Protostar - Stack levels</title>
-      <link>http://camelinc.info/blog/2014/08/Exploit-Exercises---Protostar---Stack-levels/</link>
+      <link>http://localhost:1313/blog/2014/08/Exploit-Exercises---Protostar---Stack-levels/</link>
       <pubDate>Sun, 31 Aug 2014 16:07:14 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2014/08/Exploit-Exercises---Protostar---Stack-levels/</guid>
+      <guid>http://localhost:1313/blog/2014/08/Exploit-Exercises---Protostar---Stack-levels/</guid>
       <description>
 
 &lt;h1 id=&#34;prequisites&#34;&gt;Prequisites&lt;/h1&gt;
