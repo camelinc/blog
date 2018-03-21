@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright (c) 2014 - 2017; all rights reserved.</copyright>
-    <lastBuildDate>Wed, 08 Mar 2017 22:22:59 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jan 2018 01:23:27 +0000</lastBuildDate>
     
 	<atom:link href="http://camelinc.info/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>SANS Holiday Hack Challenge 2017 Solution</title>
+      <link>http://camelinc.info/blog/2018/01/SANS-Holiday-Hack-Challenge-2017-Solution/</link>
+      <pubDate>Mon, 01 Jan 2018 01:23:27 +0000</pubDate>
+      
+      <guid>http://camelinc.info/blog/2018/01/SANS-Holiday-Hack-Challenge-2017-Solution/</guid>
+      <description>Hacking the Northpolechristmastown l2s.northpolechristmastown.com Letters to Santa app contains a reference to a development system in a HTML comment section.
+&amp;lt;!-- Development version --&amp;gt; &amp;lt;a href=&amp;#34;http://dev.northpolechristmastown.com&amp;#34; style=&amp;#34;display: none;&amp;#34;&amp;gt;Access Development Version&amp;lt;/a&amp;gt; Exploiting Apache Struts The development interface is based on Apache struts. The utilized version is vulnerable to CVE 2017-9805. A respective script can be found on github.
+The script can execute a user supplied command. For a little feedback, the response is uploaded to hookbin.</description>
+    </item>
     
     <item>
       <title>Vulnhub - Breach 2.1 boot2root CTF walkthrough</title>

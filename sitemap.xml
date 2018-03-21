@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://camelinc.info/blog/2018/01/SANS-Holiday-Hack-Challenge-2017-Solution/</loc>
+    <lastmod>2018-01-01T01:23:27+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://camelinc.info/blog/2017/03/Vulnhub---Breach-2.1-boot2root-CTF-walkthrough/</loc>
     <lastmod>2017-03-08T22:22:59+00:00</lastmod>
   </url>
@@ -104,7 +109,7 @@
   
   <url>
     <loc>http://camelinc.info/post/</loc>
-    <lastmod>2017-03-08T22:22:59+00:00</lastmod>
+    <lastmod>2018-01-01T01:23:27+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -115,7 +120,7 @@
   
   <url>
     <loc>http://camelinc.info/</loc>
-    <lastmod>2017-03-08T22:22:59+00:00</lastmod>
+    <lastmod>2018-01-01T01:23:27+00:00</lastmod>
     <priority>0</priority>
   </url>
   
