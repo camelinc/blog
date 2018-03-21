@@ -38,7 +38,8 @@
   
   
 
-  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  
+
   <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
   <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
 
@@ -50,7 +51,7 @@
   
   <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
 
-  <meta name="generator" content="Hugo 0.18.1" />
+  <meta name="generator" content="Hugo 0.37.1" />
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   
   
@@ -152,41 +153,33 @@ The AMI image ID was ami-87564feb or simply choose a Ubuntu trusty amd64 image.<
 
 <p>Before we begin, let&rsquo;s verify that the system has got a NVIDIA graphics card.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ lspci <span class="p">|</span> grep -i <span class="s2">&quot;NVIDIA&quot;</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ lspci <span class="p">|</span> grep -i <span class="s2">&#34;NVIDIA&#34;</span></code></pre></div>
 
 <p>Looks good!
 In order to stick to the best practice, let&rsquo;s follow the <a href="http://docs.nvidia.com/cuda/cuda-getting-started-guide-for-linux/index.html#runfile-installation">guide</a>.
 Start by installing the required packages, such as gcc and header files.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ sudo apt-get update
-$ sudo apt-get install -y gcc g++ build-essential <span class="s2">&quot;linux-headers-</span><span class="k">$(</span>uname -r<span class="k">)</span><span class="s2">&quot;</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ sudo apt-get update
+$ sudo apt-get install -y gcc g++ build-essential <span class="s2">&#34;linux-headers-</span><span class="k">$(</span>uname -r<span class="k">)</span><span class="s2">&#34;</span>
 $ sudo apt-get install -y freeglut3 freeglut3-dev p7zip-full
-$ sudo apt-get install -y linux-image-extra-virtual
-</code></pre></div>
-
+$ sudo apt-get install -y linux-image-extra-virtual</code></pre></div>
 
 <p>Then we simply choose the install method and download the respective driver from <a href="https://developer.nvidia.com/cuda-downloads">NVIDIA</a>.
 For this time let&rsquo;s stick to the installer file.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>curl -O <span class="s2">&quot;http://developer.download.nvidia.com/compute/cuda/7.5/Prod/local_installers/cuda_7.5.18_linux.run&quot;</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">curl -O <span class="s2">&#34;http://developer.download.nvidia.com/compute/cuda/7.5/Prod/local_installers/cuda_7.5.18_linux.run&#34;</span></code></pre></div>
 
 <p>Next, the nouveau driver has to be removed.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ <span class="nb">echo</span> <span class="s">&lt;&lt;EOF | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf</span>
-<span class="s">lacklist nouveau</span>
-<span class="s">blacklist lbm-nouveau</span>
-<span class="s">options nouveau modeset=0</span>
-<span class="s">alias nouveau off</span>
-<span class="s">alias lbm-nouveau off</span>
-<span class="s">EOF</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">echo</span> <span class="s">&lt;&lt;EOF | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+</span><span class="s">lacklist nouveau
+</span><span class="s">blacklist lbm-nouveau
+</span><span class="s">options nouveau modeset=0
+</span><span class="s">alias nouveau off
+</span><span class="s">alias lbm-nouveau off
+</span><span class="s">EOF</span>
 $ <span class="nb">echo</span> options nouveau <span class="nv">modeset</span><span class="o">=</span><span class="m">0</span> <span class="p">|</span> sudo tee -a /etc/modprobe.d/nouveau-kms.conf
-$ sudo update-initramfs -u
-</code></pre></div>
-
+$ sudo update-initramfs -u</code></pre></div>
 
 <p>After this we have to restart the system for the changes to take effect.</p>
 
@@ -198,23 +191,19 @@ The first one to execute is the NVIDIA-Linux-x86_64&hellip;run file.
 This will install the kernel module.
 After that the module can be loaded.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ sudo <span class="s2">&quot;./cuda_7.5.18_linux.run&quot;</span> -extract<span class="o">=</span>./nvidia_installers
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ sudo <span class="s2">&#34;./cuda_7.5.18_linux.run&#34;</span> -extract<span class="o">=</span>./nvidia_installers
 $ sudo ./nvidia_installers/NVIDIA-Linux-x86_64-352.39.run --silent
-$ sudo modprobe nvidia
-</code></pre></div>
-
+$ sudo modprobe nvidia</code></pre></div>
 
 <p>After the kernel module has been installed the system environment has to be adjusted.
 First the PATH should be adjusted.
 Also the LD_LIBRARY_PATH has to include the cuda libraries.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/usr/local/cuda/bin:<span class="nv">$PATH</span>
-$ <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$PATH</span><span class="s2">&quot;</span> <span class="p">|</span> sudo tee -a /etc/environment
-$ <span class="nb">echo</span> <span class="s2">&quot;/usr/local/cuda/lib64&quot;</span> <span class="p">|</span> sudo tee -a /etc/ld.so.conf.d/cuda.conf
-$ <span class="nb">echo</span> <span class="s2">&quot;/usr/local/cuda/lib&quot;</span> <span class="p">|</span> sudo tee -a /etc/ld.so.conf.d/cuda.conf
-$ sudo ldconfig
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/usr/local/cuda/bin:<span class="nv">$PATH</span>
+$ <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$PATH</span><span class="s2">&#34;</span> <span class="p">|</span> sudo tee -a /etc/environment
+$ <span class="nb">echo</span> <span class="s2">&#34;/usr/local/cuda/lib64&#34;</span> <span class="p">|</span> sudo tee -a /etc/ld.so.conf.d/cuda.conf
+$ <span class="nb">echo</span> <span class="s2">&#34;/usr/local/cuda/lib&#34;</span> <span class="p">|</span> sudo tee -a /etc/ld.so.conf.d/cuda.conf
+$ sudo ldconfig</code></pre></div>
 
 <p>Once again, let&rsquo;s reboot the system so the changes take effect.</p>
 
@@ -222,18 +211,14 @@ $ sudo ldconfig
 
 <p>After the final reboot quickly verify the kernel module is loaded.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ lsmod <span class="p">|</span> grep -q nvidia
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ lsmod <span class="p">|</span> grep -q nvidia</code></pre></div>
 
 <p>If everything works, let&rsquo;s proceed by downloading the cudaHashcat binary.
 Once it is downloaded we can unzip it and setup the access rights.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ sudo curl https://hashcat.net/files/cudaHashcat-2.01.7z -O
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ sudo curl https://hashcat.net/files/cudaHashcat-2.01.7z -O
 $ sudo 7za x -y -o /opt/ cudaHashcat-2.01.7z &gt; /dev/null
-$ sudo chown -R ubuntu:ubuntu /opt/cudaHashcat-2.01/
-</code></pre></div>
-
+$ sudo chown -R ubuntu:ubuntu /opt/cudaHashcat-2.01/</code></pre></div>
 
 <p>So the next thing is to check that cudaHashcat is working as expected.</p>
 
@@ -243,37 +228,33 @@ $ sudo chown -R ubuntu:ubuntu /opt/cudaHashcat-2.01/
 This will give a true indicator of the gains over a traditional desktop GPU.
 The whole results are available on <a href="https://gist.github.com/camelinc/5c454d428e25a1cdc803#file-cudahashcat64-bin_benchmark_g2-2xlarge">gist</a>.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ /opt/cudaHashcat-2.01/cudaHashcat64.bin --benchmark
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ /opt/cudaHashcat-2.01/cudaHashcat64.bin --benchmark
 cudaHashcat v2.01 starting in benchmark-mode...
-Device <span class="c1">#1: GRID K520, 4095MB, 797Mhz, 8MCU</span>
-
+Device <span class="c1">#1: GRID K520, 4095MB, 797Mhz, 8MCU
+</span><span class="c1"></span>
 Hashtype: MD5
 Workload: <span class="m">1024</span> loops, <span class="m">256</span> accel
 Speed.GPU.#1.:  <span class="m">2632</span>.2 MH/s
 
 Hashtype: SHA1
 Workload: <span class="m">1024</span> loops, <span class="m">256</span> accel
-Speed.GPU.#1.:   <span class="m">690</span>.4 MH/s
-</code></pre></div>
-
+Speed.GPU.#1.:   <span class="m">690</span>.4 MH/s</code></pre></div>
 
 <p>My local machine with a AMD Radeon HD 7870 GHz Edition for a comparison.
 The graphics card encounters some problems with the temperature and aborts some tests.
 The full results are available on <a href="https://gist.github.com/camelinc/5c454d428e25a1cdc803#file-oclhashcat64-bin_benchmark">github</a>.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ sudo /opt/oclHashcat/oclHashcat64.bin --benchmark
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ sudo /opt/oclHashcat/oclHashcat64.bin --benchmark
 oclHashcat v2.01 starting in benchmark-mode...
-Device <span class="c1">#1: Pitcairn, 1630MB, 1050Mhz, 20MCU</span>
-
+Device <span class="c1">#1: Pitcairn, 1630MB, 1050Mhz, 20MCU
+</span><span class="c1"></span>
 Hashtype: MD5
 Workload: <span class="m">1024</span> loops, <span class="m">256</span> accel
 Speed.GPU.#1.:  <span class="m">4477</span>.7 MH/s
 
 Hashtype: SHA1
 Workload: <span class="m">1024</span> loops, <span class="m">256</span> accel
-Speed.GPU.#1.:  <span class="m">1710</span>.5 MH/s
-</code></pre></div>
-
+Speed.GPU.#1.:  <span class="m">1710</span>.5 MH/s</code></pre></div>
 
 <p>The results are quite obvious.
 My old AMD is still better at cracking than a g2.2xlarge instance.
@@ -294,12 +275,10 @@ Or another storage mechanism is suitable to persist the relevant data.</p>
 <p>In order to speed up the whole process a bash script is the obvious solution.
 The whole file can be found in <a href="https://gist.github.com/camelinc/5c454d428e25a1cdc803#file-cuda-setup-sh">this</a> gist.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="c1">#basic setup, disable nouveau</span>
-$ ./cuda-setup.sh -i
-<span class="c1">#install cuda</span>
-$ ./cuda-setup.sh -r
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#basic setup, disable nouveau
+</span><span class="c1"></span>$ ./cuda-setup.sh -i
+<span class="c1">#install cuda
+</span><span class="c1"></span>$ ./cuda-setup.sh -r</code></pre></div>
 
 <h1 id="links">Links</h1>
 
@@ -347,7 +326,7 @@ $ ./cuda-setup.sh -r
 
 <footer>
 
-  <p class="text-muted credit">&copy; 2017. All rights reserved. </p>
+  <p class="text-muted credit">&copy; 2018. All rights reserved. </p>
 
   
   

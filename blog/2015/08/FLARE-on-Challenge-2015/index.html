@@ -38,7 +38,8 @@
   
   
 
-  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  
+
   <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
   <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
 
@@ -50,7 +51,7 @@
   
   <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
 
-  <meta name="generator" content="Hugo 0.18.1" />
+  <meta name="generator" content="Hugo 0.37.1" />
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   
   
@@ -149,43 +150,37 @@ First, let&rsquo;s extract the exe with 7zip.
 The next step is to find the information.
 The cabinet file is the obvious option to do this.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="gp">$</span> 7z l rsrc/RCDATA/CABINET
-<span class="go">Path = rsrc/RCDATA/CABINET</span>
-<span class="go">Type = Cab</span>
-<span class="go">Method = LZX</span>
-<span class="go">Blocks = 1</span>
-<span class="go">Volumes = 1</span>
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ 7z l rsrc/RCDATA/CABINET
+Path = rsrc/RCDATA/CABINET
+Type = Cab
+Method = LZX
+Blocks = 1
+Volumes = 1
 
-<span class="go">   Date      Time    Attr         Size   Compressed  Name</span>
-<span class="go">------------------- ----- ------------ ------------  ------------------------</span>
-<span class="go">2015-07-27 17:30:22 ....A         1536               i_am_happy_you_are_to_playing_the_flareon_challenge.exe</span>
-<span class="go">------------------- ----- ------------ ------------  ------------------------</span>
-<span class="go">                                  1536          634  1 files, 0 folders</span>
-</code></pre></div>
-
+   Date      Time    Attr         Size   Compressed  Name
+------------------- ----- ------------ ------------  ------------------------
+2015-07-27 17:30:22 ....A         1536               i_am_happy_you_are_to_playing_the_flareon_challenge.exe
+------------------- ----- ------------ ------------  ------------------------
+                                  1536          634  1 files, 0 folders</code></pre></div>
 
 <p>Voila, now let&rsquo;s take a look at the binary in OllyDbg.
 Quite simple.
 The user input is checked in an XOR encryption loop.
 The loop starts at <code>0x0040104D</code> and uses the encryption key <code>0x7d</code>.</p>
 
-<div class="highlight"><pre><code class="language-c-objdump" data-lang="c-objdump"><span></span><span class="nl">40104d:</span>	<span class="mh">8a 81 58 21 40 00 </span>   	<span class="nf">mov</span>    <span class="mi">0x402158</span><span class="p">(</span><span class="nv">%ecx</span><span class="p">),</span><span class="nv">%al</span>
-<span class="nl">401053:</span>	<span class="mh">34 7d </span>               	<span class="nf">xor</span>    <span class="no">$0x7d</span><span class="p">,</span><span class="nv">%al</span>
-<span class="nl">401055:</span>	<span class="mh">3a 81 40 21 40 00 </span>   	<span class="nf">cmp</span>    <span class="mi">0x402140</span><span class="p">(</span><span class="nv">%ecx</span><span class="p">),</span><span class="nv">%al</span>
-<span class="nl">40105b:</span>	<span class="mh">75 1e </span>               	<span class="nf">jne</span>    <span class="mi">0x40107b</span>
-<span class="nl">40105d:</span>	<span class="mh">41 </span>                  	<span class="nf">inc</span>    <span class="nv">%ecx</span>
-<span class="nl">40105e:</span>	<span class="mh">83 f9 18 </span>            	<span class="nf">cmp</span>    <span class="no">$0x18</span><span class="p">,</span><span class="nv">%ecx</span>
-<span class="nl">401061:</span>	<span class="mh">7c ea </span>               	<span class="nf">jl</span>     <span class="mi">0x40104d</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-c-objdump" data-lang="c-objdump">40104d:	8a 81 58 21 40 00    	mov    0x402158(%ecx),%al
+401053:	34 7d                	xor    $0x7d,%al
+401055:	3a 81 40 21 40 00    	cmp    0x402140(%ecx),%al
+40105b:	75 1e                	jne    0x40107b
+40105d:	41                   	inc    %ecx
+40105e:	83 f9 18             	cmp    $0x18,%ecx
+401061:	7c ea                	jl     0x40104d</code></pre></div>
 
 <p>Obviously, the password is stored at <code>0x00402140</code>.
 With a python two liner we can decrypt the password on the go.</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">foo</span><span class="o">=</span><span class="s2">&quot;1F 08 13 13 04 22 0E 11 4D 0D 18 3D 1B 11 1C 0F 18 50 12 13 53 1E 12 10&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-<span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="mh">0x7D</span> <span class="o">^</span> <span class="nb">int</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="mi">16</span><span class="p">)),</span><span class="mi">16</span><span class="p">))</span> <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="n">foo</span><span class="p">])</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">foo</span><span class="o">=</span><span class="sa"></span><span class="s2">&#34;1F 08 13 13 04 22 0E 11 4D 0D 18 3D 1B 11 1C 0F 18 50 12 13 53 1E 12 10&#34;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34; &#34;</span><span class="p">)</span>
+<span class="sa"></span><span class="s2">&#34;&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">chr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="mh">0x7D</span> <span class="o">^</span> <span class="nb">int</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="mi">16</span><span class="p">)),</span><span class="mi">16</span><span class="p">))</span> <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="n">foo</span><span class="p">])</span></code></pre></div>
 
 <h2 id="solution">solution</h2>
 
@@ -204,48 +199,44 @@ The encryption loop first checks whether the user input is at least 37 bytes lon
 Then the magic happens and looks too complicated to explain.
 The XOR key is 0x1C7 in line <code>0x004010A9</code>.</p>
 
-<div class="highlight"><pre><code class="language-c-objdump" data-lang="c-objdump"><span></span><span class="mo">004010</span><span class="mi">98</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">8</span><span class="n">B75</span> <span class="mi">0</span><span class="n">C</span>        <span class="n">MOV</span> <span class="n">ESI</span><span class="p">,</span><span class="n">DWORD</span> <span class="n">PTR</span> <span class="nl">SS</span><span class="p">:[</span><span class="n">EBP</span><span class="o">+</span><span class="n">C</span><span class="p">]</span>             <span class="p">;</span>  <span class="n">load</span> <span class="n">user</span> <span class="n">input</span>
-<span class="mo">004010</span><span class="mi">9</span><span class="n">B</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">8</span><span class="n">B7D</span> <span class="mi">08</span>        <span class="n">MOV</span> <span class="n">EDI</span><span class="p">,</span><span class="n">DWORD</span> <span class="n">PTR</span> <span class="nl">SS</span><span class="p">:[</span><span class="n">EBP</span><span class="o">+</span><span class="mi">8</span><span class="p">]</span>             <span class="p">;</span>  <span class="n">load</span> <span class="n">bytes</span>
-<span class="mo">004010</span><span class="mi">9</span><span class="n">E</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">8</span><span class="n">D7C0F</span> <span class="n">FF</span>      <span class="n">LEA</span> <span class="n">EDI</span><span class="p">,</span><span class="n">DWORD</span> <span class="n">PTR</span> <span class="nl">DS</span><span class="p">:[</span><span class="n">EDI</span><span class="o">+</span><span class="n">ECX</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>         <span class="p">;</span>  <span class="o">&amp;</span><span class="n">bytes</span> <span class="o">+</span> <span class="mi">37</span> <span class="o">-</span> <span class="mi">1</span>
-<span class="mo">004010</span><span class="n">A2</span>  <span class="o">|&gt;</span> <span class="mi">66</span><span class="o">:</span><span class="mi">89</span><span class="n">DA</span>        <span class="o">/</span><span class="n">MOV</span> <span class="n">DX</span><span class="p">,</span><span class="n">BX</span>
-<span class="mo">004010</span><span class="n">A5</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">66</span><span class="o">:</span><span class="mf">83E2</span> <span class="mo">03</span>     <span class="o">|</span><span class="n">AND</span> <span class="n">DX</span><span class="p">,</span><span class="mi">3</span>                                <span class="p">;</span>  <span class="n">only</span> <span class="n">keep</span> <span class="mi">3</span> <span class="n">Bits</span>
-<span class="mo">004010</span><span class="n">A9</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">66</span><span class="o">:</span><span class="n">B8</span> <span class="n">C701</span>     <span class="o">|</span><span class="n">MOV</span> <span class="n">AX</span><span class="p">,</span><span class="mi">1</span><span class="n">C7</span>                              <span class="p">;</span>  <span class="n">XOR</span> <span class="n">key</span>
-<span class="mo">004010</span><span class="n">AD</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">50</span>             <span class="o">|</span><span class="n">PUSH</span> <span class="n">EAX</span>                                <span class="p">;</span>   <span class="n">pushed</span> <span class="n">to</span> <span class="n">stack</span>
-<span class="mo">004010</span><span class="n">AE</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">9</span><span class="n">E</span>             <span class="o">|</span><span class="n">SAHF</span>
-<span class="mo">004010</span><span class="n">AF</span>  <span class="o">|</span><span class="p">.</span> <span class="n">AC</span>             <span class="o">|</span><span class="n">LODS</span> <span class="n">BYTE</span> <span class="n">PTR</span> <span class="nl">DS</span><span class="p">:[</span><span class="n">ESI</span><span class="p">]</span>                  <span class="p">;</span>  <span class="n">load</span> <span class="n">byte</span> <span class="n">from</span> <span class="n">user</span> <span class="n">input</span>
-<span class="mo">004010</span><span class="n">B0</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">9</span><span class="n">C</span>             <span class="o">|</span><span class="n">PUSHFD</span>
-<span class="mo">004010</span><span class="n">B1</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">324424</span> <span class="mo">04</span>      <span class="o">|</span><span class="n">XOR</span> <span class="n">AL</span><span class="p">,</span><span class="n">BYTE</span> <span class="n">PTR</span> <span class="nl">SS</span><span class="p">:[</span><span class="n">ESP</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span>              <span class="p">;</span>  <span class="n">encrypt</span>
-<span class="mo">004010</span><span class="n">B5</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">86</span><span class="n">CA</span>           <span class="o">|</span><span class="n">XCHG</span> <span class="n">DL</span><span class="p">,</span><span class="n">CL</span>
-<span class="mo">004010</span><span class="n">B7</span>  <span class="o">|</span><span class="p">.</span> <span class="n">D2C4</span>           <span class="o">|</span><span class="n">ROL</span> <span class="n">AH</span><span class="p">,</span><span class="n">CL</span>
-<span class="mo">004010</span><span class="n">B9</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">9</span><span class="n">D</span>             <span class="o">|</span><span class="n">POPFD</span>
-<span class="mo">004010</span><span class="n">BA</span>  <span class="o">|</span><span class="p">.</span> <span class="mf">10E0</span>           <span class="o">|</span><span class="n">ADC</span> <span class="n">AL</span><span class="p">,</span><span class="n">AH</span>
-<span class="mo">004010</span><span class="n">BC</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">86</span><span class="n">CA</span>           <span class="o">|</span><span class="n">XCHG</span> <span class="n">DL</span><span class="p">,</span><span class="n">CL</span>
-<span class="mo">004010</span><span class="n">BE</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">31</span><span class="n">D2</span>           <span class="o">|</span><span class="n">XOR</span> <span class="n">EDX</span><span class="p">,</span><span class="n">EDX</span>
-<span class="mo">004010</span><span class="n">C0</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">25</span> <span class="n">FF000000</span>    <span class="o">|</span><span class="n">AND</span> <span class="n">EAX</span><span class="p">,</span><span class="mf">0FF</span>                             <span class="p">;</span>  <span class="n">keep</span> <span class="n">only</span> <span class="n">LSB</span>
-<span class="mo">004010</span><span class="n">C5</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">66</span><span class="o">:</span><span class="mo">01</span><span class="n">C3</span>        <span class="o">|</span><span class="n">ADD</span> <span class="n">BX</span><span class="p">,</span><span class="n">AX</span>
-<span class="mo">004010</span><span class="n">C8</span>  <span class="o">|</span><span class="p">.</span> <span class="n">AE</span>             <span class="o">|</span><span class="n">SCAS</span> <span class="n">BYTE</span> <span class="n">PTR</span> <span class="nl">ES</span><span class="p">:[</span><span class="n">EDI</span><span class="p">]</span>                  <span class="p">;</span>  <span class="n">compare</span> <span class="n">against</span> <span class="n">calculated</span> <span class="n">byte</span>
-<span class="mo">004010</span><span class="n">C9</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">66</span><span class="o">:</span><span class="mf">0F</span><span class="mi">45</span><span class="n">CA</span>      <span class="o">|</span><span class="n">CMOVNE</span> <span class="n">CX</span><span class="p">,</span><span class="n">DX</span>
-<span class="mo">004010</span><span class="n">CD</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">58</span>             <span class="o">|</span><span class="n">POP</span> <span class="n">EAX</span>
-<span class="mo">004010</span><span class="n">CE</span>  <span class="o">|</span><span class="p">.</span> <span class="n">E3</span> <span class="mo">07</span>          <span class="o">|</span><span class="n">JECXZ</span> <span class="n">SHORT</span> <span class="n">very_suc</span><span class="mf">.004010</span><span class="n">D7</span>
-<span class="mo">004010</span><span class="n">D0</span>  <span class="o">|</span><span class="p">.</span> <span class="mi">83</span><span class="n">EF</span> <span class="mo">02</span>        <span class="o">|</span><span class="n">SUB</span> <span class="n">EDI</span><span class="p">,</span><span class="mi">2</span>                               <span class="p">;</span>  <span class="n">iterate</span> <span class="n">backwards</span>
-<span class="mo">004010</span><span class="n">D3</span>  <span class="o">|</span><span class="p">.</span><span class="o">^</span><span class="n">E2</span> <span class="n">CD</span>          <span class="err">\</span><span class="n">LOOPD</span> <span class="n">SHORT</span> <span class="n">very_suc</span><span class="mf">.004010</span><span class="n">A2</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-c-objdump" data-lang="c-objdump">00401098  |. 8B75 0C        MOV ESI,DWORD PTR SS:[EBP+C]             ;  load user input
+0040109B  |. 8B7D 08        MOV EDI,DWORD PTR SS:[EBP+8]             ;  load bytes
+0040109E  |. 8D7C0F FF      LEA EDI,DWORD PTR DS:[EDI+ECX-1]         ;  &amp;bytes + 37 - 1
+004010A2  |&gt; 66:89DA        /MOV DX,BX
+004010A5  |. 66:83E2 03     |AND DX,3                                ;  only keep 3 Bits
+004010A9  |. 66:B8 C701     |MOV AX,1C7                              ;  XOR key
+004010AD  |. 50             |PUSH EAX                                ;   pushed to stack
+004010AE  |. 9E             |SAHF
+004010AF  |. AC             |LODS BYTE PTR DS:[ESI]                  ;  load byte from user input
+004010B0  |. 9C             |PUSHFD
+004010B1  |. 324424 04      |XOR AL,BYTE PTR SS:[ESP+4]              ;  encrypt
+004010B5  |. 86CA           |XCHG DL,CL
+004010B7  |. D2C4           |ROL AH,CL
+004010B9  |. 9D             |POPFD
+004010BA  |. 10E0           |ADC AL,AH
+004010BC  |. 86CA           |XCHG DL,CL
+004010BE  |. 31D2           |XOR EDX,EDX
+004010C0  |. 25 FF000000    |AND EAX,0FF                             ;  keep only LSB
+004010C5  |. 66:01C3        |ADD BX,AX
+004010C8  |. AE             |SCAS BYTE PTR ES:[EDI]                  ;  compare against calculated byte
+004010C9  |. 66:0F45CA      |CMOVNE CX,DX
+004010CD  |. 58             |POP EAX
+004010CE  |. E3 07          |JECXZ SHORT very_suc.004010D7
+004010D0  |. 83EF 02        |SUB EDI,2                               ;  iterate backwards
+004010D3  |.^E2 CD          \LOOPD SHORT very_suc.004010A2</code></pre></div>
 
 <p>Again, with a few lines of python magic we can decrypt the password.
 The code basically reimplements the assembly.</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">foo</span><span class="o">=</span><span class="s2">&quot;AF AA AD EB AE AA EC A4 BA AF AE AA 8A C0 A7 B0 BC 9A BA A5 A5 BA AF B8 9D B8 F9 AE 9D AB B4 BC B6 B3 90 9A A8&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">foo</span><span class="o">=</span><span class="sa"></span><span class="s2">&#34;AF AA AD EB AE AA EC A4 BA AF AE AA 8A C0 A7 B0 BC 9A BA A5 A5 BA AF B8 9D B8 F9 AE 9D AB B4 BC B6 B3 90 9A A8&#34;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa"></span><span class="s2">&#34; &#34;</span><span class="p">)</span>
 <span class="n">EBX</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">res</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">res</span> <span class="o">=</span> <span class="sa"></span><span class="s2">&#34;&#34;</span>
 <span class="k">for</span> <span class="n">xx</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">foo</span><span class="p">):</span>
   <span class="n">EDX_shift</span> <span class="o">=</span> <span class="n">EBX</span> <span class="o">&amp;</span> <span class="mi">3</span>
   <span class="n">AH</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">EDX_shift</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
   <span class="n">EBX</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="mi">16</span><span class="p">)</span>
   <span class="n">res</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span><span class="mi">16</span><span class="p">)</span> <span class="o">-</span> <span class="n">AH</span><span class="p">)</span> <span class="o">^</span> <span class="mh">0xC7</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-</code></pre></div>
-
+<span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></code></pre></div>
 
 <h2 id="solution-1">solution</h2>
 
@@ -267,9 +258,7 @@ Running the newly created <code>elfie.py</code> yields some more obfuscated code
 Before doing that, replace the call to <code>exec</code> with a <code>print</code>.
 After looking long enough at the code, the solution is obvious.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="gp">$</span> strings elfie <span class="p">|</span> sed <span class="s2">&quot;s/exec/print/g&quot;</span> <span class="p">|</span> python <span class="p">|</span> grep -oP <span class="s2">&quot;in reversed\(&#39;moc.+&#39;\)&quot;</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ strings elfie | sed &#34;s/exec/print/g&#34; | python | grep -oP &#34;in reversed\(&#39;moc.+&#39;\)&#34;</code></pre></div>
 
 <h2 id="solution-2">Solution</h2>
 
@@ -300,16 +289,14 @@ The second hash value is calculated based on some unknown value.</p>
 <p>Why not write a script to iterate all possible values.
 Win.</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">subprocess</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">subprocess</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">24</span><span class="p">):</span>
-    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;youPecks&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="sa"></span><span class="s1">&#39;youPecks&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
     <span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
     <span class="c1">#Do we have a winner</span>
-    <span class="k">if</span> <span class="s2">&quot;flare&quot;</span> <span class="ow">in</span> <span class="n">out</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-</code></pre></div>
-
+    <span class="k">if</span> <span class="sa"></span><span class="s2">&#34;flare&#34;</span> <span class="ow">in</span> <span class="n">out</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">out</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span></code></pre></div>
 
 <p>Alternativeley, we can manipulate the value for the check in <code>0x00401BB0</code>.
 The time_struct is used to store pointers and lengths while copying the base64 encoded strings to the heap.</p>
@@ -381,74 +368,66 @@ So let&rsquo;s dive in ARM assembly.</p>
 During testing an emulated device proofed to be quite unstable.
 In order to debug the library we have to attach gdbserver to the running app.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="c1">#Grep process id</span>
-ps <span class="p">|</span> grep flare
-<span class="c1">#attach to running app</span>
-gdbserver :1234 --attach <span class="m">4444</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#Grep process id
+</span><span class="c1"></span>ps <span class="p">|</span> grep flare
+<span class="c1">#attach to running app
+</span><span class="c1"></span>gdbserver :1234 --attach <span class="m">4444</span></code></pre></div>
 
 <p>Next, we have to copy the libraries from the phone to the debugging machine.
 For this, we simply create a temporary directory and pull the necessary files via adb.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="c1">#prepare directory structure</span>
-mkdir /tmp/my_android
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1">#prepare directory structure
+</span><span class="c1"></span>mkdir /tmp/my_android
 <span class="nb">cd</span> /tmp/my_android
 mkdir system_lib
 mkdir vendor_lib
-<span class="c1">#copy system libs</span>
-<span class="nb">cd</span> system_lib
+<span class="c1">#copy system libs
+</span><span class="c1"></span><span class="nb">cd</span> system_lib
 ~/Android/Sdk/platform-tools/adb pull /system/lib
 ~/Android/Sdk/platform-tools/adb pull /system/vendor/lib/egl
 <span class="nb">cd</span> ..
-<span class="c1">#copy vendor libs</span>
-<span class="nb">cd</span> vendor_lib
+<span class="c1">#copy vendor libs
+</span><span class="c1"></span><span class="nb">cd</span> vendor_lib
 ~/Android/Sdk/platform-tools/adb pull /vendor/lib
 <span class="nb">cd</span> ..
-<span class="c1">#copy rest</span>
-~/Android/Sdk/platform-tools/adb pull /system/bin/app_process
+<span class="c1">#copy rest
+</span><span class="c1"></span>~/Android/Sdk/platform-tools/adb pull /system/bin/app_process
 ~/Android/Sdk/platform-tools/adb pull /system/bin/linker
-~/Android/Sdk/platform-tools/adb pull /data/app/com.flare_on.flare-1/lib/arm/libvalidate.so
-</code></pre></div>
-
+~/Android/Sdk/platform-tools/adb pull /data/app/com.flare_on.flare-1/lib/arm/libvalidate.so</code></pre></div>
 
 <p>With the necessary files in place we can start up the arm debugger.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="gp">#</span>start arm
-<span class="go">./arm-linux-androideabi-gdb</span>
-<span class="gp">#</span>connect to remote gdbserver
-<span class="go">target remote 192.168.1.2:1234</span>
-<span class="gp">#</span><span class="nb">set</span> up logging
-<span class="go">set logging overwrite off</span>
-<span class="go">set logging file /tmp/my_android/debug.txt</span>
-<span class="go">set logging redirect off</span>
-<span class="go">set logging on</span>
-<span class="gp">#</span><span class="nb">set</span> location of libraries
-<span class="go">set auto-solib-add on</span>
-<span class="go">set solib-search-path /tmp/my_android/system_lib/:/tmp/my_android/vendor_lib/:/tmp/my_android/</span>
-<span class="go">show solib-search-path</span>
-<span class="go">info proc mappings</span>
-<span class="go">info sharedlibrary</span>
-<span class="go">backtrace</span>
-<span class="gp">#</span>verify logging
-<span class="go">show logging</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">#start arm
+./arm-linux-androideabi-gdb
+#connect to remote gdbserver
+target remote 192.168.1.2:1234
+#set up logging
+set logging overwrite off
+set logging file /tmp/my_android/debug.txt
+set logging redirect off
+set logging on
+#set location of libraries
+set auto-solib-add on
+set solib-search-path /tmp/my_android/system_lib/:/tmp/my_android/vendor_lib/:/tmp/my_android/
+show solib-search-path
+info proc mappings
+info sharedlibrary
+backtrace
+#verify logging
+show logging</code></pre></div>
 
 <p>The disassembly points out, that the relevant input comparison happens in line <code>Java_com_flareon_flare_ValidateActivity_validate+188</code>.
 The memcmp takes two pointers and a size.
 To understand what&rsquo;s happening here let&rsquo;s add breakpoints that print out the relevant information.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="go">break Java_com_flareon_flare_ValidateActivity_validate+188</span>
-<span class="go">commands 1</span>
-<span class="go">set logging on</span>
-<span class="go">i r</span>
-<span class="go">x/1738xh $r0</span>
-<span class="go">x/1738xh $r1</span>
-<span class="go">c</span>
-<span class="go">end</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">break Java_com_flareon_flare_ValidateActivity_validate+188
+commands 1
+set logging on
+i r
+x/1738xh $r0
+x/1738xh $r1
+c
+end</code></pre></div>
 
 <p>With the above command gdb prints the registers and the relevant memory sections that are compared.
 1738 is the size 0xD94 divided by 2.
@@ -482,15 +461,15 @@ The pointer to the arrays with the solution is stored in <code>0xbeb84484</code>
 Subsequently, we have to interpret the data and recalculate the input bytes.
 The last step can be achieved with a short python script.</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="k">global</span> <span class="n">myprimes</span>
     <span class="c1">#calculate prime numbers</span>
     <span class="n">myprimes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">primesfrom2to</span><span class="p">(</span><span class="mh">0x7e7d</span><span class="p">))</span>
 
-    <span class="n">solution</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;debug-run-4&quot;</span>
+    <span class="n">solution</span> <span class="o">=</span> <span class="sa"></span><span class="s2">&#34;&#34;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="sa"></span><span class="s2">&#34;debug-run-4&#34;</span>
     <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="s2">&quot;target_&quot;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
+        <span class="k">if</span> <span class="sa"></span><span class="s2">&#34;target_&#34;</span> <span class="ow">in</span> <span class="n">filename</span><span class="p">:</span>
             <span class="c1">#calculates the sum of the primes at the addresses</span>
             <span class="c1"># of the lookup table. The memory has been dumped</span>
             <span class="c1"># with gdb</span>
@@ -504,9 +483,7 @@ The last step can be achieved with a short python script.</p>
 
     <span class="k">print</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span>
 
-<span class="n">main</span><span class="p">()</span>
-</code></pre></div>
-
+<span class="n">main</span><span class="p">()</span></code></pre></div>
 
 <p>This gives the wonderful output.</p>
 
@@ -587,34 +564,32 @@ It directly creates the required parameters on the stack.</p>
 <p>With pydbg we can attach a breakpoint at the relevant positions.
 The following function will log all relevant register values.</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">myhandler1</span><span class="p">(</span><span class="n">dbg</span><span class="p">):</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">myhandler1</span><span class="p">(</span><span class="n">dbg</span><span class="p">):</span>
     <span class="c1">#XOR</span>
     <span class="k">if</span> <span class="n">dbg</span><span class="o">.</span><span class="n">exception_address</span> <span class="o">==</span> <span class="mh">0x00401AEE</span><span class="p">:</span>
-        <span class="n">ah</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="s1">&#39;AH&#39;</span><span class="p">)</span>
-        <span class="n">al</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="s1">&#39;AL&#39;</span><span class="p">)</span>
+        <span class="n">ah</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;AH&#39;</span><span class="p">)</span>
+        <span class="n">al</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;AL&#39;</span><span class="p">)</span>
         <span class="k">print</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">ah</span><span class="p">),</span><span class="nb">hex</span><span class="p">(</span><span class="n">al</span><span class="p">))</span>
     <span class="c1">#ROL</span>
     <span class="k">elif</span> <span class="n">dbg</span><span class="o">.</span><span class="n">exception_address</span> <span class="o">==</span> <span class="mh">0x00401B14</span><span class="p">:</span>
-        <span class="n">al</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="s1">&#39;AL&#39;</span><span class="p">)</span>
-        <span class="n">cl</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="s1">&#39;CL&#39;</span><span class="p">)</span>
+        <span class="n">al</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;AL&#39;</span><span class="p">)</span>
+        <span class="n">cl</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;CL&#39;</span><span class="p">)</span>
         <span class="k">print</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">al</span><span class="p">),</span><span class="nb">hex</span><span class="p">(</span><span class="n">cl</span><span class="p">))</span>
     <span class="c1">#MOV</span>
     <span class="k">elif</span> <span class="n">dbg</span><span class="o">.</span><span class="n">exception_address</span> <span class="o">==</span> <span class="mh">0x00401B16</span><span class="p">:</span>
-        <span class="n">esp</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="s1">&#39;ESP&#39;</span><span class="p">)</span>
-        <span class="n">ebx</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="s1">&#39;EBX&#39;</span><span class="p">)</span>
+        <span class="n">esp</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;ESP&#39;</span><span class="p">)</span>
+        <span class="n">ebx</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">get_register</span><span class="p">(</span><span class="sa"></span><span class="s1">&#39;EBX&#39;</span><span class="p">)</span>
         <span class="n">ss</span> <span class="o">=</span> <span class="n">ESP</span><span class="o">+</span><span class="n">EBX</span><span class="o">+</span><span class="mh">0x2C</span>
         <span class="n">ebx2</span> <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">read_process_memory</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
         <span class="k">print</span><span class="p">(</span><span class="nb">hex</span><span class="p">(</span><span class="n">ss</span><span class="p">),</span><span class="nb">hex</span><span class="p">(</span><span class="n">ebx2</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">disasm</span>    <span class="o">=</span> <span class="n">dbg</span><span class="o">.</span><span class="n">disasm</span><span class="p">(</span><span class="n">dbg</span><span class="o">.</span><span class="n">exception_address</span><span class="p">)</span>
-        <span class="k">print</span> <span class="s2">&quot;</span><span class="si">%08x</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dbg</span><span class="o">.</span><span class="n">exception_address</span><span class="p">,</span> <span class="n">disasm</span><span class="p">)</span>
-</code></pre></div>
-
+        <span class="k">print</span> <span class="sa"></span><span class="s2">&#34;</span><span class="si">%08x</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dbg</span><span class="o">.</span><span class="n">exception_address</span><span class="p">,</span> <span class="n">disasm</span><span class="p">)</span></code></pre></div>
 
 <p>We can grep the register values from the log file.
 Subsequently, let&rsquo;s reverse engineer the encryption.</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1"># Rotate left: 0b1001 --&gt; 0b0011</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># Rotate left: 0b1001 --&gt; 0b0011</span>
 <span class="n">rol</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">val</span><span class="p">,</span> <span class="n">r_bits</span><span class="p">,</span> <span class="n">max_bits</span><span class="p">:</span> \
     <span class="p">(</span><span class="n">val</span> <span class="o">&lt;&lt;</span> <span class="n">r_bits</span><span class="o">%</span><span class="n">max_bits</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">max_bits</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">|</span> \
     <span class="p">((</span><span class="n">val</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">max_bits</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">max_bits</span><span class="o">-</span><span class="p">(</span><span class="n">r_bits</span><span class="o">%</span><span class="n">max_bits</span><span class="p">)))</span>
@@ -628,7 +603,7 @@ Subsequently, let&rsquo;s reverse engineer the encryption.</p>
 <span class="n">rol</span> <span class="o">=</span> <span class="p">[</span><span class="mh">0x56</span><span class="n">L</span><span class="p">,</span><span class="mh">0xf5</span><span class="n">L</span><span class="p">,</span><span class="mh">0xac</span><span class="n">L</span><span class="p">,</span><span class="mh">0x1b</span><span class="n">L</span><span class="p">,</span><span class="mh">0xb5</span><span class="n">L</span><span class="p">,</span><span class="mh">0x93</span><span class="n">L</span><span class="p">,</span><span class="mh">0x7e</span><span class="n">L</span><span class="p">,</span><span class="mh">0xb8</span><span class="n">L</span><span class="p">,</span><span class="mh">0x23</span><span class="n">L</span><span class="p">,</span><span class="mh">0xda</span><span class="n">L</span><span class="p">,</span><span class="mh">0xa</span><span class="n">L</span><span class="p">,</span><span class="mh">0xf2</span><span class="n">L</span><span class="p">,</span><span class="mh">0x1</span><span class="n">L</span><span class="p">,</span><span class="mh">0x61</span><span class="n">L</span><span class="p">,</span><span class="mh">0x5c</span><span class="n">L</span><span class="p">,</span><span class="mh">0xc8</span><span class="n">L</span><span class="p">,</span><span class="mh">0x4c</span><span class="n">L</span><span class="p">,</span><span class="mh">0xd6</span><span class="n">L</span><span class="p">,</span><span class="mh">0x16</span><span class="n">L</span><span class="p">,</span><span class="mh">0x55</span><span class="n">L</span><span class="p">,</span><span class="mh">0x67</span><span class="n">L</span><span class="p">,</span><span class="mh">0xb8</span><span class="n">L</span><span class="p">,</span><span class="mh">0xc1</span><span class="n">L</span><span class="p">,</span><span class="mh">0xf8</span><span class="n">L</span><span class="p">,</span><span class="mh">0xbc</span><span class="n">L</span><span class="p">,</span><span class="mh">0x11</span><span class="n">L</span><span class="p">,</span><span class="mh">0xfa</span><span class="n">L</span><span class="p">,</span><span class="mh">0x9b</span><span class="n">L</span><span class="p">,</span><span class="mh">0x6b</span><span class="n">L</span><span class="p">,</span><span class="mh">0xf9</span><span class="n">L</span><span class="p">,</span><span class="mh">0xd4</span><span class="n">L</span><span class="p">,</span><span class="mh">0x75</span><span class="n">L</span><span class="p">,</span><span class="mh">0x87</span><span class="n">L</span><span class="p">,</span><span class="mh">0xca</span><span class="n">L</span><span class="p">,</span><span class="mh">0xce</span><span class="n">L</span><span class="p">,</span><span class="mh">0xbe</span><span class="n">L</span><span class="p">,</span><span class="mh">0x4e</span><span class="n">L</span><span class="p">,</span><span class="mh">0x6e</span><span class="n">L</span><span class="p">,</span><span class="mh">0xf1</span><span class="n">L</span><span class="p">,</span><span class="mh">0xb9</span><span class="n">L</span><span class="p">,</span><span class="mh">0x6e</span><span class="n">L</span><span class="p">]</span>
 <span class="n">cmpxchg</span> <span class="o">=</span> <span class="p">[</span><span class="mh">0xc3f44e06</span><span class="p">,</span><span class="mh">0xccb880f0</span><span class="p">,</span><span class="mh">0xbac2ccb8</span><span class="p">,</span><span class="mh">0x4e0642bc</span><span class="p">,</span><span class="mh">0xf25d5630</span><span class="p">,</span><span class="mh">0xeb165a6b</span><span class="p">,</span><span class="mh">0x275dc3f4</span><span class="p">,</span><span class="mh">0x19535366</span><span class="p">,</span><span class="mh">0xc6c30e8e</span><span class="p">,</span><span class="mh">0x42bcf25d</span><span class="p">,</span><span class="mh">0x0642bcf2</span><span class="p">,</span><span class="mh">0x165a6bc6</span><span class="p">,</span><span class="mh">0x5d56302e</span><span class="p">,</span><span class="mh">0x535366d2</span><span class="p">,</span><span class="mh">0x55dc01e1</span><span class="p">,</span><span class="mh">0x0e8e275d</span><span class="p">,</span><span class="mh">0x66d2f903</span><span class="p">,</span><span class="mh">0xf44e0642</span><span class="p">,</span><span class="mh">0xf99a5055</span><span class="p">,</span><span class="mh">0x302e1953</span><span class="p">,</span><span class="mh">0x9a5055dc</span><span class="p">,</span><span class="mh">0x77f99a50</span><span class="p">,</span><span class="mh">0x56302e19</span><span class="p">,</span><span class="mh">0x6bc6c30e</span><span class="p">,</span><span class="mh">0xf04877f9</span><span class="p">,</span><span class="mh">0x8e275dc3</span><span class="p">,</span><span class="mh">0xdc01e1eb</span><span class="p">,</span><span class="mh">0x2e195353</span><span class="p">,</span><span class="mh">0x5055dc01</span><span class="p">,</span><span class="mh">0xe1eb165a</span><span class="p">,</span><span class="mh">0x5a6bc6c3</span><span class="p">,</span><span class="mh">0x80f04877</span><span class="p">,</span><span class="mh">0x4877f99a</span><span class="p">,</span><span class="mh">0x5dc3f44e</span><span class="p">,</span><span class="mh">0x5366d2f9</span><span class="p">,</span><span class="mh">0xc2ccb880</span><span class="p">,</span><span class="mh">0xb880f048</span><span class="p">,</span><span class="mh">0xd2f903cf</span><span class="p">,</span><span class="mh">0x01e1eb16</span><span class="p">,</span><span class="mh">0xc30e8e27</span><span class="p">,</span><span class="mh">0xbcf25d56</span><span class="p">]</span>
 
-<span class="n">out</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">out</span> <span class="o">=</span> <span class="sa"></span><span class="s2">&#34;&#34;</span>
 <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">while</span> <span class="n">cnt</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">xor</span><span class="p">):</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">cmpxchg</span><span class="p">[</span><span class="n">cnt</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="mi">24</span>
@@ -639,9 +614,7 @@ Subsequently, let&rsquo;s reverse engineer the encryption.</p>
     <span class="n">out</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
-</code></pre></div>
-
+<span class="k">print</span><span class="p">(</span><span class="n">out</span><span class="p">)</span></code></pre></div>
 
 <h2 id="solution-8">Solution</h2>
 
@@ -687,6 +660,8 @@ This I could not figure out in time.</p>
 
     
       
+        &nbsp;<li class="previous"><a href="http://camelinc.info/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/"> The 2015 SANS Holiday Hack Challenge - Solution</a></li>
+      
     
     
       
@@ -699,7 +674,7 @@ This I could not figure out in time.</p>
 
 <footer>
 
-  <p class="text-muted credit">&copy; 2017. All rights reserved. </p>
+  <p class="text-muted credit">&copy; 2018. All rights reserved. </p>
 
   
   

